@@ -15,7 +15,7 @@
 // Embed mode detection (when loaded inside calculator iframe)
 window._isEmbed = (function(){
   try {
-    return window.location.search.indexOf('embed=1') > -1 || (window.parent && window.parent !== window);
+    return window.location.search.indexOf('embed=1') > -1;
   } catch(e) { return false; }
 })();
 
@@ -379,12 +379,12 @@ body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,tran
 body.dark .auth-overlay{background:#0a1012;}
 .auth-overlay.on{display:flex;}
 /* Test mode link */
-.test-mode-lnk{color:var(--gm);text-decoration:none;transition:all 0.2s;display:inline-flex;line-height:0;width:32px;height:32px;border-radius:8px;background:rgba(42,143,151,0.1);border:1px solid rgba(42,143,151,0.25);align-items:center;justify-content:center;}
-.test-mode-lnk:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
-body.dark .test-mode-lnk{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);}
-body.dark .test-mode-lnk:hover{background:rgba(255,255,255,0.22);color:#fff;}
-@media(prefers-color-scheme:dark){body:not(.light) .test-mode-lnk{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);}
-body:not(.light) .test-mode-lnk:hover{background:rgba(255,255,255,0.22);color:#fff;}}
+.test-mode-lnk{color:rgba(0,0,0,0.35);text-decoration:none;transition:color 0.2s;display:inline-flex;line-height:0;}
+.test-mode-lnk:hover{color:rgba(0,0,0,0.6);}
+body.dark .test-mode-lnk{color:rgba(255,255,255,0.55);}
+body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}
+@media(prefers-color-scheme:dark){body:not(.light) .test-mode-lnk{color:rgba(255,255,255,0.55);}
+body:not(.light) .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}}
 /* Auth dark toggle */
 .auth-dark-tog{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
 .auth-lang-tog{right:auto!important;left:14px!important;}
@@ -537,7 +537,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.11</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.12</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
