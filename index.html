@@ -361,6 +361,9 @@ body.dark .pr-card{background:var(--w);}
 .mark-complete{display:flex;align-items:center;gap:14px;background:var(--w);border:1.5px solid var(--bd);border-radius:14px;padding:20px 24px;margin:36px 0 12px;}
 .next-lesson{display:flex;align-items:center;gap:14px;padding:16px 22px;background:var(--w);border:1.5px solid var(--bd);border-radius:14px;cursor:pointer;text-decoration:none;color:inherit;transition:all .15s;margin:0 0 40px;}
 .next-lesson:hover{border-color:var(--gm);box-shadow:0 3px 14px rgba(42,143,151,0.15);transform:translateX(3px);}
+body.dark .next-lesson{background:#0e1416;border-color:#2a4044;}
+body.dark .next-lesson .nl-title{color:#e8f0f1;}
+@media(prefers-color-scheme:dark){body:not(.light) .next-lesson{background:#0e1416;border-color:#2a4044;}body:not(.light) .next-lesson .nl-title{color:#e8f0f1;}}
 .nl-tag{font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gm);margin-bottom:3px;}
 .nl-title{font-size:0.92rem;font-weight:700;color:var(--bk);}
 .nl-info{flex:1;}
@@ -534,7 +537,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.18</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.19</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -7006,7 +7009,7 @@ async function loadProfile() {
   document.getElementById('sbUser').style.display = 'block';
   document.getElementById('sbUserName').textContent = _profile.full_name || _user.email || '—';
   document.getElementById('sbUserEmail').textContent = _user.email;
-  document.getElementById('logoutBtn').style.display = 'flex';
+  if (!window._isEmbed) document.getElementById('logoutBtn').style.display = 'flex';
 }
 
 async function loadProgress() {
