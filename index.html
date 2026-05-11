@@ -427,14 +427,14 @@ body.auth-active .main{display:none!important;}
 .embed-close-btn{
   display:none; align-items:center; justify-content:center;
   position:fixed; top:14px; right:18px; z-index:50;
-  width:36px; height:36px; border-radius:6.8px;
+  width:36px; height:36px; border-radius:9px;
   background:rgba(42,143,151,0.1);
-  border:0.85px solid rgba(42,143,151,0.21);
+  border:1.5px solid rgba(42,143,151,0.25);
   color:var(--gm); cursor:pointer;
   transition:background 0.15s, color 0.15s, border-color 0.15s;
 }
 .embed-close-btn:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
-body.dark .embed-close-btn{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.19);color:rgba(255,255,255,0.8);}
+body.dark .embed-close-btn{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8);}
 body.dark .embed-close-btn:hover{background:rgba(255,255,255,0.22);color:#fff;}
 .embed-mode .embed-close-btn{display:inline-flex;}
 .embed-mode .auth-dark-tog--overlay{right:auto;left:54px;}
@@ -534,7 +534,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.17</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.18</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -7337,25 +7337,31 @@ async function handleEmbedAuth(user) {
   if (ov) ov.style.display = 'none';
   document.body.classList.remove('auth-active');
   document.body.classList.add('authed');
-  // Populate user info
+  // Populate user info from calc handoff (used as fallback if loadProfile fails)
   _user = {
     id: user.id,
     email: user.email,
-    full_name: user.full_name || user.email || '',
+    full_name: user.full_name || '',
     role: user.role || 'manager'
   };
-  // Update sidebar user display
-  const nameEl = document.getElementById('sbUserName');
-  const emailEl = document.getElementById('sbUserEmail');
-  const userWrap = document.getElementById('sbUser');
-  if (nameEl) nameEl.textContent = _user.full_name || _user.email;
-  if (emailEl) emailEl.textContent = _user.email;
-  if (userWrap) userWrap.style.display = '';
-  // Initialize Supabase session if access_token provided
+  // Initialize Supabase session BEFORE loadProfile so it can query profiles
   if (user.access_token && typeof sb !== 'undefined' && sb) {
     try {
       await sb.auth.setSession({ access_token: user.access_token, refresh_token: user.access_token });
     } catch(e) { console.warn('KB: setSession failed', e); }
+  }
+  // Load profile from KB's own profiles table — same as direct login
+  // This ensures first_name/last_name come from DB, not just from calc handoff
+  if (typeof loadProfile === 'function') {
+    try { await loadProfile(); } catch(e) { console.warn('KB: loadProfile failed', e); }
+  } else {
+    // Fallback if loadProfile not available
+    const nameEl = document.getElementById('sbUserName');
+    const emailEl = document.getElementById('sbUserEmail');
+    const userWrap = document.getElementById('sbUser');
+    if (nameEl) nameEl.textContent = _user.full_name || _user.email;
+    if (emailEl) emailEl.textContent = _user.email;
+    if (userWrap) userWrap.style.display = '';
   }
   // Load progress
   if (typeof loadProgress === 'function') {
