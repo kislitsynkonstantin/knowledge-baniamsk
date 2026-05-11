@@ -338,8 +338,15 @@ body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,tran
 .mark-complete.done .mc-btn{background:transparent;color:var(--gm);border:1.5px solid var(--gm);}
 
 /* Auth modal */
-.auth-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.auth-overlay{display:none;position:fixed;inset:0;background:#f0f6f6;z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .auth-overlay.on{display:flex;}
+body.dark .auth-overlay{background:#0a1012;}
+/* Hide sidebar, right side-nav, mobile and floating buttons while auth overlay is showing */
+body.auth-active .sb,
+body.auth-active .sb-floating,
+body.auth-active .mob-btn,
+body.auth-active .side-nav,
+body.auth-active .main{display:none!important;}
 .auth-modal{background:var(--w);border-radius:16px;padding:32px 36px;max-width:380px;width:100%;box-shadow:0 12px 48px rgba(0,0,0,0.2);}
 .auth-modal h3{font-family:'Unbounded',sans-serif;font-size:1.05rem;margin:0 0 7px;color:var(--bk);}
 .auth-modal p{font-size:0.78rem;color:var(--gr);margin-bottom:20px;}
@@ -400,7 +407,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v1.38</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v1.42</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -6310,25 +6317,58 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
   <div class="side-nav-strip"></div>
 </div>
 
-<!-- ── Auth modal ── -->
+<!-- ── Auth modal (calculator-style) ── -->
 <div class="auth-overlay" id="authOverlay">
   <div class="auth-modal">
-    <h3>
-      <span class="lang-ru">Вход в базу знаний</span>
-      <span class="lang-en">Sign in to the Knowledge Base</span>
-    </h3>
-    <p>
-      <span class="lang-ru">Используйте те же данные, что и в калькуляторе Баня-МСК.</span>
-      <span class="lang-en">Use the same credentials as in the Banya-MSK calculator.</span>
-    </p>
-    <label><span class="lang-ru">Email</span><span class="lang-en">Email</span></label>
-    <input type="email" id="authEmail" placeholder="you@example.com" autocomplete="email">
-    <label><span class="lang-ru">Пароль</span><span class="lang-en">Password</span></label>
-    <input type="password" id="authPwd" autocomplete="current-password">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:#1e6c72;color:#fff;font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.04em;padding:8px 16px;border-radius:10px;margin-bottom:16px;">БМСК</div>
+      <div style="display:inline-block;font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gm);background:var(--gb);padding:3px 12px;border-radius:20px;margin-bottom:12px;">
+        <span class="lang-ru">Только для сотрудников</span><span class="lang-en">Employees only</span>
+      </div>
+      <div style="font-family:'Unbounded',sans-serif;font-size:1.35rem;font-weight:700;color:var(--bk);line-height:1.25;margin-bottom:5px;">
+        <span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span>
+      </div>
+      <div style="font-size:0.75rem;color:var(--gr);padding-bottom:14px;border-bottom:1px solid var(--gb);">
+        <span class="lang-ru">Обучение менеджеров отдела продаж</span><span class="lang-en">Sales team training</span>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="font-size:0.68rem;font-weight:600;color:var(--gr);letter-spacing:0.04em;text-transform:uppercase;display:block;margin-bottom:6px;">
+        <span class="lang-ru">Email</span><span class="lang-en">Email</span>
+      </label>
+      <input id="authEmail" type="email" placeholder="manager@baniamsk.ru" autocomplete="email"
+        style="width:100%;padding:10px 13px;border-radius:9px;border:1.5px solid var(--bd);background:var(--w);color:var(--bk);font-size:0.85rem;font-family:'Geologica',sans-serif;box-sizing:border-box;outline:none;margin-bottom:0;"
+        onkeydown="if(event.key==='Enter')document.getElementById('authPwd').focus()">
+    </div>
+    <div style="margin-bottom:18px;">
+      <label style="font-size:0.68rem;font-weight:600;color:var(--gr);letter-spacing:0.04em;text-transform:uppercase;display:block;margin-bottom:6px;">
+        <span class="lang-ru">Пароль</span><span class="lang-en">Password</span>
+      </label>
+      <div style="position:relative;">
+        <input id="authPwd" type="password" placeholder="••••••••" autocomplete="current-password"
+          style="width:100%;padding:10px 40px 10px 13px;border-radius:9px;border:1.5px solid var(--bd);background:var(--w);color:var(--bk);font-size:0.85rem;font-family:'Geologica',sans-serif;box-sizing:border-box;outline:none;margin-bottom:0;"
+          onkeydown="if(event.key==='Enter')signIn()">
+        <button type="button" onclick="const f=document.getElementById('authPwd');f.type=f.type==='password'?'text':'password';"
+          style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gr);padding:0;display:flex;align-items:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
     <div class="auth-err" id="authErr"></div>
-    <button class="pr-btn pr-btn-pri" style="width:100%;padding:11px;" onclick="signIn()">
-      <span class="lang-ru">Войти</span><span class="lang-en">Sign in</span>
+    <button onclick="signIn()" style="width:100%;padding:12px;background:var(--g);color:#fff;border:none;border-radius:9px;font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;letter-spacing:0.04em;transition:opacity 0.15s;">
+      <span class="lang-ru">ВОЙТИ</span><span class="lang-en">SIGN IN</span>
     </button>
+    <!-- Discreet test mode trigger -->
+    <div id="testModeWrap" style="margin-top:18px;text-align:center;">
+      <a href="#" onclick="showTestPwd();return false;" id="testModeLink" style="color:rgba(0,0,0,0.22);font-size:0.68rem;text-decoration:none;letter-spacing:0.05em;font-family:'Geologica',sans-serif;">
+        <span class="lang-ru">Тест</span><span class="lang-en">Test</span>
+      </a>
+      <div id="testPwdRow" style="display:none;margin-top:10px;">
+        <input id="testPwd" type="password" placeholder="••••" autocomplete="off"
+          style="width:120px;padding:6px 10px;border-radius:7px;border:1.5px solid var(--bd);background:var(--w);color:var(--bk);font-size:0.78rem;font-family:'Geologica',sans-serif;outline:none;text-align:center;"
+          onkeydown="if(event.key==='Enter')submitTestPwd()">
+      </div>
+    </div>
   </div>
 </div>
 
@@ -6602,20 +6642,40 @@ function setLang(lang) {
 const savedLang = localStorage.getItem('kb_lang') || 'ru';
 setLang(savedLang);
 
-// ── Auth (TEST MODE: bypass disabled) ──
+// ── Auth (cookie-based SSO with calculator.baniamsk.ru) ──
 async function init() {
-  // Test mode: skip auth, fake user, use localStorage for progress/practice
-  _user = { id: 'test-local', email: 'test@local' };
-  _profile = { id: 'test-local', email: 'test@local', full_name: 'Тестовый режим' };
-  document.getElementById('sbUser').style.display = 'block';
-  document.getElementById('sbUserName').textContent = 'Тестовый режим';
-  document.getElementById('sbUserEmail').textContent = 'без авторизации';
-  document.getElementById('logoutBtn').style.display = 'none';
-  // Load progress from localStorage
-  try { _progress = JSON.parse(localStorage.getItem('kb_test_progress') || '{}'); } catch(e) { _progress = {}; }
-  refreshProgressUI();
-  showLesson('1.3');
+  // Check for an existing session (from shared cookie or fresh login on this site)
+  let session = null;
+  try {
+    const { data } = await sb.auth.getSession();
+    session = data && data.session;
+  } catch(e) {
+    console.error('[auth] getSession failed:', e);
+  }
+
+  if (session && session.user) {
+    // Logged in — proceed to load profile, progress, first lesson
+    _user = session.user;
+    document.body.classList.remove('auth-active');
+    document.getElementById('authOverlay').classList.remove('on');
+    await loadProfile();
+    await loadProgress();
+    showLesson('1.3');
+  } else {
+    // No session — show login modal. signIn() will complete the flow.
+    document.body.classList.add('auth-active');
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('authOverlay').classList.add('on');
+  }
 }
+
+// Listen for auth changes (e.g. token refresh, sign-out on another tab/subdomain)
+sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT' && _user) {
+    // Session ended elsewhere (or token failed to refresh) — reload to reset state
+    location.reload();
+  }
+});
 
 async function loadProfile() {
   const { data } = await sb.from('profiles').select('*').eq('id', _user.id).single();
@@ -6692,6 +6752,7 @@ async function signIn() {
     return;
   }
   _user = data.user;
+  document.body.classList.remove('auth-active');
   document.getElementById('authOverlay').classList.remove('on');
   document.getElementById('loadingState').style.display = 'none';
   await loadProfile();
@@ -6702,6 +6763,38 @@ async function signIn() {
 async function signOut() {
   await sb.auth.signOut();
   location.reload();
+}
+
+// ── Test mode (password-gated, no Supabase, localStorage progress) ──
+function showTestPwd() {
+  document.getElementById('testModeLink').style.display = 'none';
+  document.getElementById('testPwdRow').style.display = 'block';
+  setTimeout(() => document.getElementById('testPwd').focus(), 50);
+}
+function submitTestPwd() {
+  const pwd = document.getElementById('testPwd').value;
+  if (pwd !== '323') {
+    // Reset for retry
+    document.getElementById('testPwd').value = '';
+    document.getElementById('testPwd').style.borderColor = '#c0392b';
+    setTimeout(() => { document.getElementById('testPwd').style.borderColor = ''; }, 800);
+    return;
+  }
+  enterTestMode();
+}
+async function enterTestMode() {
+  _user = { id: 'test-local', email: 'test@local' };
+  _profile = { id: 'test-local', email: 'test@local', full_name: 'Тестовый режим' };
+  document.getElementById('sbUser').style.display = 'block';
+  document.getElementById('sbUserName').textContent = 'Тестовый режим';
+  document.getElementById('sbUserEmail').textContent = 'без авторизации';
+  document.getElementById('logoutBtn').style.display = 'none';
+  document.body.classList.remove('auth-active');
+  document.getElementById('authOverlay').classList.remove('on');
+  document.getElementById('loadingState').style.display = 'none';
+  try { _progress = JSON.parse(localStorage.getItem('kb_test_progress') || '{}'); } catch(e) { _progress = {}; }
+  refreshProgressUI();
+  showLesson('1.3');
 }
 
 // ── Navigation ──
