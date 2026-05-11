@@ -12,6 +12,13 @@
 <script>
 // Apply theme BEFORE render — calculator-manual hybrid pattern:
 // body.dark = forced dark, body.light = forced light, neither = follow system
+// Embed mode detection (when loaded inside calculator iframe)
+window._isEmbed = (function(){
+  try {
+    return window.location.search.indexOf('embed=1') > -1 || (window.parent && window.parent !== window);
+  } catch(e) { return false; }
+})();
+
 // MOBILE EXCEPTION: on screens ≤880px, always follow system theme (button hidden)
 (function(){
   var isMobile = window.matchMedia('(max-width:880px)').matches;
@@ -142,7 +149,7 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
   100%{background:transparent;box-shadow:0 0 0 0 rgba(61,176,186,0);}
 }
 .search-flash{animation:searchFlash 1.8s ease-out;border-radius:8px;}
-.sb-group{padding:14px 22px 5px;font-size:0.55rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.12em;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:color 0.15s;}
+.sb-group{padding:14px 22px 5px;font-size:0.55rem;font-weight:700;color:rgba(255,255,255,0.88);text-transform:uppercase;letter-spacing:0.12em;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:color 0.15s;}
 .sb-group:hover{color:rgba(255,255,255,0.7);}
 .sb-group-chevron{opacity:0.45;transition:transform 0.22s ease,opacity 0.15s;flex-shrink:0;}
 .sb-group:hover .sb-group-chevron{opacity:0.8;}
@@ -223,6 +230,10 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 /* ── Main ── */
 .main{flex:1;padding:48px 64px 100px;max-width:920px;margin:0 auto;transition:margin-left 0.25s cubic-bezier(0.4,0,0.2,1);}
 /* Constrain content widths — lessons, home, section all capped at 920px */
+
+/* ── Embed mode (loaded in calculator iframe) ── */
+.embed-mode .sb-floating{display:none!important;}
+.embed-mode #sbPinBtn{display:none!important;}
 
 /* Backdrop for mobile drawer */
 .sb-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:79;animation:fadeIn 0.2s;}
@@ -505,7 +516,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.5</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.8</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -537,7 +548,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     </div>
     <!-- Search -->
     <div class="srch-wrap">
-      <input class="srch-inp" id="kbSearch" type="search" placeholder="Поиск по урокам…" oninput="doKbSearch(this.value)" onblur="setTimeout(()=>closeKbSearch(),200)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" name="kb-search-nofill" inputmode="search">
+      <input class="srch-inp" id="kbSearch" type="text" role="searchbox" placeholder="Поиск по урокам…" oninput="doKbSearch(this.value)" onfocus="this.removeAttribute('readonly')" onblur="setTimeout(()=>closeKbSearch(),200)" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" name="kb-search-no-autofill-x9k2" inputmode="search" readonly>
       <div class="srch-results" id="srchResults"></div>
     </div>
     <div class="sb-group" id="grp-b1" onclick="toggleSbGroup('b1')">
@@ -7224,6 +7235,76 @@ const HS_LESSON_NAMES = {
   '3.10':'Три доверия','3.11':'Встреча',
   '5.1':'Встреча с экспертом','5.2':'Выбор проекта'
 };
+
+// ── EMBED MODE: integrate with parent (calculator) ──
+if (window._isEmbed) {
+  document.documentElement.classList.add('embed-mode');
+  // Hide test mode link in embed
+  document.addEventListener('DOMContentLoaded', function() {
+    const wrap = document.getElementById('testModeWrap');
+    if (wrap) wrap.style.display = 'none';
+    // Hide pin button (no sidebar collapse in embed for now)
+    const pinBtn = document.getElementById('sbPinBtn');
+    if (pinBtn) pinBtn.style.display = 'none';
+  });
+  // Listen for theme + auth messages from parent
+  window.addEventListener('message', function(e) {
+    if (!e.data || !e.data.type) return;
+    if (e.data.type === 'theme') {
+      const dark = !!e.data.dark;
+      document.body.classList.remove('dark', 'light');
+      document.body.classList.add(dark ? 'dark' : 'light');
+      const m = document.getElementById('themeColorMeta');
+      if (m) m.setAttribute('content', dark ? '#0a1012' : '#f0f6f6');
+    }
+    if (e.data.type === 'auth' && e.data.user) {
+      handleEmbedAuth(e.data.user);
+    }
+  });
+  // Notify parent we're ready (sends after DOMContentLoaded so listener is attached on calc side)
+  function _pingParent() {
+    try { window.parent.postMessage('kbReady', '*'); } catch(err) {}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _pingParent);
+  } else {
+    _pingParent();
+  }
+}
+
+async function handleEmbedAuth(user) {
+  // Hide auth overlay immediately
+  const ov = document.getElementById('authOverlay');
+  if (ov) ov.style.display = 'none';
+  document.body.classList.remove('auth-active');
+  document.body.classList.add('authed');
+  // Populate user info
+  _user = {
+    id: user.id,
+    email: user.email,
+    full_name: user.full_name || user.email || '',
+    role: user.role || 'manager'
+  };
+  // Update sidebar user display
+  const nameEl = document.getElementById('sbUserName');
+  const emailEl = document.getElementById('sbUserEmail');
+  const userWrap = document.getElementById('sbUser');
+  if (nameEl) nameEl.textContent = _user.full_name || _user.email;
+  if (emailEl) emailEl.textContent = _user.email;
+  if (userWrap) userWrap.style.display = '';
+  // Initialize Supabase session if access_token provided
+  if (user.access_token && typeof sb !== 'undefined' && sb) {
+    try {
+      await sb.auth.setSession({ access_token: user.access_token, refresh_token: user.access_token });
+    } catch(e) { console.warn('KB: setSession failed', e); }
+  }
+  // Load progress
+  if (typeof loadProgress === 'function') {
+    try { await loadProgress(); } catch(e) {}
+  }
+  // Show home screen
+  if (typeof showHomeScreen === 'function') showHomeScreen();
+}
 
 function showHomeScreen() {
   // Hide all lessons, hide loading
