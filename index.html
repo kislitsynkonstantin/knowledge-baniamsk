@@ -104,9 +104,9 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 .sb-top h1{font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;color:#fff;line-height:1.3;}
 .sb-top p{font-size:0.66rem;color:rgba(255,255,255,0.55);margin-top:4px;}
 .sb-controls{margin-top:14px;display:flex;gap:7px;align-items:center;}
-.sb-ctrl-btn{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 9px;border-radius:9px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.85);font-family:'Geologica',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.04em;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.sb-ctrl-btn{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:30px;padding:0 9px;border-radius:9px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.85);font-family:'Geologica',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.04em;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .sb-ctrl-btn:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.36);color:#fff;}
-#sbThemeBtn{padding:0;width:32px;}
+#sbThemeBtn{padding:0;width:32px;height:30px;}
 #sbThemeBtn svg{width:13px;height:13px;}
 
 /* lang switch */
@@ -237,7 +237,6 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 /* Constrain content widths — lessons, home, section all capped at 920px */
 
 /* ── Embed mode (loaded in calculator iframe) ── */
-.embed-mode .sb-floating{display:none!important;}
 
 /* Backdrop for mobile drawer */
 .sb-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:79;animation:fadeIn 0.2s;}
@@ -428,14 +427,14 @@ body.auth-active .main{display:none!important;}
 .embed-close-btn{
   display:none; align-items:center; justify-content:center;
   position:fixed; top:14px; right:18px; z-index:50;
-  width:36px; height:36px; border-radius:8px;
+  width:36px; height:36px; border-radius:6.8px;
   background:rgba(42,143,151,0.1);
-  border:1px solid rgba(42,143,151,0.25);
+  border:0.85px solid rgba(42,143,151,0.21);
   color:var(--gm); cursor:pointer;
   transition:background 0.15s, color 0.15s, border-color 0.15s;
 }
 .embed-close-btn:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
-body.dark .embed-close-btn{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8);}
+body.dark .embed-close-btn{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.19);color:rgba(255,255,255,0.8);}
 body.dark .embed-close-btn:hover{background:rgba(255,255,255,0.22);color:#fff;}
 .embed-mode .embed-close-btn{display:inline-flex;}
 .embed-mode .auth-dark-tog--overlay{right:auto;left:54px;}
@@ -535,7 +534,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.15</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.17</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -6888,6 +6887,11 @@ window.addEventListener('keydown', function(e) {
   if (e.key === 'я' || e.key === 'Я' || e.key === 'z' || e.key === 'Z') {
     const cur = document.body.getAttribute('data-lang') || 'ru';
     setLang(cur === 'ru' ? 'en' : 'ru');
+    return;
+  }
+  // Н/Y → toggle theme (same hotkey as calculator)
+  if (e.key === 'н' || e.key === 'Н' || e.key === 'y' || e.key === 'Y') {
+    toggleTheme();
     return;
   }
 });
