@@ -103,6 +103,11 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 .sb-logo-badge{font-family:'Unbounded',sans-serif;font-size:0.58rem;font-weight:800;background:rgba(255,255,255,0.15);border-radius:5px;padding:4px 9px;color:#fff;letter-spacing:0.04em;}
 .sb-top h1{font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;color:#fff;line-height:1.3;}
 .sb-top p{font-size:0.66rem;color:rgba(255,255,255,0.55);margin-top:4px;}
+.sb-controls{margin-top:14px;display:flex;gap:7px;align-items:center;}
+.sb-ctrl-btn{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 9px;border-radius:9px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.85);font-family:'Geologica',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.04em;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.sb-ctrl-btn:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.36);color:#fff;}
+#sbThemeBtn{padding:0;width:32px;}
+#sbThemeBtn svg{width:13px;height:13px;}
 
 /* lang switch */
 .lang-switch{display:flex;gap:0;background:rgba(255,255,255,0.08);border-radius:8px;padding:3px;margin-top:14px;}
@@ -233,7 +238,6 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 
 /* ── Embed mode (loaded in calculator iframe) ── */
 .embed-mode .sb-floating{display:none!important;}
-.embed-mode #sbPinBtn{display:none!important;}
 
 /* Backdrop for mobile drawer */
 .sb-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:79;animation:fadeIn 0.2s;}
@@ -386,9 +390,9 @@ body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}
 @media(prefers-color-scheme:dark){body:not(.light) .test-mode-lnk{color:rgba(255,255,255,0.55);}
 body:not(.light) .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}}
 /* Auth dark toggle */
-.auth-dark-tog{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.auth-dark-tog{position:fixed;top:14px;right:14px;width:32px;height:32px;border-radius:9px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:0.62rem;font-weight:700;letter-spacing:0.04em;font-family:"Geologica",sans-serif;}
 .auth-lang-tog{right:auto!important;left:14px!important;}
-.auth-dark-tog--overlay{right:auto!important;left:58px!important;}
+.auth-dark-tog--overlay{right:auto!important;left:54px!important;}
 @media(max-width:880px){.auth-dark-tog{display:none!important;}.auth-lang-tog{display:none!important;}}
 .auth-dark-tog:hover{background:rgba(42,143,151,0.12);color:var(--g);}
 body.dark .auth-dark-tog{background:#1a2a2c;border-color:#2a4a4e;color:var(--grl);}
@@ -411,13 +415,16 @@ body.auth-active .main{display:none!important;}
 
 /* Theme toggle — matches calculator header button style */
 .theme-tog{
-  display:inline-flex; align-items:center; justify-content:center;
+  display:none!important; align-items:center; justify-content:center;
   border-radius:8px; padding:6px 10px;
   cursor:pointer; transition:background 0.15s, color 0.15s, border-color 0.15s;
   position:fixed; top:14px; right:18px; z-index:50;
+  /* Light theme: subtle on white background */
+  background:rgba(42,143,151,0.1);
+  border:1px solid rgba(42,143,151,0.25);
+  color:var(--gm);
 }
-/* In embed mode: theme moves left, close button takes top-right slot */
-.embed-mode .theme-tog{right:62px;}
+.theme-tog:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
 .embed-close-btn{
   display:none; align-items:center; justify-content:center;
   position:fixed; top:14px; right:18px; z-index:50;
@@ -431,16 +438,7 @@ body.auth-active .main{display:none!important;}
 body.dark .embed-close-btn{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8);}
 body.dark .embed-close-btn:hover{background:rgba(255,255,255,0.22);color:#fff;}
 .embed-mode .embed-close-btn{display:inline-flex;}
-.embed-mode .auth-dark-tog--overlay{right:auto;left:58px;}
-.embed-mode .auth-close-btn{display:inline-flex;}
-.auth-close-btn{display:none;}
-.fake-tog-marker{
-  /* Light theme: subtle on white background */
-  background:rgba(42,143,151,0.1);
-  border:1px solid rgba(42,143,151,0.25);
-  color:var(--gm);
-}
-.theme-tog:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
+.embed-mode .auth-dark-tog--overlay{right:auto;left:54px;}
 /* Dark theme: exact calculator style */
 body.dark .theme-tog{
   background:rgba(255,255,255,0.13);
@@ -537,13 +535,17 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.12</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.15</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
-    <div class="lang-switch">
-      <button id="langRu" class="lang-btn on" onclick="setLang('ru')">РУС</button>
-      <button id="langEn" class="lang-btn" onclick="setLang('en')">ENG</button>
+    <div class="sb-controls">
+      <button id="sbLangBtn" class="sb-ctrl-btn" onclick="toggleLangSb()" title="Switch language">
+        <span class="lang-ru">En</span><span class="lang-en">Ру</span>
+      </button>
+      <button id="sbThemeBtn" class="sb-ctrl-btn" onclick="toggleTheme()" title="Тёмный / светлый режим">
+        <svg id="sbThemeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
   </div>
 
@@ -6585,7 +6587,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
 <!-- ── Auth modal (calculator-style) ── -->
 <div class="auth-overlay" id="authOverlay">
   <button class="auth-dark-tog auth-lang-tog" onclick="toggleLangFromAuth()" title="Язык / Language" id="authLangBtn">
-    <span id="authLangLabel" style="font-size:0.68rem;font-weight:700;letter-spacing:0.04em;">EN</span>
+    <span id="authLangLabel" style="font-size:0.62rem;font-weight:700;letter-spacing:0.04em;">En</span>
   </button>
   <button class="auth-dark-tog auth-dark-tog--overlay" onclick="toggleTheme()" title="Тёмный / светлый режим">
     <svg id="authDarkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -6864,6 +6866,11 @@ const savedSbState = localStorage.getItem('kb_sb_state') || 'pinned';
 setSidebarState(savedSbState);
 
 // ── Theme (calculator-manual hybrid pattern) ──
+function toggleLangSb() {
+  const cur = document.body.getAttribute('data-lang') || 'ru';
+  setLang(cur === 'ru' ? 'en' : 'ru');
+}
+
 function closeEmbed() {
   try { window.parent.postMessage('closeGuide', '*'); } catch(e) {}
 }
@@ -6890,7 +6897,7 @@ function toggleLangFromAuth() {
   const next = cur === 'ru' ? 'en' : 'ru';
   setLang(next);
   const lbl = document.getElementById('authLangLabel');
-  if (lbl) lbl.textContent = next === 'ru' ? 'EN' : 'RU';
+  if (lbl) lbl.textContent = next === 'ru' ? 'En' : 'Ру';
 }
 
 function toggleTheme() {
@@ -6919,6 +6926,9 @@ function updateThemeIcon(isDark) {
   // Also update auth modal icon if visible
   const authIcon = document.getElementById('authDarkIcon');
   if (authIcon) authIcon.innerHTML = svgHtml;
+  // Sidebar theme icon
+  const sbIcon = document.getElementById('sbThemeIcon');
+  if (sbIcon) sbIcon.innerHTML = svgHtml;
 }
 // Initial icon state based on current effective theme
 (function(){
@@ -6940,6 +6950,9 @@ function setLang(lang) {
   // Update search placeholder
   const inp = document.getElementById('kbSearch');
   if (inp) inp.placeholder = lang === 'en' ? 'Search lessons…' : 'Поиск по урокам…';
+  // Update auth-overlay lang label (shows opposite language)
+  const authLbl = document.getElementById('authLangLabel');
+  if (authLbl) authLbl.textContent = lang === 'ru' ? 'En' : 'Ру';
 }
 const savedLang = localStorage.getItem('kb_lang') || 'ru';
 setLang(savedLang);
@@ -7288,9 +7301,6 @@ if (window._isEmbed) {
   document.addEventListener('DOMContentLoaded', function() {
     const wrap = document.getElementById('testModeWrap');
     if (wrap) wrap.style.display = 'none';
-    // Hide pin button (no sidebar collapse in embed for now)
-    const pinBtn = document.getElementById('sbPinBtn');
-    if (pinBtn) pinBtn.style.display = 'none';
   });
   // Listen for theme + auth messages from parent
   window.addEventListener('message', function(e) {
