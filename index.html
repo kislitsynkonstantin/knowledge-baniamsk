@@ -340,6 +340,15 @@ body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,tran
 /* Auth modal */
 .auth-overlay{display:none;position:fixed;inset:0;background:#f0f6f6;z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .auth-overlay.on{display:flex;}
+/* Test mode link */
+.test-mode-lnk{color:rgba(0,0,0,0.22);font-size:0.68rem;text-decoration:none;letter-spacing:0.05em;font-family:'Geologica',sans-serif;transition:color 0.2s;}
+body.dark .test-mode-lnk{color:rgba(255,255,255,0.38);}
+body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.7);}
+/* Auth dark toggle */
+.auth-dark-tog{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.auth-dark-tog:hover{background:rgba(42,143,151,0.12);color:var(--g);}
+body.dark .auth-dark-tog{background:#1a2a2c;border-color:#2a4a4e;color:var(--grl);}
+body.dark .auth-dark-tog:hover{background:rgba(255,255,255,0.12);color:#fff;}
 body.dark .auth-overlay{background:#0a1012;}
 /* Hide sidebar, right side-nav, mobile and floating buttons while auth overlay is showing */
 body.auth-active .sb,
@@ -407,7 +416,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v1.42</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v1.44</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -6319,6 +6328,9 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
 
 <!-- ── Auth modal (calculator-style) ── -->
 <div class="auth-overlay" id="authOverlay">
+  <button class="auth-dark-tog auth-dark-tog--overlay" onclick="toggleTheme()" title="Тёмный / светлый режим">
+    <svg id="authDarkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
   <div class="auth-modal">
     <div style="text-align:center;margin-bottom:24px;">
       <div style="display:inline-flex;align-items:center;gap:6px;background:#1e6c72;color:#fff;font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.04em;padding:8px 16px;border-radius:10px;margin-bottom:16px;">БМСК</div>
@@ -6360,7 +6372,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     </button>
     <!-- Discreet test mode trigger -->
     <div id="testModeWrap" style="margin-top:18px;text-align:center;">
-      <a href="#" onclick="showTestPwd();return false;" id="testModeLink" style="color:rgba(0,0,0,0.22);font-size:0.68rem;text-decoration:none;letter-spacing:0.05em;font-family:'Geologica',sans-serif;">
+      <a href="#" onclick="showTestPwd();return false;" id="testModeLink" class="test-mode-lnk">
         <span class="lang-ru">Тест</span><span class="lang-en">Test</span>
       </a>
       <div id="testPwdRow" style="display:none;margin-top:10px;">
@@ -6612,11 +6624,14 @@ function toggleTheme() {
   if (m) m.setAttribute('content', next === 'dark' ? '#0a1012' : '#f0f6f6');
 }
 function updateThemeIcon(isDark) {
-  const icon = document.getElementById('darkModeIcon');
-  if (!icon) return;
-  icon.innerHTML = isDark
+  const svgHtml = isDark
     ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
     : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  const icon = document.getElementById('darkModeIcon');
+  if (icon) icon.innerHTML = svgHtml;
+  // Also update auth modal icon if visible
+  const authIcon = document.getElementById('authDarkIcon');
+  if (authIcon) authIcon.innerHTML = svgHtml;
 }
 // Initial icon state based on current effective theme
 (function(){
@@ -6680,8 +6695,12 @@ sb.auth.onAuthStateChange((event, session) => {
 async function loadProfile() {
   const { data } = await sb.from('profiles').select('*').eq('id', _user.id).single();
   _profile = data || { id: _user.id, email: _user.email };
+  // Assemble full_name from first_name + last_name (same logic as calculator)
+  if (!_profile.full_name && (data?.first_name || data?.last_name)) {
+    _profile.full_name = [data.first_name, data.last_name].filter(Boolean).join(' ');
+  }
   document.getElementById('sbUser').style.display = 'block';
-  document.getElementById('sbUserName').textContent = _profile.full_name || _profile.email || '—';
+  document.getElementById('sbUserName').textContent = _profile.full_name || _user.email || '—';
   document.getElementById('sbUserEmail').textContent = _user.email;
   document.getElementById('logoutBtn').style.display = 'flex';
 }
@@ -6773,7 +6792,7 @@ function showTestPwd() {
 }
 function submitTestPwd() {
   const pwd = document.getElementById('testPwd').value;
-  if (pwd !== '323') {
+  if (pwd !== '3232') {
     // Reset for retry
     document.getElementById('testPwd').value = '';
     document.getElementById('testPwd').style.borderColor = '#c0392b';
