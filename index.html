@@ -59,7 +59,7 @@ body{font-family:'Geologica',sans-serif;background:#f0f6f6;color:var(--bk);line-
 @media(prefers-color-scheme:dark){body:not(.light){background:#0a1012;color:var(--bk);}}
 body.dark{background:#0a1012;}
 .layout{display:flex;min-height:100vh;position:relative;}
-:root{--sb-w:264px;}
+:root{--sb-w:290px;}
 
 /* ── Sidebar — collapsible ── */
 .sb{width:var(--sb-w);flex-shrink:0;background:#1e6c72;position:fixed;left:0;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:80;transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 24px rgba(0,0,0,0.15);}
@@ -79,7 +79,7 @@ body[data-sb="unpinned"] .sb.peek{transform:translateX(0);}
 /* pinned: stays open, layout shifts */
 body[data-sb="pinned"] .sb{transform:translateX(0);box-shadow:none;}
 body[data-sb="pinned"] .main{margin-left:var(--sb-w);}
-body[data-sb="unpinned"] .main{margin-left:0;}
+body[data-sb="unpinned"] .main{margin-left:0!important;}
 
 /* Pin/unpin button inside sidebar (top-right corner) */
 .sb-pin{position:absolute;top:14px;right:14px;width:26px;height:26px;border:none;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:5;}
@@ -111,6 +111,15 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 .sb-nav{padding:8px 0 24px;flex:1;}
 
 /* ── Search (calculator manual style) ── */
+.sb-home-btn{display:flex;align-items:center;gap:9px;padding:10px 14px 10px 22px;font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.85);cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);transition:all .15s;letter-spacing:0.01em;}
+.sb-home-btn:hover{color:#fff;background:rgba(255,255,255,0.06);}
+.sb-home-btn>svg{opacity:0.7;flex-shrink:0;}
+.sb-home-btn:hover>svg{opacity:1;}
+.sb-home-btn>span{flex:1;}
+.sb-toggle-btn{margin-left:auto;flex-shrink:0;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.7);padding:4px 7px;border-radius:5px;display:flex;align-items:center;gap:4px;transition:all .15s;font-family:'Geologica',sans-serif;}
+.sb-toggle-btn:hover{color:#fff;background:rgba(255,255,255,0.1);}
+.sb-toggle-label{font-size:0.6rem;font-weight:600;letter-spacing:0.02em;}
+
 .srch-wrap{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.1);position:relative;}
 .srch-inp{width:100%;padding:7px 11px;border-radius:7px;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.92);font-family:'Geologica',sans-serif;font-size:0.74rem;outline:none;box-sizing:border-box;-webkit-appearance:none;}
 .srch-inp::placeholder{color:rgba(255,255,255,0.45);}
@@ -131,14 +140,14 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
   100%{background:transparent;box-shadow:0 0 0 0 rgba(61,176,186,0);}
 }
 .search-flash{animation:searchFlash 1.8s ease-out;border-radius:8px;}
-.sb-group{padding:14px 22px 5px;font-size:0.55rem;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.12em;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:color 0.15s;}
+.sb-group{padding:14px 22px 5px;font-size:0.55rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.12em;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:color 0.15s;}
 .sb-group:hover{color:rgba(255,255,255,0.7);}
 .sb-group-chevron{opacity:0.45;transition:transform 0.22s ease,opacity 0.15s;flex-shrink:0;}
 .sb-group:hover .sb-group-chevron{opacity:0.8;}
 .sb-group.collapsed .sb-group-chevron{transform:rotate(-90deg);}
 .sb-group-items{overflow:hidden;transition:max-height 0.28s ease;}
 .sb-group-items.collapsed{max-height:0!important;}
-.sb-a{display:flex;align-items:center;gap:8px;padding:8px 22px;font-size:0.74rem;color:rgba(255,255,255,0.72);cursor:pointer;transition:all 0.12s;border-left:2px solid transparent;user-select:none;line-height:1.35;}
+.sb-a{display:flex;align-items:center;gap:8px;padding:8px 22px;font-size:0.74rem;color:rgba(255,255,255,0.88);cursor:pointer;transition:all 0.12s;border-left:2px solid transparent;user-select:none;line-height:1.35;}
 .sb-a:hover{background:rgba(255,255,255,0.06);color:#fff;}
 .sb-a.on{background:rgba(255,255,255,0.12);color:#fff;border-left-color:var(--gl);font-weight:600;}
 .sb-a-num{font-family:'Unbounded',sans-serif;font-size:0.6rem;font-weight:700;background:rgba(255,255,255,0.1);border-radius:4px;padding:2px 5px;flex-shrink:0;letter-spacing:0.03em;}
@@ -211,6 +220,7 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 
 /* ── Main ── */
 .main{flex:1;padding:48px 64px 100px;max-width:920px;margin:0 auto;transition:margin-left 0.25s cubic-bezier(0.4,0,0.2,1);}
+/* Constrain content widths — lessons, home, section all capped at 920px */
 
 /* Backdrop for mobile drawer */
 .sb-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:79;animation:fadeIn 0.2s;}
@@ -227,6 +237,8 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 @media(max-width:880px){
   /* Hide desktop floating pin button on mobile */
   .sb-floating{display:none!important;}
+  /* Home screen: 2 columns on all screen sizes */
+  .hs-blocks{grid-template-columns:1fr 1fr!important;}
   /* Sidebar becomes off-canvas drawer — z-index ABOVE backdrop */
   .sb{
     width:min(280px,86vw);
@@ -239,13 +251,12 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
   body[data-sb="unpinned"] .sb{transform:translateX(-100%);}
   /* mob-open class opens the drawer */
   .sb.mob-open{transform:translateX(0)!important;}
-  /* Content never shifts on mobile */
-  body[data-sb="pinned"] .main,
-  body[data-sb="unpinned"] .main{margin-left:0;}
+  /* Mobile: only unpinned has margin-left:0; pinned keeps sidebar width */
   .main{padding:24px 18px 100px;}
   /* Show mobile button */
   .mob-btn{display:flex;}
-  /* Theme button hidden on mobile — system theme is used automatically */
+  /* mob-btn visible on all screens including home/section */
+  /* Theme button hidden on mobile — follows system theme */
   .theme-tog{display:none!important;}
   /* Hide desktop pin/collapse button — drawer pattern doesn't pin */
   .sb-pin{display:none;}
@@ -347,11 +358,12 @@ body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,tran
 .auth-overlay{display:none;position:fixed;inset:0;background:#f0f6f6;z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .auth-overlay.on{display:flex;}
 /* Test mode link */
-.test-mode-lnk{color:rgba(0,0,0,0.22);font-size:0.68rem;text-decoration:none;letter-spacing:0.05em;font-family:'Geologica',sans-serif;transition:color 0.2s;}
-body.dark .test-mode-lnk{color:rgba(255,255,255,0.38);}
-body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.7);}
+.test-mode-lnk{color:rgba(0,0,0,0.18);text-decoration:none;transition:color 0.2s;display:inline-flex;line-height:0;}
+.test-mode-lnk:hover{color:rgba(0,0,0,0.5);}
+body.dark .test-mode-lnk{color:rgba(255,255,255,0.2);}
+body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.55);}
 /* Auth dark toggle */
-.auth-dark-tog{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.auth-dark-tog{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);}@media(max-width:880px){.auth-dark-tog{display:none!important;}}
 .auth-dark-tog:hover{background:rgba(42,143,151,0.12);color:var(--g);}
 body.dark .auth-dark-tog{background:#1a2a2c;border-color:#2a4a4e;color:var(--grl);}
 body.dark .auth-dark-tog:hover{background:rgba(255,255,255,0.12);color:#fff;}
@@ -397,6 +409,63 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
 
 /* Loading */
 .loading{display:flex;align-items:center;justify-content:center;min-height:50vh;color:var(--grl);font-size:0.85rem;}
+
+/* ── Home screen ── */
+.hs-wrap{padding:0 0 80px;}
+/* Section drill-down */
+.sec-back{display:inline-flex;align-items:center;gap:7px;font-size:0.72rem;font-weight:600;color:var(--gm);cursor:pointer;margin-bottom:28px;padding:6px 0;border:none;background:none;font-family:'Geologica',sans-serif;letter-spacing:0.01em;transition:color .12s;}
+.sec-back:hover{color:var(--g);}
+.sec-tag{font-family:'Unbounded',sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gm);margin-bottom:10px;}
+.sec-title{font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:800;color:var(--bk);margin-bottom:5px;}
+.sec-sub{font-size:0.82rem;color:var(--gr);margin-bottom:30px;line-height:1.55;}
+.sec-lesson-list{display:flex;flex-direction:column;gap:8px;}
+.sec-lesson-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:var(--w);border:1.5px solid var(--bd);cursor:pointer;transition:all .15s;}
+.sec-lesson-row:hover{border-color:var(--gm);box-shadow:0 3px 12px rgba(42,143,151,0.12);transform:translateX(3px);}
+.sec-lesson-row.done{background:var(--gb);border-color:transparent;}
+.sec-lesson-row.done:hover{border-color:transparent;}
+.slr-num{font-family:'Unbounded',sans-serif;font-size:0.62rem;font-weight:700;color:var(--gm);width:34px;flex-shrink:0;}
+.sec-lesson-row.done .slr-num{color:var(--g);}
+.slr-info{flex:1;}
+.slr-title{font-size:0.8rem;font-weight:600;color:var(--bk);margin-bottom:2px;}
+.slr-sub{font-size:0.67rem;color:var(--gr);}
+.slr-check{width:20px;height:20px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hs-greeting{margin-bottom:28px;}
+.hs-greeting-name{font-family:'Unbounded',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gm);margin-bottom:10px;}
+.hs-title{font-family:'Unbounded',sans-serif;font-size:1.5rem;font-weight:700;color:var(--bk);line-height:1.25;margin-bottom:6px;}
+.hs-subtitle{font-size:0.84rem;color:var(--gr);}
+.hs-progress-row{display:flex;align-items:center;gap:14px;margin-bottom:36px;}
+.hs-prog-bar{flex:1;height:5px;background:var(--gb);border-radius:3px;overflow:hidden;}
+.hs-prog-fill{height:100%;background:var(--g);border-radius:3px;transition:width 0.5s ease;}
+.hs-prog-label{font-size:0.72rem;font-weight:600;color:var(--gm);white-space:nowrap;min-width:80px;text-align:right;}
+
+/* Block grid */
+.hs-blocks{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.hs-block{background:var(--g);border-radius:16px;padding:22px 20px 18px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;color:#fff;position:relative;overflow:hidden;}
+.hs-block::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 60%);pointer-events:none;}
+.hs-block:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(30,108,114,0.35);}
+.hs-block:active{transform:translateY(0);}
+.hs-block--dim{background:var(--g);cursor:default;}
+.hs-block--dim:hover{transform:none;box-shadow:none;}
+body.dark .hs-block{background:#1a4448;}
+body.dark .hs-block--dim{background:#1a4448;}
+body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
+.hs-block-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.hs-block-num{font-family:'Unbounded',sans-serif;font-size:1.6rem;font-weight:800;color:rgba(255,255,255,0.55);line-height:1;}
+.hs-wip-tag{display:inline-block;font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:8px;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.65);margin-top:6px;}
+.hs-block-name{font-family:'Unbounded',sans-serif;font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.02em;margin-bottom:4px;line-height:1.3;}
+.hs-block-count{font-size:0.65rem;color:rgba(255,255,255,0.55);margin-bottom:14px;}
+.hs-block--dim .hs-block-name{color:rgba(255,255,255,0.6);}
+
+/* Lesson pills in block tile */
+.hs-block-lessons{display:flex;flex-wrap:wrap;gap:5px;}
+.hs-pill{font-size:0.6rem;font-weight:600;padding:3px 8px;border-radius:10px;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);cursor:pointer;transition:background 0.12s;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+.hs-pill:hover{background:rgba(255,255,255,0.28);}
+.hs-pill.done{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.45);text-decoration:line-through;}
+
+/* Progress ring */
+.hs-block-prog-ring{position:relative;width:36px;height:36px;flex-shrink:0;}
+.hs-block-prog-ring svg{width:36px;height:36px;}
+.hs-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:rgba(255,255,255,0.8);}
 </style>
 </head>
 <body data-lang="ru">
@@ -422,7 +491,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v1.48</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.1</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -437,12 +506,21 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <div class="sb-user-email" id="sbUserEmail" style="font-size:0.66rem;opacity:0.7;"></div>
     <div class="sb-user-prog"><div id="sbProgFill" class="sb-user-prog-fill" style="width:0%"></div></div>
     <div class="sb-user-prog-label">
-      <span class="lang-ru">Пройдено: <span id="sbProgPct">0</span>% (<span id="sbProgN">0</span>/13)</span>
-      <span class="lang-en">Completed: <span id="sbProgPctEn">0</span>% (<span id="sbProgNEn">0</span>/13)</span>
+      <span class="lang-ru">Пройдено: <span id="sbProgPct">0</span>% (<span id="sbProgN">0</span>/15)</span>
+      <span class="lang-en">Completed: <span id="sbProgPctEn">0</span>% (<span id="sbProgNEn">0</span>/15)</span>
     </div>
   </div>
 
   <nav class="sb-nav">
+    <!-- Home button + collapse toggle in one row -->
+    <div class="sb-home-btn" id="sbHomeBtn" onclick="showHomeScreen()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="lang-ru">Главная</span><span class="lang-en">Home</span>
+      <button class="sb-toggle-btn" id="sbToggleBtn" onclick="toggleAllGroups(event)" title="Свернуть / развернуть всё">
+        <span class="sb-toggle-label lang-ru" id="sbToggleLabelRu">Свернуть</span><span class="sb-toggle-label lang-en" id="sbToggleLabelEn">Collapse</span>
+        <svg id="sbToggleIcon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+      </button>
+    </div>
     <!-- Search -->
     <div class="srch-wrap">
       <input class="srch-inp" id="kbSearch" type="search" placeholder="Поиск по урокам…" oninput="doKbSearch(this.value)" onblur="setTimeout(()=>closeKbSearch(),200)" autocomplete="nope" name="kb-search-nofill">
@@ -557,7 +635,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
 
     </div>
     <div class="sb-group" id="grp-b4" onclick="toggleSbGroup('b4')">
-      <span><span class="lang-ru">Блок 4. Конкуренты и сравнение</span><span class="lang-en">Block 4. Competitors and comparison</span></span>
+      <span><span class="lang-ru">Блок 4. Конкуренты</span><span class="lang-en">Block 4. Competitors</span></span>
       <svg class="sb-group-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="sb-group-items" id="grp-items-b4">
@@ -607,6 +685,100 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
 <!-- ── Main content ── -->
 <div class="main" id="main">
   <div id="loadingState" class="loading">Загрузка…</div>
+
+  <!-- ── Home screen (shown after login, before first lesson) ── -->
+  <div id="homeScreen" style="display:none;">
+    <div class="hs-wrap">
+      <div class="hs-greeting">
+        <h1 class="hs-title"><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
+        <p class="hs-subtitle"><span class="lang-ru">Выберите раздел для изучения</span><span class="lang-en">Choose a section to study</span></p>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="hs-progress-row">
+        <div class="hs-prog-bar"><div class="hs-prog-fill" id="hsProgFill"></div></div>
+        <span class="hs-prog-label" id="hsProgLabel"></span>
+      </div>
+
+      <!-- Block tiles -->
+      <div class="hs-blocks">
+
+        <!-- Block 1 -->
+        <div class="hs-block" onclick="openSection('b1')">
+          <div class="hs-block-top">
+            <span class="hs-block-num">01</span>
+            <div class="hs-block-prog-ring" id="hsProg-b1">
+              <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/><circle class="hs-ring-fill" cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="3" stroke-dasharray="88 88" stroke-dashoffset="88" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>
+              <span class="hs-ring-pct" id="hsPct-b1">0%</span>
+            </div>
+          </div>
+          <div class="hs-block-name"><span class="lang-ru">Компания</span><span class="lang-en">Company</span></div>
+          <div class="hs-block-count"><span class="lang-ru" id="hsCnt-b1-ru">2 урока</span><span class="lang-en" id="hsCnt-b1-en">2 lessons</span></div>
+
+        </div>
+
+        <!-- Block 2 -->
+        <div class="hs-block hs-block--dim">
+          <div class="hs-block-top">
+            <span class="hs-block-num">02</span>
+          </div>
+          <div class="hs-block-name"><span class="lang-ru">Продукт</span><span class="lang-en">Product</span></div>
+          <div class="hs-block-count"><span class="hs-wip-tag lang-ru">В разработке</span><span class="hs-wip-tag lang-en">In development</span></div>
+        </div>
+
+        <!-- Block 3 -->
+        <div class="hs-block" onclick="openSection('b3')">
+          <div class="hs-block-top">
+            <span class="hs-block-num">03</span>
+            <div class="hs-block-prog-ring" id="hsProg-b3">
+              <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/><circle class="hs-ring-fill" cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="3" stroke-dasharray="88 88" stroke-dashoffset="88" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>
+              <span class="hs-ring-pct" id="hsPct-b3">0%</span>
+            </div>
+          </div>
+          <div class="hs-block-name"><span class="lang-ru">Продажи</span><span class="lang-en">Sales</span></div>
+          <div class="hs-block-count"><span class="lang-ru" id="hsCnt-b3-ru">11 уроков</span><span class="lang-en" id="hsCnt-b3-en">11 lessons</span></div>
+
+        </div>
+
+        <!-- Block 4 -->
+        <div class="hs-block hs-block--dim">
+          <div class="hs-block-top">
+            <span class="hs-block-num">04</span>
+          </div>
+          <div class="hs-block-name"><span class="lang-ru">Конкуренты</span><span class="lang-en">Competitors</span></div>
+          <div class="hs-block-count"><span class="hs-wip-tag lang-ru">В разработке</span><span class="hs-wip-tag lang-en">In development</span></div>
+        </div>
+
+        <!-- Block 5 -->
+        <div class="hs-block" onclick="openSection('b5')">
+          <div class="hs-block-top">
+            <span class="hs-block-num">05</span>
+            <div class="hs-block-prog-ring" id="hsProg-b5">
+              <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/><circle class="hs-ring-fill" cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="3" stroke-dasharray="88 88" stroke-dashoffset="88" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>
+              <span class="hs-ring-pct" id="hsPct-b5">0%</span>
+            </div>
+          </div>
+          <div class="hs-block-name"><span class="lang-ru">Для клиентов</span><span class="lang-en">For clients</span></div>
+          <div class="hs-block-count"><span class="lang-ru" id="hsCnt-b5-ru">2 урока</span><span class="lang-en" id="hsCnt-b5-en">2 lessons</span></div>
+
+        </div>
+
+      </div><!-- /hs-blocks -->
+    </div><!-- /hs-wrap -->
+
+    <div id="sectionScreen" style="display:none;">
+      <div class="sec-wrap">
+        <button class="sec-back" onclick="showHomeScreen()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+          <span class="lang-ru">Главная</span><span class="lang-en">Home</span>
+        </button>
+        <div class="sec-tag" id="secTag"></div>
+        <h2 class="sec-title" id="secTitle"></h2>
+        <p class="sec-sub" id="secSub"></p>
+        <div class="sec-lesson-list" id="secLessonList"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Lesson 1.3 -->
   <div id="lesson-1-3" style="display:none;">
@@ -6368,11 +6540,11 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
   </button>
   <!-- Test mode trigger: fixed bottom-right of overlay -->
   <div id="testModeWrap" style="position:fixed;bottom:20px;right:20px;text-align:right;z-index:1010;">
-    <a href="#" onclick="showTestPwd();return false;" id="testModeLink" class="test-mode-lnk">
-      <span class="lang-ru">Тест</span><span class="lang-en">Test</span>
+    <a href="#" onclick="showTestPwd();return false;" id="testModeLink" class="test-mode-lnk" title="Тест">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     </a>
     <div id="testPwdRow" style="display:none;margin-top:8px;">
-      <input id="testPwd" type="password" placeholder="••••" autocomplete="off"
+      <input id="testPwd" type="password" placeholder="••••" autocomplete="off" onfocus="this.placeholder=''" onblur="this.placeholder='••••'"
         style="width:100px;padding:6px 10px;border-radius:7px;border:1.5px solid var(--bd);background:var(--w);color:var(--bk);font-size:0.78rem;font-family:'Geologica',sans-serif;outline:none;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.12);"
         onkeydown="if(event.key==='Enter')submitTestPwd()">
     </div>
@@ -6513,8 +6685,8 @@ const PIN_ICON = '<line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76
 const COLLAPSE_ICON = '<polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/>';
 
 function setSidebarState(state) {
-  document.body.setAttribute('data-sb', state);
-  localStorage.setItem('kb_sb_state', state);
+document.body.setAttribute('data-sb', state);
+localStorage.setItem('kb_sb_state', state);
   const icon = document.getElementById('sbPinIcon');
   const btn = document.getElementById('sbPinBtn');
   if (state === 'pinned') {
@@ -6530,9 +6702,7 @@ function isMobile() { return window.matchMedia('(max-width: 880px)').matches; }
 
 function togglePin() {
   if (isMobile()) {
-    // On mobile: just close the drawer
     closeSidebarMobile();
-    return;
   }
   const cur = document.body.getAttribute('data-sb');
   if (cur === 'pinned') {
@@ -6711,7 +6881,7 @@ async function init() {
     document.getElementById('authOverlay').classList.remove('on');
     await loadProfile();
     await loadProgress();
-    showLesson('1.3');
+    showHomeScreen();
   } else {
     // No session — show login modal. signIn() will complete the flow.
     document.body.classList.add('auth-active');
@@ -6823,7 +6993,41 @@ async function signIn() {
   document.getElementById('loadingState').style.display = 'none';
   await loadProfile();
   await loadProgress();
-  showLesson('1.3');
+  showHomeScreen();
+}
+
+function toggleAllGroups(e) {
+  e.stopPropagation(); // don't trigger showHomeScreen
+  const anyOpen = ['b1','b2','b3','b4','b5'].some(id => {
+    const grp = document.getElementById('grp-' + id);
+    return grp && !grp.classList.contains('collapsed');
+  });
+  // If any open → collapse all; if all collapsed → expand all
+  const shouldCollapse = anyOpen;
+  ['b1','b2','b3','b4','b5'].forEach(id => {
+    const grp = document.getElementById('grp-' + id);
+    const items = document.getElementById('grp-items-' + id);
+    if (!grp || !items) return;
+    if (shouldCollapse) {
+      grp.classList.add('collapsed'); items.style.maxHeight = '0'; items.classList.add('collapsed');
+    } else {
+      grp.classList.remove('collapsed'); items.classList.remove('collapsed'); items.style.maxHeight = 'none';
+    }
+  });
+  // Update icon direction and label
+  const icon = document.getElementById('sbToggleIcon');
+  if (icon) icon.innerHTML = shouldCollapse
+    ? '<polyline points="6 9 12 15 18 9"/>'   // chevron down = expand
+    : '<polyline points="18 15 12 9 6 15"/>'; // chevron up = collapse
+  const labelRu = document.getElementById('sbToggleLabelRu');
+  const labelEn = document.getElementById('sbToggleLabelEn');
+  if (labelRu) labelRu.textContent = shouldCollapse ? 'Развернуть' : 'Свернуть';
+  if (labelEn) labelEn.textContent = shouldCollapse ? 'Expand' : 'Collapse';
+  try {
+    const s = {};
+    if (shouldCollapse) ['b1','b2','b3','b4','b5'].forEach(id => s[id] = true);
+    localStorage.setItem('kb_nav_collapsed', JSON.stringify(s));
+  } catch(e){}
 }
 
 function toggleSbGroup(id) {
@@ -6866,6 +7070,200 @@ function initSbGroups() {
       }
     });
   } catch(e) {}
+  // Sync toggle label with current state
+  const anyOpen = ['b1','b2','b3','b4','b5'].some(id => {
+    const grp = document.getElementById('grp-' + id);
+    return grp && !grp.classList.contains('collapsed');
+  });
+  const labelRu = document.getElementById('sbToggleLabelRu');
+  const labelEn = document.getElementById('sbToggleLabelEn');
+  const icon = document.getElementById('sbToggleIcon');
+  if (labelRu) labelRu.textContent = anyOpen ? 'Свернуть' : 'Развернуть';
+  if (labelEn) labelEn.textContent = anyOpen ? 'Collapse' : 'Expand';
+  if (icon) icon.innerHTML = anyOpen
+    ? '<polyline points="18 15 12 9 6 15"/>'
+    : '<polyline points="6 9 12 15 18 9"/>';
+}
+
+
+// ── Home screen ──
+const HS_BLOCK_META = {
+  b1: { name_ru:'Компания', name_en:'Company', sub_ru:'Кто мы, что строим, ценности и преимущества', sub_en:'Who we are, what we build, values and advantages' },
+  b3: { name_ru:'Продажи', name_en:'Sales', sub_ru:'Технология, сценарии, квалификация и работа с клиентом', sub_en:'Technology, scenarios, qualification and client work' },
+  b5: { name_ru:'Для клиентов', name_en:'For clients', sub_ru:'Материалы для работы непосредственно с клиентами', sub_en:'Materials for working directly with clients' }
+};
+
+const HS_LESSON_META = {
+  '1.3': { sub_ru:'Продукт Баня-МСК', sub_en:'The Banya-MSK product' },
+  '1.9': { sub_ru:'Типовые возражения', sub_en:'Typical objections' },
+  '3.1': { sub_ru:'Общая система', sub_en:'Overall system' },
+  '3.2': { sub_ru:'Ценностное предложение', sub_en:'Value proposition' },
+  '3.3': { sub_ru:'Стадии готовности клиента', sub_en:'Client readiness stages' },
+  '3.4': { sub_ru:'Сценарий использования', sub_en:'Usage scenario' },
+  '3.5': { sub_ru:'Роли в продаже', sub_en:'Roles in the sale' },
+  '3.6': { sub_ru:'Первый звонок и диалог', sub_en:'First call and dialogue' },
+  '3.7': { sub_ru:'Критерии и квалификация', sub_en:'Criteria and qualification' },
+  '3.8': { sub_ru:'Вопросы и техники', sub_en:'Questions and techniques' },
+  '3.9': { sub_ru:'Управление сделкой', sub_en:'Deal management' },
+  '3.10': { sub_ru:'Продукт, компания, менеджер', sub_en:'Product, company, manager' },
+  '3.11': { sub_ru:'Завершение этапа', sub_en:'Stage completion' },
+  '5.1': { sub_ru:'Как проводить встречу', sub_en:'How to run the meeting' },
+  '5.2': { sub_ru:'Каркас, брус, камень', sub_en:'Frame, timber, stone' }
+};
+
+function openSection(blockId) {
+  const isEn = document.body.getAttribute('data-lang') === 'en';
+  const blkLessons = HS_BLOCKS.find(b => b.id === blockId)?.lessons || [];
+  const meta = HS_BLOCK_META[blockId];
+  if (!meta) return;
+
+  // Update section screen header
+  const numMap = { b1:'01', b3:'03', b5:'05' };
+  const blockName = isEn ? meta.name_en : meta.name_ru;
+  const blockNum = numMap[blockId];
+  document.getElementById('secTag').innerHTML =
+    `<span class="lang-ru">Блок ${blockNum} · ${meta.name_ru.toUpperCase()}</span><span class="lang-en">Block ${blockNum} · ${meta.name_en.toUpperCase()}</span>`;
+  document.getElementById('secTitle').innerHTML =
+    `<span class="lang-ru">${meta.name_ru}</span><span class="lang-en">${meta.name_en}</span>`;
+  document.getElementById('secSub').innerHTML =
+    `<span class="lang-ru">${meta.sub_ru}</span><span class="lang-en">${meta.sub_en}</span>`;
+  // Apply current lang
+  const curLang = document.body.getAttribute('data-lang') || 'ru';
+  document.querySelectorAll('#sectionScreen .lang-ru, #sectionScreen .lang-en').forEach(el => {
+    el.style.display = el.classList.contains('lang-' + curLang) ? '' : 'none';
+  });
+
+  // Render lesson list
+  const list = document.getElementById('secLessonList');
+  list.innerHTML = '';
+  blkLessons.forEach(l => {
+    const done = _progress[l.id]?.status === 'completed';
+    const lMeta = HS_LESSON_META[l.id];
+    const row = document.createElement('div');
+    row.className = 'sec-lesson-row' + (done ? ' done' : '');
+    const titleRu = (l.ru || l.id).replace(/^[\d.]+ /, '');
+    const titleEn = (l.en || l.id).replace(/^[\d.]+ /, '');
+    const subRu = lMeta ? lMeta.sub_ru : '';
+    const subEn = lMeta ? lMeta.sub_en : '';
+    row.innerHTML = `
+      <span class="slr-num">${l.id}</span>
+      <div class="slr-info">
+        <div class="slr-title"><span class="lang-ru">${titleRu}</span><span class="lang-en">${titleEn}</span></div>
+        <div class="slr-sub"><span class="lang-ru">${subRu}</span><span class="lang-en">${subEn}</span></div>
+      </div>
+      ${done ? '<div class="slr-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
+    `;
+    // Apply current lang to new row
+    const cL = document.body.getAttribute('data-lang') || 'ru';
+    row.querySelectorAll('.lang-ru, .lang-en').forEach(el => {
+      el.style.display = el.classList.contains('lang-' + cL) ? '' : 'none';
+    });
+    row.onclick = () => goLesson(l.id);
+    list.appendChild(row);
+  });
+
+  // Show section screen, hide home and side nav
+  document.getElementById('homeScreen').style.display = 'block';
+  document.getElementById('homeScreen').querySelector('.hs-wrap').style.display = 'none';
+  document.getElementById('sectionScreen').style.display = 'block';
+  const sNav = document.getElementById('sideNav');
+  if (sNav) sNav.style.display = 'none';
+  document.body.classList.add('on-section'); document.body.classList.remove('on-home', 'on-lesson');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const HS_BLOCKS = [
+  { id: 'b1', lessons: [
+    { id:'1.3', ru:'1.3 Что мы строим', en:'1.3 What we build' },
+    { id:'1.9', ru:'1.9 Боли и страхи', en:'1.9 Pains and fears' }
+  ]},
+  { id: 'b3', lessons: [
+    { id:'3.1', ru:'3.1', en:'3.1' },{ id:'3.2', ru:'3.2', en:'3.2' },
+    { id:'3.3', ru:'3.3', en:'3.3' },{ id:'3.4', ru:'3.4', en:'3.4' },
+    { id:'3.5', ru:'3.5', en:'3.5' },{ id:'3.6', ru:'3.6', en:'3.6' },
+    { id:'3.7', ru:'3.7', en:'3.7' },{ id:'3.8', ru:'3.8', en:'3.8' },
+    { id:'3.9', ru:'3.9', en:'3.9' },{ id:'3.10', ru:'3.10', en:'3.10' },
+    { id:'3.11', ru:'3.11', en:'3.11' }
+  ]},
+  { id: 'b5', lessons: [
+    { id:'5.1', ru:'5.1 Встреча с экспертом', en:'5.1 Expert consultation' },
+    { id:'5.2', ru:'5.2 Выбор проекта', en:'5.2 Project selection' }
+  ]}
+];
+
+const HS_LESSON_NAMES = {
+  '1.3':'Что мы строим','1.9':'Боли и страхи',
+  '3.1':'Устройство продаж','3.2':'Что продаём','3.3':'Лестница Ханта',
+  '3.4':'Сценарий','3.5':'Квалификатор','3.6':'Первый контакт',
+  '3.7':'Квалификация','3.8':'Потребность','3.9':'Belfort / Straight Line',
+  '3.10':'Три доверия','3.11':'Встреча',
+  '5.1':'Встреча с экспертом','5.2':'Выбор проекта'
+};
+
+function showHomeScreen() {
+  // Hide all lessons, hide loading
+  document.getElementById('loadingState').style.display = 'none';
+  document.querySelectorAll('[id^="lesson-"]').forEach(el => el.style.display = 'none');
+  // Clear active lesson in sidebar
+  document.querySelectorAll('.sb-a').forEach(a => a.classList.remove('on'));
+
+  // Overall progress bar
+  const total = TOTAL_LESSONS, done = Object.values(_progress).filter(p => p.status === 'completed').length;
+  const pct = Math.round((done / total) * 100);
+  const fillEl = document.getElementById('hsProgFill');
+  const lblEl  = document.getElementById('hsProgLabel');
+  if (fillEl) fillEl.style.width = pct + '%';
+  if (lblEl) {
+    const isEn = document.body.getAttribute('data-lang') === 'en';
+    lblEl.textContent = isEn
+      ? `${done}/${total} completed`
+      : `${done} из ${total} пройдено`;
+  }
+
+  // Render block tiles
+  HS_BLOCKS.forEach(blk => {
+    // Count done in this block
+    const blockDone = blk.lessons.filter(l => _progress[l.id]?.status === 'completed').length;
+    const blockTotal = blk.lessons.length;
+    const blockPct = Math.round((blockDone / blockTotal) * 100);
+
+    // Update ring
+    const ringEl = document.getElementById('hsProg-' + blk.id);
+    const pctEl  = document.getElementById('hsPct-'  + blk.id);
+    if (ringEl) {
+      const circle = ringEl.querySelector('.hs-ring-fill');
+      if (circle) {
+        const circumference = 88;
+        const offset = circumference - (blockPct / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+        circle.style.stroke = blockPct === 100 ? '#4ade80' : 'rgba(255,255,255,0.85)';
+      }
+    }
+    if (pctEl) pctEl.textContent = blockPct + '%';
+
+
+  });
+
+  document.getElementById('homeScreen').style.display = 'block';
+  document.getElementById('homeScreen').querySelector('.hs-wrap').style.display = '';
+  document.getElementById('sectionScreen').style.display = 'none';
+  document.body.classList.add('on-home'); document.body.classList.remove('on-section', 'on-lesson');
+  // Hide right side nav on home screen (home button stays visible)
+  const sNav = document.getElementById('sideNav');
+  if (sNav) { sNav.classList.remove('open'); sNav.style.display = 'none'; }
+}
+
+function showBlock(blockId) {
+  // Find first available lesson in block and go to it
+  const blk = HS_BLOCKS.find(b => b.id === blockId);
+  if (!blk || !blk.lessons.length) return;
+  // Expand that group in sidebar
+  const grp = document.getElementById('grp-' + blockId);
+  const items = document.getElementById('grp-items-' + blockId);
+  if (grp && grp.classList.contains('collapsed')) {
+    toggleSbGroup(blockId);
+  }
+  goLesson(blk.lessons[0].id);
 }
 
 async function signOut() {
@@ -6909,7 +7307,7 @@ async function enterTestMode() {
   document.getElementById('loadingState').style.display = 'none';
   try { _progress = JSON.parse(localStorage.getItem('kb_test_progress') || '{}'); } catch(e) { _progress = {}; }
   refreshProgressUI();
-  showLesson('1.3');
+  showHomeScreen();
 }
 
 // ── Navigation ──
@@ -6923,7 +7321,13 @@ function goLesson(id) {
 
 function showLesson(id) {
   document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('sectionScreen').style.display = 'none';
   document.querySelectorAll('[id^="lesson-"]').forEach(el => el.style.display = 'none');
+  // Show right side nav when in a lesson (home button always visible)
+  const sNav = document.getElementById('sideNav');
+  if (sNav) sNav.style.display = '';
+  document.body.classList.add('on-lesson'); document.body.classList.remove('on-home', 'on-section');
   const el = document.getElementById('lesson-' + id.replace('.', '-'));
   if (el) el.style.display = 'block';
   // Build right-side TOC for this lesson
