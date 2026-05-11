@@ -31,9 +31,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{overflow-x:hidden;max-width:100%;}
+html,body{overflow-x:hidden;max-width:100%;background:#eef7f7;}
 html{min-height:100%;}
-body.dark{background:#0a1012;}
+body{background:#eef7f7;}
+html.dark,body.dark{background:#0a1012!important;}
 :root{
   --g:#1e6c72;--gm:#2a8f97;--gl:#3db0ba;--gb:#e4f5f6;
   --bk:#111;--gr:#555;--grl:#888;--bd:#d4e4e5;--w:#fff;
@@ -55,9 +56,10 @@ body.dark{
   }}
 
 
+html{background:#f0f6f6;}
 body{font-family:'Geologica',sans-serif;background:#f0f6f6;color:var(--bk);line-height:1.6;-webkit-text-size-adjust:100%;}
-@media(prefers-color-scheme:dark){body:not(.light){background:#0a1012;color:var(--bk);}}
-body.dark{background:#0a1012;}
+@media(prefers-color-scheme:dark){html:not(.light),body:not(.light){background:#0a1012;color:var(--bk);}}
+html.dark,body.dark{background:#0a1012;}
 .layout{display:flex;min-height:100vh;position:relative;}
 :root{--sb-w:290px;}
 
@@ -252,7 +254,7 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
   /* mob-open class opens the drawer */
   .sb.mob-open{transform:translateX(0)!important;}
   /* Mobile: only unpinned has margin-left:0; pinned keeps sidebar width */
-  .main{padding:24px 18px 100px;}
+  .main{padding:24px 18px 100px;margin:0!important;max-width:100%!important;}
   /* Show mobile button */
   .mob-btn{display:flex;}
   /* mob-btn visible on all screens including home/section */
@@ -342,7 +344,13 @@ body.dark .pr-card{background:var(--w);}
 .sc-item::before{content:counter(scn);position:absolute;left:0;top:9px;font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;color:#fff;background:var(--g);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 
 /* Mark complete */
-.mark-complete{display:flex;align-items:center;gap:14px;background:var(--w);border:1.5px solid var(--bd);border-radius:14px;padding:20px 24px;margin:36px 0 20px;}
+.mark-complete{display:flex;align-items:center;gap:14px;background:var(--w);border:1.5px solid var(--bd);border-radius:14px;padding:20px 24px;margin:36px 0 12px;}
+.next-lesson{display:flex;align-items:center;gap:14px;padding:16px 22px;background:var(--w);border:1.5px solid var(--bd);border-radius:14px;cursor:pointer;text-decoration:none;color:inherit;transition:all .15s;margin:0 0 40px;}
+.next-lesson:hover{border-color:var(--gm);box-shadow:0 3px 14px rgba(42,143,151,0.15);transform:translateX(3px);}
+.nl-tag{font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gm);margin-bottom:3px;}
+.nl-title{font-size:0.92rem;font-weight:700;color:var(--bk);}
+.nl-info{flex:1;}
+.nl-arrow{flex-shrink:0;color:var(--gm);}
 .mark-complete.done{border-color:var(--gm);background:linear-gradient(90deg,var(--gb) 0%,var(--w) 100%);}
 body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,transparent 100%);}
 .mc-icon{width:42px;height:42px;border-radius:50%;background:var(--gb);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gm);}
@@ -356,14 +364,20 @@ body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,tran
 
 /* Auth modal */
 .auth-overlay{display:none;position:fixed;inset:0;background:#f0f6f6;z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+@media(prefers-color-scheme:dark){body:not(.light) .auth-overlay{background:#0a1012;}}
+body.dark .auth-overlay{background:#0a1012;}
 .auth-overlay.on{display:flex;}
 /* Test mode link */
 .test-mode-lnk{color:rgba(0,0,0,0.18);text-decoration:none;transition:color 0.2s;display:inline-flex;line-height:0;}
 .test-mode-lnk:hover{color:rgba(0,0,0,0.5);}
-body.dark .test-mode-lnk{color:rgba(255,255,255,0.2);}
-body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.55);}
+body.dark .test-mode-lnk{color:rgba(255,255,255,0.5);}
+body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}
+@media(prefers-color-scheme:dark){body:not(.light) .test-mode-lnk{color:rgba(255,255,255,0.5);}
+body:not(.light) .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}}
 /* Auth dark toggle */
-.auth-dark-tog{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);}@media(max-width:880px){.auth-dark-tog{display:none!important;}}
+.auth-dark-tog{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.auth-lang-tog{right:58px!important;}
+@media(max-width:880px){.auth-dark-tog{display:none!important;}.auth-lang-tog{display:none!important;}}
 .auth-dark-tog:hover{background:rgba(42,143,151,0.12);color:var(--g);}
 body.dark .auth-dark-tog{background:#1a2a2c;border-color:#2a4a4e;color:var(--grl);}
 body.dark .auth-dark-tog:hover{background:rgba(255,255,255,0.12);color:#fff;}
@@ -491,7 +505,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.1</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.5</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -523,7 +537,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     </div>
     <!-- Search -->
     <div class="srch-wrap">
-      <input class="srch-inp" id="kbSearch" type="search" placeholder="Поиск по урокам…" oninput="doKbSearch(this.value)" onblur="setTimeout(()=>closeKbSearch(),200)" autocomplete="nope" name="kb-search-nofill">
+      <input class="srch-inp" id="kbSearch" type="search" placeholder="Поиск по урокам…" oninput="doKbSearch(this.value)" onblur="setTimeout(()=>closeKbSearch(),200)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" name="kb-search-nofill" inputmode="search">
       <div class="srch-results" id="srchResults"></div>
     </div>
     <div class="sb-group" id="grp-b1" onclick="toggleSbGroup('b1')">
@@ -6535,6 +6549,9 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
 
 <!-- ── Auth modal (calculator-style) ── -->
 <div class="auth-overlay" id="authOverlay">
+  <button class="auth-dark-tog auth-lang-tog" onclick="toggleLangFromAuth()" title="Язык / Language" id="authLangBtn">
+    <span id="authLangLabel" style="font-size:0.68rem;font-weight:700;letter-spacing:0.04em;">EN</span>
+  </button>
   <button class="auth-dark-tog auth-dark-tog--overlay" onclick="toggleTheme()" title="Тёмный / светлый режим">
     <svg id="authDarkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
@@ -6812,6 +6829,14 @@ const savedSbState = localStorage.getItem('kb_sb_state') || 'pinned';
 setSidebarState(savedSbState);
 
 // ── Theme (calculator-manual hybrid pattern) ──
+function toggleLangFromAuth() {
+  const cur = document.body.getAttribute('data-lang') || 'ru';
+  const next = cur === 'ru' ? 'en' : 'ru';
+  setLang(next);
+  const lbl = document.getElementById('authLangLabel');
+  if (lbl) lbl.textContent = next === 'ru' ? 'EN' : 'RU';
+}
+
 function toggleTheme() {
   // Detect current effective theme: forced (.dark/.light) or system
   const body = document.body;
@@ -7319,6 +7344,51 @@ function goLesson(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function getNextLessonId(currentId) {
+  // Flatten all lessons across blocks in order
+  const flat = [];
+  HS_BLOCKS.forEach(b => b.lessons.forEach(l => flat.push(l.id)));
+  const idx = flat.indexOf(currentId);
+  if (idx < 0 || idx >= flat.length - 1) return null;
+  return flat[idx + 1];
+}
+
+function renderNextLessonLink(currentId) {
+  // Remove any previous next-lesson link
+  document.querySelectorAll('.next-lesson').forEach(el => el.remove());
+  const nextId = getNextLessonId(currentId);
+  if (!nextId) return;
+  // Read name from sidebar entry (matches TOC exactly)
+  const navEl = document.getElementById('navL' + nextId.replace('.', ''));
+  let nameRu = nextId, nameEn = nextId;
+  if (navEl) {
+    const ruEl = navEl.querySelector('.lang-ru');
+    const enEl = navEl.querySelector('.lang-en');
+    if (ruEl) nameRu = ruEl.textContent.trim();
+    if (enEl) nameEn = enEl.textContent.trim();
+  }
+  const lessonEl = document.getElementById('lesson-' + currentId.replace('.', '-'));
+  if (!lessonEl) return;
+  const mc = lessonEl.querySelector('.mark-complete');
+  if (!mc) return;
+  const link = document.createElement('a');
+  link.className = 'next-lesson';
+  link.href = '#';
+  link.onclick = function(e){ e.preventDefault(); goLesson(nextId); };
+  link.innerHTML = `
+    <div class="nl-info">
+      <div class="nl-tag"><span class="lang-ru">Следующий урок · ${nextId}</span><span class="lang-en">Next lesson · ${nextId}</span></div>
+      <div class="nl-title"><span class="lang-ru">${nameRu}</span><span class="lang-en">${nameEn}</span></div>
+    </div>
+    <svg class="nl-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  `;
+  mc.parentNode.insertBefore(link, mc.nextSibling);
+  const curLang = document.body.getAttribute('data-lang') || 'ru';
+  link.querySelectorAll('.lang-ru, .lang-en').forEach(el => {
+    el.style.display = el.classList.contains('lang-' + curLang) ? '' : 'none';
+  });
+}
+
 function showLesson(id) {
   document.getElementById('loadingState').style.display = 'none';
   document.getElementById('homeScreen').style.display = 'none';
@@ -7337,6 +7407,8 @@ function showLesson(id) {
     _progress[id] = { lesson_id: id, status: 'in_progress', updated_at: new Date().toISOString() };
     localStorage.setItem('kb_test_progress', JSON.stringify(_progress));
   }
+  // Render next lesson link
+  renderNextLessonLink(id);
 }
 
 // ── Practice (test mode: localStorage) ──
