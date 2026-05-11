@@ -379,15 +379,16 @@ body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,tran
 body.dark .auth-overlay{background:#0a1012;}
 .auth-overlay.on{display:flex;}
 /* Test mode link */
-.test-mode-lnk{color:rgba(0,0,0,0.18);text-decoration:none;transition:color 0.2s;display:inline-flex;line-height:0;}
-.test-mode-lnk:hover{color:rgba(0,0,0,0.5);}
-body.dark .test-mode-lnk{color:rgba(255,255,255,0.5);}
-body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}
-@media(prefers-color-scheme:dark){body:not(.light) .test-mode-lnk{color:rgba(255,255,255,0.5);}
-body:not(.light) .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}}
+.test-mode-lnk{color:var(--gm);text-decoration:none;transition:all 0.2s;display:inline-flex;line-height:0;width:32px;height:32px;border-radius:8px;background:rgba(42,143,151,0.1);border:1px solid rgba(42,143,151,0.25);align-items:center;justify-content:center;}
+.test-mode-lnk:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
+body.dark .test-mode-lnk{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);}
+body.dark .test-mode-lnk:hover{background:rgba(255,255,255,0.22);color:#fff;}
+@media(prefers-color-scheme:dark){body:not(.light) .test-mode-lnk{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);}
+body:not(.light) .test-mode-lnk:hover{background:rgba(255,255,255,0.22);color:#fff;}}
 /* Auth dark toggle */
 .auth-dark-tog{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
-.auth-lang-tog{right:58px!important;}
+.auth-lang-tog{right:auto!important;left:14px!important;}
+.auth-dark-tog--overlay{right:auto!important;left:58px!important;}
 @media(max-width:880px){.auth-dark-tog{display:none!important;}.auth-lang-tog{display:none!important;}}
 .auth-dark-tog:hover{background:rgba(42,143,151,0.12);color:var(--g);}
 body.dark .auth-dark-tog{background:#1a2a2c;border-color:#2a4a4e;color:var(--grl);}
@@ -414,6 +415,26 @@ body.auth-active .main{display:none!important;}
   border-radius:8px; padding:6px 10px;
   cursor:pointer; transition:background 0.15s, color 0.15s, border-color 0.15s;
   position:fixed; top:14px; right:18px; z-index:50;
+}
+/* In embed mode: theme moves left, close button takes top-right slot */
+.embed-mode .theme-tog{right:62px;}
+.embed-close-btn{
+  display:none; align-items:center; justify-content:center;
+  position:fixed; top:14px; right:18px; z-index:50;
+  width:36px; height:36px; border-radius:8px;
+  background:rgba(42,143,151,0.1);
+  border:1px solid rgba(42,143,151,0.25);
+  color:var(--gm); cursor:pointer;
+  transition:background 0.15s, color 0.15s, border-color 0.15s;
+}
+.embed-close-btn:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
+body.dark .embed-close-btn{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8);}
+body.dark .embed-close-btn:hover{background:rgba(255,255,255,0.22);color:#fff;}
+.embed-mode .embed-close-btn{display:inline-flex;}
+.embed-mode .auth-dark-tog--overlay{right:auto;left:58px;}
+.embed-mode .auth-close-btn{display:inline-flex;}
+.auth-close-btn{display:none;}
+.fake-tog-marker{
   /* Light theme: subtle on white background */
   background:rgba(42,143,151,0.1);
   border:1px solid rgba(42,143,151,0.25);
@@ -516,7 +537,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.8</span></div>
+    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.11</span></div>
     <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
     <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
 
@@ -703,6 +724,9 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
 <div class="sb-resizer" id="sbResizer" title="Перетащите, чтобы изменить ширину"></div>
 
 <!-- ── Theme toggle (calculator style) ── -->
+<button class="embed-close-btn" id="embedCloseBtn" onclick="closeEmbed()" title="Закрыть (Esc)">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
 <button class="theme-tog" id="darkModeBtn" onclick="toggleTheme()" title="Тёмный / светлый режим">
   <svg id="darkModeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
 </button>
@@ -6840,6 +6864,27 @@ const savedSbState = localStorage.getItem('kb_sb_state') || 'pinned';
 setSidebarState(savedSbState);
 
 // ── Theme (calculator-manual hybrid pattern) ──
+function closeEmbed() {
+  try { window.parent.postMessage('closeGuide', '*'); } catch(e) {}
+}
+
+// Hotkey support in embed mode
+window.addEventListener('keydown', function(e) {
+  if (!window._isEmbed) return;
+  const tag = document.activeElement?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  // Esc → close (also works inside iframe so parent's listener fires)
+  if (e.key === 'Escape') {
+    closeEmbed(); return;
+  }
+  // Я/Z → toggle language
+  if (e.key === 'я' || e.key === 'Я' || e.key === 'z' || e.key === 'Z') {
+    const cur = document.body.getAttribute('data-lang') || 'ru';
+    setLang(cur === 'ru' ? 'en' : 'ru');
+    return;
+  }
+});
+
 function toggleLangFromAuth() {
   const cur = document.body.getAttribute('data-lang') || 'ru';
   const next = cur === 'ru' ? 'en' : 'ru';
