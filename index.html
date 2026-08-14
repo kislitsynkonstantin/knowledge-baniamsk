@@ -7309,8 +7309,19 @@ if (window._isEmbed) {
     const wrap = document.getElementById('testModeWrap');
     if (wrap) wrap.style.display = 'none';
   });
+  // Источники, которым разрешено управлять этой страницей сообщениями.
+  // Сообщение auth прячет экран входа и открывает сессию присланным токеном,
+  // поэтому принимать его от кого угодно нельзя: любая страница, встроившая
+  // базу знаний, могла бы убрать экран входа. Оба домена калькулятора нужны —
+  // база встраивается и боевым, и тестовым.
+  var KB_ALLOWED_PARENTS = [
+    'https://calculator.baniamsk.ru',
+    'https://test.calculator.baniamsk.ru'
+  ];
+
   // Listen for theme + auth messages from parent
   window.addEventListener('message', function(e) {
+    if (KB_ALLOWED_PARENTS.indexOf(e.origin) === -1) return;
     if (!e.data || !e.data.type) return;
     if (e.data.type === 'theme') {
       const dark = !!e.data.dark;
