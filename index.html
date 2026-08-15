@@ -374,10 +374,23 @@ body.dark .next-lesson .nl-title{color:#e8f0f1;}
 .nl-arrow{flex-shrink:0;color:var(--gm);}
 /* Возврат к списку уроков. Кнопка «домой» есть только в боковом меню, а на
    телефоне оно спрятано за гамбургером — изнутри урока выхода было не видно. */
-.back-top{display:inline-flex;align-items:center;gap:7px;margin:0 0 18px;padding:7px 13px;
+.lesson-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 18px;}
+.back-top{display:inline-flex;align-items:center;gap:7px;margin:0;padding:7px 13px;
   border:1.5px solid var(--bd);border-radius:20px;background:var(--w);color:var(--gm);
   font-size:0.74rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .15s;}
 .back-top:hover{border-color:var(--gm);box-shadow:0 2px 10px rgba(42,143,151,0.12);}
+/* Оглавление урока открывалось только жестом: свайпом влево на телефоне и
+   наведением на правый край на компьютере. Жест не виден — нужна кнопка. */
+.toc-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;flex:none;
+  border:1.5px solid var(--bd);border-radius:20px;background:var(--w);color:var(--gm);
+  font-size:0.74rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .15s;}
+.toc-btn:hover{border-color:var(--gm);box-shadow:0 2px 10px rgba(42,143,151,0.12);}
+.toc-btn svg{flex:none;}
+body.dark .toc-btn{background:#0e1416;border-color:#2a4044;}
+@media(prefers-color-scheme:dark){body:not(.light) .toc-btn{background:#0e1416;border-color:#2a4044;}}
+@media(max-width:400px){
+  .back-top,.toc-btn{padding:7px 11px;font-size:0.71rem;}
+}
 .back-top svg{flex:none;}
 .back-bottom{display:inline-flex;align-items:center;gap:7px;margin:-24px 0 40px;
   color:var(--gm);font-size:0.8rem;font-weight:600;cursor:pointer;text-decoration:none;}
@@ -1963,7 +1976,7 @@ function renderNextLessonLink(currentId) {
 // следующего урока: сверху — чтобы выйти, не долистывая; снизу — чтобы не искать
 // выход после того, как урок дочитан.
 function renderBackLinks(id) {
-  document.querySelectorAll('.back-top, .back-bottom').forEach(el => el.remove());
+  document.querySelectorAll('.lesson-bar, .back-bottom').forEach(el => el.remove());
   const el = document.getElementById('lesson-' + id.replace('.', '-'));
   if (!el) return;
   const block = (typeof HS_BLOCKS !== 'undefined')
@@ -1981,12 +1994,38 @@ function renderBackLinks(id) {
   const label = '<span class="lang-ru">К списку уроков</span>'
               + '<span class="lang-en">Back to lessons</span>';
 
+  const bar = document.createElement('div');
+  bar.className = 'lesson-bar';
+
   const top = document.createElement('a');
   top.className = 'back-top';
   top.href = '#';
   top.onclick = open;
   top.innerHTML = arrow + label;
-  el.insertBefore(top, el.firstChild);
+  bar.appendChild(top);
+
+  // Оглавление урока. Кнопка нужна и на телефоне, и на компьютере: там оно
+  // открывалось наведением на правый край, о чём тоже никто не знает.
+  const toc = document.createElement('a');
+  toc.className = 'toc-btn';
+  toc.href = '#';
+  toc.title = 'Оглавление урока';
+  toc.onclick = (e) => {
+    e.preventDefault();
+    if (typeof sideNavOpen !== 'undefined' && sideNavOpen) closeSideNav();
+    else openSideNav();
+  };
+  toc.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" '
+    + 'stroke="currentColor" stroke-width="2.2" stroke-linecap="round" '
+    + 'stroke-linejoin="round"><line x1="9" y1="6" x2="20" y2="6"/>'
+    + '<line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/>'
+    + '<circle cx="4.5" cy="6" r="1.1" fill="currentColor" stroke="none"/>'
+    + '<circle cx="4.5" cy="12" r="1.1" fill="currentColor" stroke="none"/>'
+    + '<circle cx="4.5" cy="18" r="1.1" fill="currentColor" stroke="none"/></svg>'
+    + '<span class="lang-ru">Оглавление</span><span class="lang-en">Contents</span>';
+  bar.appendChild(toc);
+
+  el.insertBefore(bar, el.firstChild);
 
   // Внизу — после карточки следующего урока, если она есть, иначе после блока
   // «отметить пройденным». На последнем уроке блока карточки нет, а выход нужен.
