@@ -372,6 +372,21 @@ body.dark .next-lesson .nl-title{color:#e8f0f1;}
 .nl-title{font-size:0.92rem;font-weight:700;color:var(--bk);}
 .nl-info{flex:1;}
 .nl-arrow{flex-shrink:0;color:var(--gm);}
+/* Возврат к списку уроков. Кнопка «домой» есть только в боковом меню, а на
+   телефоне оно спрятано за гамбургером — изнутри урока выхода было не видно. */
+.back-top{display:inline-flex;align-items:center;gap:7px;margin:0 0 18px;padding:7px 13px;
+  border:1.5px solid var(--bd);border-radius:20px;background:var(--w);color:var(--gm);
+  font-size:0.74rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .15s;}
+.back-top:hover{border-color:var(--gm);box-shadow:0 2px 10px rgba(42,143,151,0.12);}
+.back-top svg{flex:none;}
+.back-bottom{display:inline-flex;align-items:center;gap:7px;margin:-24px 0 40px;
+  color:var(--gm);font-size:0.8rem;font-weight:600;cursor:pointer;text-decoration:none;}
+.back-bottom:hover{text-decoration:underline;}
+body.dark .back-top{background:#0e1416;border-color:#2a4044;}
+@media(prefers-color-scheme:dark){body:not(.light) .back-top{background:#0e1416;border-color:#2a4044;}}
+@media(max-width:640px){
+  .back-bottom{margin-top:-28px;}
+}
 .mark-complete.done{border-color:var(--gm);background:linear-gradient(90deg,var(--gb) 0%,var(--w) 100%);}
 body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,transparent 100%);}
 .mc-icon{width:42px;height:42px;border-radius:50%;background:var(--gb);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gm);}
@@ -1652,6 +1667,9 @@ function openSection(blockId) {
   // Show section screen, hide home and side nav
   document.getElementById('homeScreen').style.display = 'block';
   document.getElementById('homeScreen').querySelector('.hs-wrap').style.display = 'none';
+  // Урок, если он был открыт, надо спрятать: раньше в список приходили только
+  // с главной, и это не всплывало, а из урока экраны накладывались друг на друга.
+  document.querySelectorAll('[id^="lesson-"]').forEach(el => el.style.display = 'none');
   document.getElementById('sectionScreen').style.display = 'block';
   const sNav = document.getElementById('sideNav');
   if (sNav) sNav.style.display = 'none';
@@ -1941,6 +1959,49 @@ function renderNextLessonLink(currentId) {
   });
 }
 
+// Возврат к списку уроков блока. Ставится и сверху урока, и внизу под карточкой
+// следующего урока: сверху — чтобы выйти, не долистывая; снизу — чтобы не искать
+// выход после того, как урок дочитан.
+function renderBackLinks(id) {
+  document.querySelectorAll('.back-top, .back-bottom').forEach(el => el.remove());
+  const el = document.getElementById('lesson-' + id.replace('.', '-'));
+  if (!el) return;
+  const block = (typeof HS_BLOCKS !== 'undefined')
+    ? HS_BLOCKS.find(b => (b.lessons || []).some(l => l.id === id)) : null;
+
+  const open = (e) => {
+    e.preventDefault();
+    if (block && typeof openSection === 'function') openSection(block.id);
+    else if (typeof showHomeScreen === 'function') showHomeScreen();
+  };
+
+  const arrow = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" '
+    + 'stroke="currentColor" stroke-width="2.4" stroke-linecap="round" '
+    + 'stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+  const label = '<span class="lang-ru">К списку уроков</span>'
+              + '<span class="lang-en">Back to lessons</span>';
+
+  const top = document.createElement('a');
+  top.className = 'back-top';
+  top.href = '#';
+  top.onclick = open;
+  top.innerHTML = arrow + label;
+  el.insertBefore(top, el.firstChild);
+
+  // Внизу — после карточки следующего урока, если она есть, иначе после блока
+  // «отметить пройденным». На последнем уроке блока карточки нет, а выход нужен.
+  const next = el.querySelector('.next-lesson');
+  const mc = el.querySelector('.mark-complete');
+  const after = next || mc;
+  if (!after) return;
+  const bottom = document.createElement('a');
+  bottom.className = 'back-bottom';
+  bottom.href = '#';
+  bottom.onclick = open;
+  bottom.innerHTML = arrow + label;
+  after.parentNode.insertBefore(bottom, after.nextSibling);
+}
+
 function showLesson(id) {
   document.getElementById('loadingState').style.display = 'none';
   document.getElementById('homeScreen').style.display = 'none';
@@ -1961,6 +2022,8 @@ function showLesson(id) {
   }
   // Render next lesson link
   renderNextLessonLink(id);
+  // Возврат к списку — после карточки следующего урока, чтобы встать под ней
+  renderBackLinks(id);
 }
 
 // ── Practice (test mode: localStorage) ──
