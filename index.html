@@ -1672,8 +1672,17 @@ function openSection(blockId) {
     const lMeta = HS_LESSON_META[l.id];
     const row = document.createElement('div');
     row.className = 'sec-lesson-row' + (done ? ' done' : '');
-    const titleRu = (l.ru || l.id).replace(/^[\d.]+ /, '');
-    const titleEn = (l.en || l.id).replace(/^[\d.]+ /, '');
+    // В блоке 3 у уроков в HS_BLOCKS нет названия — только номер («3.1»).
+    // Старая срезка требовала пробел после номера, поэтому не срабатывала,
+    // и номер печатался дважды: слева в кружке и он же вместо названия.
+    // Срезаем номер вместе с пробелом или без него; если после этого пусто —
+    // берём настоящее название урока из KB_LESSONS.
+    const kb = (typeof KB_LESSONS !== 'undefined')
+      ? KB_LESSONS.find(k => k.id === l.id) : null;
+    let titleRu = (l.ru || '').replace(/^[\d.]+\s*/, '');
+    let titleEn = (l.en || '').replace(/^[\d.]+\s*/, '');
+    if (!titleRu) titleRu = kb ? kb.title_ru : (lMeta ? lMeta.sub_ru : l.id);
+    if (!titleEn) titleEn = kb ? kb.title_en : (lMeta ? lMeta.sub_en : l.id);
     const subRu = lMeta ? lMeta.sub_ru : '';
     const subEn = lMeta ? lMeta.sub_en : '';
     row.innerHTML = `
