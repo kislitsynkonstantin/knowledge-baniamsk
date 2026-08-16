@@ -472,11 +472,29 @@ body.auth-active .main{display:none!important;}
   color:var(--gm); cursor:pointer;
   transition:background 0.15s, color 0.15s;
 }
-.embed-close-btn:hover{background:rgba(42,143,151,0.14);color:var(--g);}
-.embed-close-btn:active{background:rgba(42,143,151,0.22);}
-body.dark .embed-close-btn{background:transparent;border:none;color:rgba(255,255,255,0.75);}
-body.dark .embed-close-btn:hover{background:rgba(255,255,255,0.14);color:#fff;}
-body.dark .embed-close-btn:active{background:rgba(255,255,255,0.22);}
+/* Крестик лежит поверх содержимого, которое под ним прокручивается: над
+   таблицей урока или абзацем голый знак сливался с текстом. Подложка
+   полупрозрачная, под цвет страницы, с размытием — видна ровно настолько,
+   чтобы знак читался над чем угодно, и не выглядит второй кнопкой. */
+.embed-close-btn{
+  background:rgba(255,255,255,0.82);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+  box-shadow:0 1px 3px rgba(0,0,0,0.10), 0 0 0 1px rgba(42,143,151,0.12);
+}
+.embed-close-btn:hover{background:rgba(255,255,255,0.96);color:var(--g);}
+.embed-close-btn:active{background:rgba(255,255,255,1);}
+body.dark .embed-close-btn{
+  background:rgba(16,26,28,0.82);
+  box-shadow:0 1px 3px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.10);
+  color:rgba(255,255,255,0.8);
+}
+body.dark .embed-close-btn:hover{background:rgba(16,26,28,0.96);color:#fff;}
+
+/* Крестик стоит в правом верхнем углу, а там же — кнопка «Оглавление»
+   внутри урока. В режиме встраивания резервируем ей место, иначе крестик
+   ложится ровно на неё. */
+.embed-mode .lesson-bar{padding-right:46px;}
 .embed-mode .embed-close-btn{display:inline-flex;}
 .embed-mode .auth-dark-tog--overlay{right:auto;left:54px;}
 /* Dark theme: exact calculator style */
