@@ -459,18 +459,24 @@ body.auth-active .main{display:none!important;}
   color:var(--gm);
 }
 .theme-tog:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
+/* Крестик закрытия — тот же рецепт, что у окон калькулятора (.ovl-x):
+   площадь нажатия 36×36, но в покое ни рамки, ни заливки. С ними крестик
+   читался как отдельная кнопка и перетягивал внимание; подложка появляется
+   под курсором и в момент нажатия. Сведено к общему виду 16.08.2026. */
 .embed-close-btn{
   display:none; align-items:center; justify-content:center;
   position:fixed; top:14px; right:18px; z-index:50;
-  width:36px; height:36px; border-radius:9px;
-  background:rgba(42,143,151,0.1);
-  border:1.5px solid rgba(42,143,151,0.25);
+  width:36px; height:36px; border-radius:8px; padding:0;
+  background:transparent;
+  border:none;
   color:var(--gm); cursor:pointer;
-  transition:background 0.15s, color 0.15s, border-color 0.15s;
+  transition:background 0.15s, color 0.15s;
 }
-.embed-close-btn:hover{background:rgba(42,143,151,0.18);border-color:var(--gm);}
-body.dark .embed-close-btn{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8);}
-body.dark .embed-close-btn:hover{background:rgba(255,255,255,0.22);color:#fff;}
+.embed-close-btn:hover{background:rgba(42,143,151,0.14);color:var(--g);}
+.embed-close-btn:active{background:rgba(42,143,151,0.22);}
+body.dark .embed-close-btn{background:transparent;border:none;color:rgba(255,255,255,0.75);}
+body.dark .embed-close-btn:hover{background:rgba(255,255,255,0.14);color:#fff;}
+body.dark .embed-close-btn:active{background:rgba(255,255,255,0.22);}
 .embed-mode .embed-close-btn{display:inline-flex;}
 .embed-mode .auth-dark-tog--overlay{right:auto;left:54px;}
 /* Dark theme: exact calculator style */
@@ -761,7 +767,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
 
 <!-- ── Theme toggle (calculator style) ── -->
 <button class="embed-close-btn" id="embedCloseBtn" onclick="closeEmbed()" title="Закрыть (Esc)">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 </button>
 <button class="theme-tog" id="darkModeBtn" onclick="toggleTheme()" title="Тёмный / светлый режим">
   <svg id="darkModeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
