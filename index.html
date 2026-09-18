@@ -597,8 +597,8 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <div class="sb-user-email" id="sbUserEmail" style="font-size:0.66rem;opacity:0.7;"></div>
     <div class="sb-user-prog"><div id="sbProgFill" class="sb-user-prog-fill" style="width:0%"></div></div>
     <div class="sb-user-prog-label">
-      <span class="lang-ru">Пройдено: <span id="sbProgPct">0</span>% (<span id="sbProgN">0</span>/15)</span>
-      <span class="lang-en">Completed: <span id="sbProgPctEn">0</span>% (<span id="sbProgNEn">0</span>/15)</span>
+      <span class="lang-ru">Пройдено: <span id="sbProgPct">0</span>% (<span id="sbProgN">0</span>/<span id="sbProgTotal">0</span>)</span>
+      <span class="lang-en">Completed: <span id="sbProgPctEn">0</span>% (<span id="sbProgNEn">0</span>/<span id="sbProgTotalEn">0</span>)</span>
     </div>
   </div>
 
@@ -617,140 +617,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
       <input class="srch-inp" id="kbSearch" type="text" role="searchbox" placeholder="Поиск по урокам…" oninput="doKbSearch(this.value)" onfocus="this.removeAttribute('readonly')" onblur="setTimeout(()=>closeKbSearch(),200)" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" name="kb-search-no-autofill-x9k2" inputmode="search" readonly>
       <div class="srch-results" id="srchResults"></div>
     </div>
-    <div class="sb-group" id="grp-b1" onclick="toggleSbGroup('b1')">
-      <span><span class="lang-ru">Блок 1. Компания</span><span class="lang-en">Block 1. Company</span></span>
-      <svg class="sb-group-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="sb-group-items" id="grp-items-b1">
-    <div class="sb-a disabled" title="В разработке"><span class="sb-a-num">1.1</span><span class="lang-ru">Кто такая Баня-МСК</span><span class="lang-en">Who is Banya-MSK</span></div>
-    <div class="sb-a disabled"><span class="sb-a-num">1.2</span><span class="lang-ru">Опыт и факты</span><span class="lang-en">Experience and facts</span></div>
-    <div class="sb-a on" id="navL13" onclick="goLesson('1.3')">
-      <span class="sb-a-num">1.3</span>
-      <span class="lang-ru">Что мы строим</span>
-      <span class="lang-en">What we build</span>
-      <svg class="sb-a-check" id="checkL13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a disabled"><span class="sb-a-num">1.4</span><span class="lang-ru">Как устроена компания</span><span class="lang-en">Company structure</span></div>
-    <div class="sb-a disabled"><span class="sb-a-num">1.5</span><span class="lang-ru">Почему доверяют</span><span class="lang-en">Why we're trusted</span></div>
-    <div class="sb-a disabled"><span class="sb-a-num">1.6</span><span class="lang-ru">Договор и гарантии</span><span class="lang-en">Contract and warranties</span></div>
-    <div class="sb-a disabled"><span class="sb-a-num">1.7</span><span class="lang-ru">Позиционирование</span><span class="lang-en">Positioning</span></div>
-    <div class="sb-a disabled"><span class="sb-a-num">1.8</span><span class="lang-ru">Клиент Баня-МСК</span><span class="lang-en">Banya-MSK client</span></div>
-    <div class="sb-a" id="navL19" onclick="goLesson('1.9')">
-      <span class="sb-a-num">1.9</span>
-      <span class="lang-ru">Боли и страхи</span>
-      <span class="lang-en">Pains and fears</span>
-      <svg class="sb-a-check" id="checkL19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a disabled"><span class="sb-a-num">1.10</span><span class="lang-ru">Что можно обещать</span><span class="lang-en">What can be promised</span></div>
-
-    </div>
-    <div class="sb-group" id="grp-b2" onclick="toggleSbGroup('b2')">
-      <span><span class="lang-ru">Блок 2. Продукт</span><span class="lang-en">Block 2. Product</span></span>
-      <svg class="sb-group-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="sb-group-items" id="grp-items-b2">
-    <div class="sb-a disabled" title="В разработке" style="opacity:0.4;"><span class="sb-a-num">—</span><span class="lang-ru">В разработке</span><span class="lang-en">In development</span></div>
-
-    </div>
-    <div class="sb-group" id="grp-b3" onclick="toggleSbGroup('b3')">
-      <span><span class="lang-ru">Блок 3. Продажи</span><span class="lang-en">Block 3. Sales</span></span>
-      <svg class="sb-group-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="sb-group-items" id="grp-items-b3">
-    <div class="sb-a" id="navL31" onclick="goLesson('3.1')">
-      <span class="sb-a-num">3.1</span>
-      <span class="lang-ru">Как устроены продажи</span>
-      <span class="lang-en">How sales work</span>
-      <svg class="sb-a-check" id="checkL31" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL32" onclick="goLesson('3.2')">
-      <span class="sb-a-num">3.2</span>
-      <span class="lang-ru">Что мы продаём</span>
-      <span class="lang-en">What we actually sell</span>
-      <svg class="sb-a-check" id="checkL32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL33" onclick="goLesson('3.3')">
-      <span class="sb-a-num">3.3</span>
-      <span class="lang-ru">Лестница Ханта</span>
-      <span class="lang-en">Hunt's Ladder</span>
-      <svg class="sb-a-check" id="checkL33" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL34" onclick="goLesson('3.4')">
-      <span class="sb-a-num">3.4</span>
-      <span class="lang-ru">Продажа через сценарий</span>
-      <span class="lang-en">Selling through scenario</span>
-      <svg class="sb-a-check" id="checkL34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL35" onclick="goLesson('3.5')">
-      <span class="sb-a-num">3.5</span>
-      <span class="lang-ru">Квалификатор и менеджер</span>
-      <span class="lang-en">Qualifier &amp; manager</span>
-      <svg class="sb-a-check" id="checkL35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL36" onclick="goLesson('3.6')">
-      <span class="sb-a-num">3.6</span>
-      <span class="lang-ru">Первый контакт</span>
-      <span class="lang-en">First contact</span>
-      <svg class="sb-a-check" id="checkL36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL37" onclick="goLesson('3.7')">
-      <span class="sb-a-num">3.7</span>
-      <span class="lang-ru">Квалификация клиента</span>
-      <span class="lang-en">Client qualification</span>
-      <svg class="sb-a-check" id="checkL37" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL38" onclick="goLesson('3.8')">
-      <span class="sb-a-num">3.8</span>
-      <span class="lang-ru">Выявление потребности</span>
-      <span class="lang-en">Needs discovery</span>
-      <svg class="sb-a-check" id="checkL38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL39" onclick="goLesson('3.9')">
-      <span class="sb-a-num">3.9</span>
-      <span class="lang-ru">Belfort / Straight Line</span>
-      <span class="lang-en">Belfort / Straight Line</span>
-      <svg class="sb-a-check" id="checkL39" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL310" onclick="goLesson('3.10')">
-      <span class="sb-a-num">3.10</span>
-      <span class="lang-ru">Три доверия</span>
-      <span class="lang-en">Three trusts</span>
-      <svg class="sb-a-check" id="checkL310" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL311" onclick="goLesson('3.11')">
-      <span class="sb-a-num">3.11</span>
-      <span class="lang-ru">Назначение встречи</span>
-      <span class="lang-en">Booking the meeting</span>
-      <svg class="sb-a-check" id="checkL311" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-
-    </div>
-    <div class="sb-group" id="grp-b4" onclick="toggleSbGroup('b4')">
-      <span><span class="lang-ru">Блок 4. Конкуренты</span><span class="lang-en">Block 4. Competitors</span></span>
-      <svg class="sb-group-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="sb-group-items" id="grp-items-b4">
-    <div class="sb-a disabled" title="В разработке" style="opacity:0.4;"><span class="sb-a-num">—</span><span class="lang-ru">В разработке</span><span class="lang-en">In development</span></div>
-
-    </div>
-    <div class="sb-group" id="grp-b5" onclick="toggleSbGroup('b5')">
-      <span><span class="lang-ru">Блок 5. Для клиентов</span><span class="lang-en">Block 5. For clients</span></span>
-      <svg class="sb-group-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="sb-group-items" id="grp-items-b5">
-    <div class="sb-a" id="navL51" onclick="goLesson('5.1')">
-      <span class="sb-a-num">5.1</span>
-      <span class="lang-ru">Встреча с экспертом</span>
-      <span class="lang-en">Expert consultation</span>
-      <svg class="sb-a-check" id="checkL51" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="sb-a" id="navL52" onclick="goLesson('5.2')">
-      <span class="sb-a-num">5.2</span>
-      <span class="lang-ru">Выбор проекта и технологии</span>
-      <span class="lang-en">Project &amp; technology selection</span>
-      <svg class="sb-a-check" id="checkL52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    </div>
+    <div id="sbNavList"></div>
   </nav>
 
   <div class="sb-bottom">
@@ -909,10 +776,10 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
   <!-- Lesson 3.11 -->
   <div id="lesson-3-11" style="display:none;"></div>
 
-  <!-- Lesson 5.1 — Expert consultation (Встреча с экспертом) -->
+  <!-- Lesson 5.1 -->
   <div id="lesson-5-1" style="display:none;"></div>
 
-  <!-- Lesson 5.2 — Project & Technology Selection (Выбор проекта и технологии) -->
+  <!-- Lesson 5.2 -->
   <div id="lesson-5-2" style="display:none;"></div>
 
 
@@ -1048,7 +915,7 @@ const sb = supabase.createClient(SB_URL, SB_KEY, {
 let _user = null;
 let _profile = null;
 let _progress = {};
-const TOTAL_LESSONS = 15;
+let TOTAL_LESSONS = 0;
 
 // ── Mobile menu (drawer) ──
 function toggleMobMenu() {
@@ -1362,20 +1229,31 @@ async function loadLessons() {
     ls.style.display = '';
   }
 
-  let rows = null, err = null;
+  // Одним заходом берём и тела уроков, и их названия, и блоки: имена больше
+  // не лежат в исходнике страницы, меню и главный экран собираются отсюда.
+  let rows = null, blocks = null, err = null;
   try {
-    const res = await sb.from('kb_lessons')
-      .select('id, body_html')
-      .order('block', { ascending: true })
-      .order('ord', { ascending: true });
-    rows = res.data; err = res.error;
+    const [оУроках, оБлоках] = await Promise.all([
+      sb.from('kb_lessons')
+        .select('id, block, ord, status, title_ru, title_en, nav_ru, nav_en, sub_ru, sub_en, body_html')
+        .order('block', { ascending: true })
+        .order('ord', { ascending: true }),
+      sb.from('kb_blocks')
+        .select('id, num, ord, name_ru, name_en, sub_ru, sub_en')
+        .order('ord', { ascending: true })
+    ]);
+    rows = оУроках.data; blocks = оБлоках.data;
+    err = оУроках.error || оБлоках.error;
   } catch (e) { err = e; }
 
-  if (err || !rows || !rows.length) {
+  if (err || !rows || !rows.length || !blocks || !blocks.length) {
     console.error('[kb] не удалось загрузить уроки:', err);
     showLessonsError();
     return false;
   }
+
+  построитьКаталог(rows, blocks);
+  построитьМеню(rows, blocks);
 
   let placed = 0;
   rows.forEach(r => {
@@ -1432,6 +1310,12 @@ function refreshProgressUI() {
   document.getElementById('sbProgN').textContent = completed;
   document.getElementById('sbProgPctEn').textContent = pct;
   document.getElementById('sbProgNEn').textContent = completed;
+  // Знаменатель тоже из базы: прежде в разметке стояла жёсткая пятнадцать,
+  // и добавленный урок её бы не сдвинул.
+  const всего = document.getElementById('sbProgTotal');
+  const всегоEn = document.getElementById('sbProgTotalEn');
+  if (всего) всего.textContent = TOTAL_LESSONS;
+  if (всегоEn) всегоEn.textContent = TOTAL_LESSONS;
   // Sidebar checkmarks + lesson mark-complete state — universal for any lesson
   KB_LESSONS.forEach(L => {
     const lid = L.id;
@@ -1588,29 +1472,13 @@ function initSbGroups() {
 
 
 // ── Home screen ──
-const HS_BLOCK_META = {
-  b1: { name_ru:'Компания', name_en:'Company', sub_ru:'Кто мы, что строим, ценности и преимущества', sub_en:'Who we are, what we build, values and advantages' },
-  b3: { name_ru:'Продажи', name_en:'Sales', sub_ru:'Технология, сценарии, квалификация и работа с клиентом', sub_en:'Technology, scenarios, qualification and client work' },
-  b5: { name_ru:'Для клиентов', name_en:'For clients', sub_ru:'Материалы для работы непосредственно с клиентами', sub_en:'Materials for working directly with clients' }
-};
-
-const HS_LESSON_META = {
-  '1.3': { sub_ru:'Продукт Баня-МСК', sub_en:'The Banya-MSK product' },
-  '1.9': { sub_ru:'Типовые возражения', sub_en:'Typical objections' },
-  '3.1': { sub_ru:'Общая система', sub_en:'Overall system' },
-  '3.2': { sub_ru:'Ценностное предложение', sub_en:'Value proposition' },
-  '3.3': { sub_ru:'Стадии готовности клиента', sub_en:'Client readiness stages' },
-  '3.4': { sub_ru:'Сценарий использования', sub_en:'Usage scenario' },
-  '3.5': { sub_ru:'Роли в продаже', sub_en:'Roles in the sale' },
-  '3.6': { sub_ru:'Первый звонок и диалог', sub_en:'First call and dialogue' },
-  '3.7': { sub_ru:'Критерии и квалификация', sub_en:'Criteria and qualification' },
-  '3.8': { sub_ru:'Вопросы и техники', sub_en:'Questions and techniques' },
-  '3.9': { sub_ru:'Управление сделкой', sub_en:'Deal management' },
-  '3.10': { sub_ru:'Продукт, компания, менеджер', sub_en:'Product, company, manager' },
-  '3.11': { sub_ru:'Завершение этапа', sub_en:'Stage completion' },
-  '5.1': { sub_ru:'Как проводить встречу', sub_en:'How to run the meeting' },
-  '5.2': { sub_ru:'Каркас, брус, камень', sub_en:'Frame, timber, stone' }
-};
+// ── Каталог уроков: имена приходят из базы ─────────────────────────────
+// В исходнике страницы их нет намеренно: по названиям читается вся карта
+// обучения, а страница открыта всякому. Тела уроков лежали в Supabase и
+// раньше, теперь там же и названия — меню, главный экран и список раздела
+// собираются после входа. Установлено 18.09.2026.
+let HS_BLOCK_META = {};   // { b3: { name_ru, name_en, sub_ru, sub_en } }
+let HS_LESSON_META = {};  // { '3.4': { sub_ru, sub_en } }
 
 function openSection(blockId) {
   const isEn = document.body.getAttribute('data-lang') === 'en';
@@ -1685,33 +1553,8 @@ function openSection(blockId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-const HS_BLOCKS = [
-  { id: 'b1', lessons: [
-    { id:'1.3', ru:'1.3 Что мы строим', en:'1.3 What we build' },
-    { id:'1.9', ru:'1.9 Боли и страхи', en:'1.9 Pains and fears' }
-  ]},
-  { id: 'b3', lessons: [
-    { id:'3.1', ru:'3.1', en:'3.1' },{ id:'3.2', ru:'3.2', en:'3.2' },
-    { id:'3.3', ru:'3.3', en:'3.3' },{ id:'3.4', ru:'3.4', en:'3.4' },
-    { id:'3.5', ru:'3.5', en:'3.5' },{ id:'3.6', ru:'3.6', en:'3.6' },
-    { id:'3.7', ru:'3.7', en:'3.7' },{ id:'3.8', ru:'3.8', en:'3.8' },
-    { id:'3.9', ru:'3.9', en:'3.9' },{ id:'3.10', ru:'3.10', en:'3.10' },
-    { id:'3.11', ru:'3.11', en:'3.11' }
-  ]},
-  { id: 'b5', lessons: [
-    { id:'5.1', ru:'5.1 Встреча с экспертом', en:'5.1 Expert consultation' },
-    { id:'5.2', ru:'5.2 Выбор проекта', en:'5.2 Project selection' }
-  ]}
-];
+let HS_BLOCKS = [];       // [{ id:'b3', lessons:[{ id, ru:'', en:'' }] }]
 
-const HS_LESSON_NAMES = {
-  '1.3':'Что мы строим','1.9':'Боли и страхи',
-  '3.1':'Устройство продаж','3.2':'Что продаём','3.3':'Лестница Ханта',
-  '3.4':'Сценарий','3.5':'Квалификатор','3.6':'Первый контакт',
-  '3.7':'Квалификация','3.8':'Потребность','3.9':'Belfort / Straight Line',
-  '3.10':'Три доверия','3.11':'Встреча',
-  '5.1':'Встреча с экспертом','5.2':'Выбор проекта'
-};
 
 // ── EMBED MODE: integrate with parent (calculator) ──
 if (window._isEmbed) {
@@ -2041,24 +1884,85 @@ async function loadPractice(lessonId, taskId) {
 }
 
 // ── Search across all built lessons (calculator manual pattern) ──
-const KB_LESSONS = [
-  { id: '1.3', title_ru: 'Что мы строим: продукт Баня-МСК', title_en: 'What we build: the Banya-MSK product' },
-  { id: '1.9', title_ru: 'Боли и страхи клиента', title_en: 'Client pains and fears' },
-  { id: '3.1', title_ru: 'Как устроены продажи в Баня-МСК', title_en: 'How sales work at Banya-MSK' },
-  { id: '3.2', title_ru: 'Что мы продаём на самом деле', title_en: 'What we actually sell' },
-  { id: '3.3', title_ru: 'Лестница Ханта: как клиент выбирает решение', title_en: "Hunt's Ladder: how the client chooses a solution" },
-  { id: '3.4', title_ru: 'Продажа через сценарий использования', title_en: 'Selling through the usage scenario' },
-  { id: '3.5', title_ru: 'Роль квалификатора и роль менеджера', title_en: "The qualifier's role and the manager's role" },
-  { id: '3.6', title_ru: 'Первый контакт с клиентом', title_en: 'First contact with the client' },
-  { id: '3.7', title_ru: 'Квалификация клиента', title_en: 'Client qualification' },
-  { id: '3.8', title_ru: 'Выявление потребности', title_en: 'Needs discovery' },
-  { id: '3.9', title_ru: 'Belfort / Straight Line: управление сделкой', title_en: 'Belfort / Straight Line: deal management' },
-  { id: '3.10', title_ru: 'Три доверия в продаже', title_en: 'Three trusts in sales' },
-  { id: '3.11', title_ru: 'Назначение встречи / консультации', title_en: 'Booking the meeting / consultation' },
-  { id: '5.1', title_ru: 'Встреча с экспертом', title_en: 'Expert consultation' },
-  { id: '5.2', title_ru: 'Выбор проекта и технологии', title_en: 'Project & technology selection' },
-  // future lessons added here as they're built
-];
+let KB_LESSONS = [];      // [{ id:'3.4', title_ru, title_en }] — только готовые
+
+function номерУрока(ид) {
+  return String(ид).replace(/^lesson-/, '').replace('-', '.');
+}
+
+// Сборка каталога из строк базы. Заголовки списка раздела намеренно пустые:
+// openSection подставляет в них полное название урока из KB_LESSONS.
+function построитьКаталог(уроки, блоки) {
+  const готовые = уроки.filter(у => у.status !== 'planned');
+  KB_LESSONS = готовые.map(у => ({
+    id: номерУрока(у.id), title_ru: у.title_ru, title_en: у.title_en
+  }));
+  TOTAL_LESSONS = KB_LESSONS.length;
+
+  HS_LESSON_META = {};
+  уроки.forEach(у => {
+    HS_LESSON_META[номерУрока(у.id)] = { sub_ru: у.sub_ru || '', sub_en: у.sub_en || '' };
+  });
+
+  HS_BLOCK_META = {};
+  блоки.forEach(б => {
+    HS_BLOCK_META[б.id] = {
+      name_ru: б.name_ru, name_en: б.name_en, sub_ru: б.sub_ru, sub_en: б.sub_en
+    };
+  });
+
+  HS_BLOCKS = блоки
+    .map(б => ({
+      id: б.id,
+      lessons: готовые.filter(у => у.block === б.num)
+                      .map(у => ({ id: номерУрока(у.id), ru: '', en: '' }))
+    }))
+    .filter(б => б.lessons.length);
+}
+
+// Боковое меню собирается тем же набором строк. Имена узлов сохранены прежние
+// («navL34», «checkL34»): по ним ходят отметки о пройденном и подсветка урока.
+function построитьМеню(уроки, блоки) {
+  const место = document.getElementById('sbNavList');
+  if (!место) return;
+  const экр = с => String(с == null ? '' : с)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  let разметка = '';
+  блоки.forEach(б => {
+    разметка +=
+      '<div class="sb-group" id="grp-' + б.id + '" onclick="toggleSbGroup(\'' + б.id + '\')">' +
+        '<span><span class="lang-ru">Блок ' + б.num + '. ' + экр(б.name_ru) + '</span>' +
+        '<span class="lang-en">Block ' + б.num + '. ' + экр(б.name_en) + '</span></span>' +
+        '<svg class="sb-group-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" ' +
+        'stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>' +
+      '</div><div class="sb-group-items" id="grp-items-' + б.id + '">';
+    const свои = уроки.filter(у => у.block === б.num);
+    if (!свои.length) {
+      разметка += '<div class="sb-a disabled"><span class="sb-a-num">—</span>' +
+        '<span class="lang-ru">В разработке</span>' +
+        '<span class="lang-en">In development</span></div>';
+    }
+    свои.forEach(у => {
+      const н = номерУрока(у.id), ключ = н.replace('.', '');
+      if (у.status === 'planned') {
+        разметка += '<div class="sb-a disabled" title="В разработке">' +
+          '<span class="sb-a-num">' + н + '</span>' +
+          '<span class="lang-ru">' + экр(у.nav_ru) + '</span>' +
+          '<span class="lang-en">' + экр(у.nav_en) + '</span></div>';
+      } else {
+        разметка += '<div class="sb-a" id="navL' + ключ + '" onclick="goLesson(\'' + н + '\')">' +
+          '<span class="sb-a-num">' + н + '</span>' +
+          '<span class="lang-ru">' + экр(у.nav_ru) + '</span>' +
+          '<span class="lang-en">' + экр(у.nav_en) + '</span>' +
+          '<svg class="sb-a-check" id="checkL' + ключ + '" viewBox="0 0 24 24" fill="none" ' +
+          'stroke="currentColor" stroke-width="3" style="display:none;">' +
+          '<polyline points="20 6 9 17 4 12"/></svg></div>';
+      }
+    });
+    разметка += '</div>';
+  });
+  место.innerHTML = разметка;
+}
 
 let _kbIndex = null;
 
