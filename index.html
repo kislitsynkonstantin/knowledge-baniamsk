@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#f0f6f6" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a1012" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" id="themeColorMeta" content="#f0f6f6">
-<title>База знаний продаж — Баня-МСК</title>
+<title>База знаний — Баня-МСК</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%3Crect%20width=%2232%22%20height=%2232%22%20rx=%227%22%20fill=%22%230f4a4f%22/%3E%3Cpolygon%20points=%2216,2%2030,9%2016,16%202,9%22%20fill=%22%230a3438%22/%3E%3Cpath%20d=%22M%207%2011%20L%209%2010%20L%2016%2014%20L%2023%2010%20L%2025%2011%20Q%2025%2018,%2016%2019%20Q%207%2018,%207%2011%20Z%22%20fill=%22%230a3438%22/%3E%3Ctext%20x=%2216%22%20y=%2223%22%20text-anchor=%22middle%22%20font-family=%22Arial,sans-serif%22%20font-size=%229%22%20font-weight=%22900%22%20fill=%22white%22%3E%D0%91%D0%9C%D0%A1%D0%9A%3C/text%3E%3C/svg%3E" type="image/svg+xml">
 <script>
 // Apply theme BEFORE render — calculator-manual hybrid pattern:
@@ -417,12 +417,6 @@ body.dark .mark-complete.done{background:linear-gradient(90deg,var(--gb) 0%,tran
 body.dark .auth-overlay{background:#0a1012;}
 .auth-overlay.on{display:flex;}
 /* Test mode link */
-.test-mode-lnk{color:rgba(0,0,0,0.35);text-decoration:none;transition:color 0.2s;display:inline-flex;line-height:0;}
-.test-mode-lnk:hover{color:rgba(0,0,0,0.6);}
-body.dark .test-mode-lnk{color:rgba(255,255,255,0.55);}
-body.dark .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}
-@media(prefers-color-scheme:dark){body:not(.light) .test-mode-lnk{color:rgba(255,255,255,0.55);}
-body:not(.light) .test-mode-lnk:hover{color:rgba(255,255,255,0.85);}}
 /* Auth dark toggle */
 .auth-dark-tog{position:fixed;top:14px;right:14px;width:32px;height:32px;border-radius:9px;border:1.5px solid var(--bd);background:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);transition:all 0.15s;z-index:1010;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:0.62rem;font-weight:700;letter-spacing:0.04em;font-family:"Geologica",sans-serif;}
 .auth-lang-tog{right:auto!important;left:14px!important;}
@@ -586,8 +580,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
   </button>
   <div class="sb-top">
     <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.19</span></div>
-    <h1><span class="lang-ru">База знаний продаж</span><span class="lang-en">Sales Knowledge Base</span></h1>
-    <p><span class="lang-ru">Обучение менеджеров</span><span class="lang-en">Manager training</span></p>
+    <h1><span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span></h1>
 
     <div class="sb-controls">
       <button id="sbLangBtn" class="sb-ctrl-btn" onclick="toggleLangSb()" title="Switch language">
@@ -764,10 +757,6 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
     <div class="sb-action" id="logoutBtn" onclick="signOut()" style="display:none;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       <span class="lang-ru">Выйти</span><span class="lang-en">Sign out</span>
-    </div>
-    <div class="sb-action" id="exitTestBtn" onclick="exitTestMode()" style="display:none;opacity:0.7;">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-      <span class="lang-ru">Выйти из теста</span><span class="lang-en">Exit test mode</span>
     </div>
   </div>
 </div>
@@ -946,28 +935,14 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
   <button class="auth-dark-tog auth-dark-tog--overlay" onclick="toggleTheme()" title="Тёмный / светлый режим">
     <svg id="authDarkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
-  <!-- Test mode trigger: fixed bottom-right of overlay -->
-  <div id="testModeWrap" style="position:fixed;bottom:20px;right:20px;text-align:right;z-index:1010;">
-    <a href="#" onclick="showTestPwd();return false;" id="testModeLink" class="test-mode-lnk" title="Тест">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    </a>
-    <div id="testPwdRow" style="display:none;margin-top:8px;">
-      <input id="testPwd" type="password" placeholder="••••" autocomplete="off" onfocus="this.placeholder=''" onblur="this.placeholder='••••'"
-        style="width:100px;padding:6px 10px;border-radius:7px;border:1.5px solid var(--bd);background:var(--w);color:var(--bk);font-size:0.78rem;font-family:'Geologica',sans-serif;outline:none;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.12);"
-        onkeydown="if(event.key==='Enter')submitTestPwd()">
-    </div>
-  </div>
   <div class="auth-modal">
     <div style="text-align:center;margin-bottom:24px;">
       <div style="display:inline-flex;align-items:center;gap:6px;background:#1e6c72;color:#fff;font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.04em;padding:8px 16px;border-radius:10px;margin-bottom:16px;">БМСК</div>
       <div style="display:inline-block;font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gm);background:var(--gb);padding:3px 12px;border-radius:20px;margin-bottom:12px;">
         <span class="lang-ru">Только для сотрудников</span><span class="lang-en">Employees only</span>
       </div>
-      <div style="font-family:'Unbounded',sans-serif;font-size:1.35rem;font-weight:700;color:var(--bk);line-height:1.25;margin-bottom:5px;">
+      <div style="font-family:'Unbounded',sans-serif;font-size:1.35rem;font-weight:700;color:var(--bk);line-height:1.25;padding-bottom:14px;border-bottom:1px solid var(--gb);">
         <span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span>
-      </div>
-      <div style="font-size:0.75rem;color:var(--gr);padding-bottom:14px;border-bottom:1px solid var(--gb);">
-        <span class="lang-ru">Обучение менеджеров отдела продаж</span><span class="lang-en">Sales team training</span>
       </div>
     </div>
     <div style="margin-bottom:14px;">
@@ -1495,15 +1470,10 @@ async function toggleComplete(lessonId) {
   _progress[lessonId] = record;
   refreshProgressUI();
 
-  // Save: Supabase for real users, localStorage for test mode
-  if (_user.id === 'test-local') {
-    localStorage.setItem('kb_test_progress', JSON.stringify(_progress));
-  } else {
-    try {
-      await sb.from('kb_lesson_progress').upsert(record, { onConflict: 'user_id,lesson_id' });
-    } catch(err) {
-      console.warn('Progress sync error:', err);
-    }
+  try {
+    await sb.from('kb_lesson_progress').upsert(record, { onConflict: 'user_id,lesson_id' });
+  } catch (err) {
+    console.warn('Progress sync error:', err);
   }
 }
 
@@ -1746,11 +1716,6 @@ const HS_LESSON_NAMES = {
 // ── EMBED MODE: integrate with parent (calculator) ──
 if (window._isEmbed) {
   document.documentElement.classList.add('embed-mode');
-  // Hide test mode link in embed
-  document.addEventListener('DOMContentLoaded', function() {
-    const wrap = document.getElementById('testModeWrap');
-    if (wrap) wrap.style.display = 'none';
-  });
   // Источники, которым разрешено управлять этой страницей сообщениями.
   // Сообщение auth прячет экран входа и открывает сессию присланным токеном,
   // поэтому принимать его от кого угодно нельзя: любая страница, встроившая
@@ -1904,45 +1869,6 @@ async function signOut() {
   location.reload();
 }
 
-function exitTestMode() {
-  // Clear test progress from localStorage
-  localStorage.removeItem('kb_test_progress');
-  location.reload();
-}
-
-// ── Test mode (password-gated, no Supabase, localStorage progress) ──
-function showTestPwd() {
-  document.getElementById('testModeLink').style.display = 'none';
-  document.getElementById('testPwdRow').style.display = 'block';
-  setTimeout(() => document.getElementById('testPwd').focus(), 50);
-}
-function submitTestPwd() {
-  const pwd = document.getElementById('testPwd').value;
-  if (pwd !== '3232') {
-    // Reset for retry
-    document.getElementById('testPwd').value = '';
-    document.getElementById('testPwd').style.borderColor = '#c0392b';
-    setTimeout(() => { document.getElementById('testPwd').style.borderColor = ''; }, 800);
-    return;
-  }
-  enterTestMode();
-}
-async function enterTestMode() {
-  _user = { id: 'test-local', email: 'test@local' };
-  _profile = { id: 'test-local', email: 'test@local', full_name: 'Тестовый режим' };
-  document.getElementById('sbUser').style.display = 'block';
-  document.getElementById('sbUserName').textContent = 'Тестовый режим';
-  document.getElementById('sbUserEmail').textContent = 'без авторизации';
-  document.getElementById('logoutBtn').style.display = 'none';
-  document.getElementById('exitTestBtn').style.display = 'flex';
-  document.body.classList.remove('auth-active');
-  document.getElementById('authOverlay').classList.remove('on');
-  document.getElementById('loadingState').style.display = 'none';
-  try { _progress = JSON.parse(localStorage.getItem('kb_test_progress') || '{}'); } catch(e) { _progress = {}; }
-  refreshProgressUI();
-  showHomeScreen();
-}
-
 // ── Navigation ──
 function goLesson(id) {
   document.querySelectorAll('.sb-a').forEach(a => a.classList.remove('on'));
@@ -2079,10 +2005,8 @@ function showLesson(id) {
   if (el) el.style.display = 'block';
   // Build right-side TOC for this lesson
   buildLessonTOC(id);
-  // Test mode: track in_progress in localStorage
   if (!_progress[id]) {
     _progress[id] = { lesson_id: id, status: 'in_progress', updated_at: new Date().toISOString() };
-    localStorage.setItem('kb_test_progress', JSON.stringify(_progress));
   }
   // Render next lesson link
   renderNextLessonLink(id);
