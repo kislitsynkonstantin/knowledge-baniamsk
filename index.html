@@ -1584,7 +1584,7 @@ if (window._isEmbed) {
     // перекрашивалась вместе с ним). Калькулятор присылает поворот тона в
     // градусах; 0 — бирюза, оригиналы возвращаются байт в байт.
     if (e.data.type === 'tone') {
-      try { перекраситьПоТону(document, Number(e.data.shift) || 0); } catch (err) {}
+      try { перекраситьПоТону(document, Number(e.data.shift) || 0, Number(e.data.sat) || 1); } catch (err) {}
     }
     if (e.data.type === 'auth' && e.data.user) {
       handleEmbedAuth(e.data.user);
@@ -1605,7 +1605,8 @@ if (window._isEmbed) {
 // -calculator-test): правило одно на калькулятор, аналитику и базу знаний.
 // Фирменные цвета (тон 175–195°) поворачиваются на сдвиг, светлота и
 // насыщенность остаются; то, что страница дорисует позже, ловит наблюдатель.
-function перекраситьПоТону(док, сдвиг) {
+function перекраситьПоТону(док, сдвиг, насыщ) {
+  if (!(насыщ > 0)) насыщ = 1;
   if (!док || !док.documentElement) return;
   const ФИРМ = (r, g, b) => {
     const мак = Math.max(r, g, b), мин = Math.min(r, g, b);
@@ -1614,7 +1615,7 @@ function перекраситьПоТону(док, сдвиг) {
     let h = M === R ? ((G - B) / d) % 6 : M === G ? (B - R) / d + 2 : (R - G) / d + 4;
     h = (h * 60 + 360) % 360;
     if (h < 175 || h > 195) return null;
-    const l = (M + m) / 2, s = d / (1 - Math.abs(2 * l - 1));
+    const l = (M + m) / 2, s = Math.min(1, d / (1 - Math.abs(2 * l - 1)) * насыщ);
     const h2 = ((h + сдвиг) % 360 + 360) % 360, c = (1 - Math.abs(2 * l - 1)) * s;
     const x = c * (1 - Math.abs((h2 / 60) % 2 - 1)), o = l - c / 2;
     const [r1, g1, b1] = h2 < 60 ? [c, x, 0] : h2 < 120 ? [x, c, 0] : h2 < 180 ? [0, c, x]
@@ -1622,7 +1623,7 @@ function перекраситьПоТону(док, сдвиг) {
     return [r1, g1, b1].map(v => Math.round((v + o) * 255));
   };
   const hex = a => '#' + a.map(v => v.toString(16).padStart(2, '0')).join('');
-  const заменить = т => !сдвиг || !т ? т : String(т)
+  const заменить = т => (!сдвиг && насыщ === 1) || !т ? т : String(т)
     .replace(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g, (все, ш) => {
       if (ш.length === 3) ш = ш.split('').map(с => с + с).join('');
       const н = ФИРМ(parseInt(ш.slice(0, 2), 16), parseInt(ш.slice(2, 4), 16), parseInt(ш.slice(4, 6), 16));
