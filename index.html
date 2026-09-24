@@ -1580,6 +1580,12 @@ if (window._isEmbed) {
       const m = document.getElementById('themeColorMeta');
       if (m) m.setAttribute('content', dark ? '#0a1012' : '#f0f6f6');
     }
+    // Цвет оформления калькулятора (Константин 24.09.2026: база знаний не
+    // перекрашивалась вместе с ним). Калькулятор присылает поворот тона в
+    // градусах; 0 — бирюза, оригиналы возвращаются байт в байт.
+    if (e.data.type === 'tone') {
+      try { перекраситьПоТону(document, Number(e.data.shift) || 0); } catch (err) {}
+    }
     if (e.data.type === 'auth' && e.data.user) {
       handleEmbedAuth(e.data.user);
     }
@@ -1592,6 +1598,79 @@ if (window._isEmbed) {
     document.addEventListener('DOMContentLoaded', _pingParent);
   } else {
     _pingParent();
+  }
+}
+
+// Перекраска по тону — копия функции из калькулятора (index.html
+// -calculator-test): правило одно на калькулятор, аналитику и базу знаний.
+// Фирменные цвета (тон 175–195°) поворачиваются на сдвиг, светлота и
+// насыщенность остаются; то, что страница дорисует позже, ловит наблюдатель.
+function перекраситьПоТону(док, сдвиг) {
+  if (!док || !док.documentElement) return;
+  const ФИРМ = (r, g, b) => {
+    const мак = Math.max(r, g, b), мин = Math.min(r, g, b);
+    if (мак - мин < 0.02 * 255) return null;
+    const R = r / 255, G = g / 255, B = b / 255, M = мак / 255, m = мин / 255, d = M - m;
+    let h = M === R ? ((G - B) / d) % 6 : M === G ? (B - R) / d + 2 : (R - G) / d + 4;
+    h = (h * 60 + 360) % 360;
+    if (h < 175 || h > 195) return null;
+    const l = (M + m) / 2, s = d / (1 - Math.abs(2 * l - 1));
+    const h2 = ((h + сдвиг) % 360 + 360) % 360, c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs((h2 / 60) % 2 - 1)), o = l - c / 2;
+    const [r1, g1, b1] = h2 < 60 ? [c, x, 0] : h2 < 120 ? [x, c, 0] : h2 < 180 ? [0, c, x]
+      : h2 < 240 ? [0, x, c] : h2 < 300 ? [x, 0, c] : [c, 0, x];
+    return [r1, g1, b1].map(v => Math.round((v + o) * 255));
+  };
+  const hex = a => '#' + a.map(v => v.toString(16).padStart(2, '0')).join('');
+  const заменить = т => !сдвиг || !т ? т : String(т)
+    .replace(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g, (все, ш) => {
+      if (ш.length === 3) ш = ш.split('').map(с => с + с).join('');
+      const н = ФИРМ(parseInt(ш.slice(0, 2), 16), parseInt(ш.slice(2, 4), 16), parseInt(ш.slice(4, 6), 16));
+      return н ? hex(н) : все;
+    })
+    .replace(/rgb(a?)\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})/g, (все, а, r, g, b) => {
+      const н = ФИРМ(+r, +g, +b);
+      return н ? 'rgb' + а + '(' + н.join(',') : все;
+    });
+  const окно = док.defaultView || window;
+  const основа = окно.__тонОснова || (окно.__тонОснова = new WeakMap());
+  окно.__тонСдвиг = сдвиг;
+  const АТР = ['style', 'fill', 'stroke', 'stop-color'];
+  const тронуть = эл => {
+    if (эл.nodeType !== 1) return;
+    if (эл.tagName === 'STYLE') {
+      let о = основа.get(эл);
+      if (о === undefined || (эл.textContent !== о.текст && эл.textContent !== о.стало)) о = { текст: эл.textContent };
+      о.стало = заменить(о.текст); основа.set(эл, о);
+      if (эл.textContent !== о.стало) эл.textContent = о.стало;
+      return;
+    }
+    let о = основа.get(эл);
+    if (!о) { о = {}; основа.set(эл, о); }
+    АТР.forEach(а => {
+      const знач = эл.getAttribute(а);
+      if (знач === null) return;
+      if (!о[а] || (знач !== о[а].было && знач !== о[а].стало)) о[а] = { было: знач };
+      о[а].стало = заменить(о[а].было);
+      if (знач !== о[а].стало) эл.setAttribute(а, о[а].стало);
+    });
+  };
+  const обойти = корень => { тронуть(корень); корень.querySelectorAll && корень.querySelectorAll('*').forEach(тронуть); };
+  обойти(док.documentElement);
+  // Наблюдатель берёт обработчик последнего вызова: новый рисунок идёт в том
+  // тоне, что выбран сейчас, а не в том, что стоял при первом открытии.
+  окно.__тонТронуть = тронуть; окно.__тонОбойти = обойти;
+  if (!окно.__тонНаблюдатель) {
+    окно.__тонНаблюдатель = new окно.MutationObserver(записи => {
+      const т = окно.__тонТронуть, об = окно.__тонОбойти;
+      записи.forEach(з => {
+        if (з.type === 'attributes') т(з.target);
+        else if (з.type === 'characterData') { const с = з.target.parentNode; if (с && с.tagName === 'STYLE') т(с); }
+        else з.addedNodes.forEach(у => { if (у.nodeType === 1) об(у); else if (у.parentNode && у.parentNode.tagName === 'STYLE') т(у.parentNode); });
+      });
+    });
+    окно.__тонНаблюдатель.observe(док.documentElement, { subtree: true, childList: true, characterData: true,
+      attributes: true, attributeFilter: АТР });
   }
 }
 
