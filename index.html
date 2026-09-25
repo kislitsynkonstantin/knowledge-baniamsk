@@ -72,6 +72,10 @@ html.dark,body.dark{background:#0a1012;}
 
 /* ── Sidebar — collapsible ── */
 .sb{width:var(--sb-w);flex-shrink:0;background:#1e6c72;position:fixed;left:0;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:80;transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 24px rgba(0,0,0,0.15);}
+/* «Зелёный-графит» калькулятора: боковое меню — графит. Признак тона
+   ставит сообщение калькулятора; графит вне бирюзового круга, и перекраска
+   по тону его не трогает. */
+:root[data-tone="bmsk"] .sb{background:#24271f;}
 
 /* Resizer handle — desktop only (hidden on mobile via media query below) */
 .sb-resizer{position:fixed;top:0;left:calc(var(--sb-w) - 3px);width:6px;height:100vh;cursor:col-resize;z-index:90;background:transparent;transition:background 0.15s;}
@@ -1586,6 +1590,12 @@ if (window._isEmbed) {
     if (e.data.type === 'tone') {
       try { перекраситьПоТону(document, Number(e.data.shift) || 0, Number(e.data.sat) || 1,
         e.data.neutral === undefined ? undefined : Number(e.data.neutral), e.data.light); } catch (err) {}
+      // Имя тона — для того, что решается не поворотом цвета: у «Зелёного-
+      // графита» боковое меню графитовое (Константин 25.09.2026). Старый
+      // калькулятор имени не шлёт — признак просто снимается.
+      const имя = typeof e.data.name === 'string' ? e.data.name.replace(/[^a-z]/g, '') : '';
+      if (имя) document.documentElement.dataset.tone = имя;
+      else delete document.documentElement.dataset.tone;
     }
     if (e.data.type === 'auth' && e.data.user) {
       handleEmbedAuth(e.data.user);
