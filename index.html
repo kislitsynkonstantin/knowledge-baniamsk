@@ -76,6 +76,13 @@ html.dark,body.dark{background:#0a1012;}
    ставит сообщение калькулятора; графит вне бирюзового круга, и перекраска
    по тону его не трогает. */
 :root[data-tone="bmsk"] .sb{background:#24271f;}
+/* На графите зелёным отмечена структура, а не весь текст: заголовки блоков,
+   значки, номера уроков и выбранный урок (вариант 03 макета
+   sidebar-green-v1, Константин 25.09.2026). */
+:root[data-tone="bmsk"] .sb-group{color:#8bc34a;}
+:root[data-tone="bmsk"] .sb-a svg,:root[data-tone="bmsk"] .sb-home-btn>svg{color:#8bc34a;stroke:#8bc34a;opacity:1;}
+:root[data-tone="bmsk"] .sb-a-num{background:rgba(139,195,74,.18);color:#a6d474;}
+:root[data-tone="bmsk"] .sb-a.on{color:#a6d474;border-left-color:#8bc34a;}
 
 /* Resizer handle — desktop only (hidden on mobile via media query below) */
 .sb-resizer{position:fixed;top:0;left:calc(var(--sb-w) - 3px);width:6px;height:100vh;cursor:col-resize;z-index:90;background:transparent;transition:background 0.15s;}
