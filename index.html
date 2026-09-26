@@ -507,7 +507,15 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
 [data-lang="en"] .lang-ru{display:none;}
 
 /* Loading */
-.loading{display:flex;align-items:center;justify-content:center;min-height:50vh;color:var(--grl);font-size:0.85rem;}
+.loading{display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;min-height:50vh;color:var(--grl);font-size:0.85rem;}
+/* Полоска загрузки — та же, что у справки и окна «Пресеты» в калькуляторе:
+   180×3, отрезок бежит слева направо, цвет — акцент тона (--g), дорожка —
+   он же прозрачнее. Хода загрузки мы не знаем, поэтому процентов нет.
+   Константин 26.09.2026: «База знаний грузится по старому». */
+.kb-load{position:relative;width:180px;height:3px;border-radius:3px;overflow:hidden;background:color-mix(in srgb,var(--g) 18%,transparent);}
+.kb-load i{position:absolute;top:0;bottom:0;left:0;width:40%;border-radius:3px;background:var(--g);animation:kbLoad 1.35s cubic-bezier(.65,.05,.35,1) infinite;}
+@keyframes kbLoad{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+@media (prefers-reduced-motion:reduce){.kb-load i{animation:none;transform:translateX(75%);}}
 
 /* ── Home screen ── */
 .hs-wrap{padding:0 0 80px;}
@@ -652,7 +660,7 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
 
 <!-- ── Main content ── -->
 <div class="main" id="main">
-  <div id="loadingState" class="loading">Загрузка…</div>
+  <div id="loadingState" class="loading"><div class="kb-load" role="progressbar" aria-label="Загрузка"><i></i></div><div>Загрузка…</div></div>
 
   <!-- ── Home screen (shown after login, before first lesson) ── -->
   <div id="homeScreen" style="display:none;">
@@ -1235,8 +1243,11 @@ async function loadLessons() {
   if (_lessonsLoaded) return true;
   const ls = document.getElementById('loadingState');
   if (ls) {
-    ls.textContent = (document.body.getAttribute('data-lang') === 'en')
+    const текст = (document.body.getAttribute('data-lang') === 'en')
       ? 'Loading lessons…' : 'Загрузка материалов…';
+    // Разметку ставим целиком, а не одну надпись: после ошибки загрузки на месте
+    // полоски стоит текст ошибки, и повторная загрузка должна вернуть полоску.
+    ls.innerHTML = '<div class="kb-load" role="progressbar" aria-label="' + текст + '"><i></i></div><div>' + текст + '</div>';
     ls.style.display = '';
   }
 
