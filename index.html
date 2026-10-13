@@ -458,6 +458,77 @@ body.auth-active .main{display:none!important;}
 .auth-modal input:focus{outline:none;border-color:var(--gm);}
 .auth-err{font-size:0.74rem;color:#c0392b;margin-bottom:14px;display:none;}
 .auth-err.on{display:block;}
+/* ── Окно входа в стиле калькулятора ─────────────────────────────────────
+   Токены — значения палитры экрана входа калькулятора (#loginScreen, тема
+   «Бланк»), один в один. Они бирюзовые, как и у калькулятора в исходнике:
+   «Зелёный-графит» и другие цвета ложатся той же перекраской по тону, что и
+   на всю базу. */
+#authOverlay{
+  --lg-page:#f7fbfb;--lg-sheet:#fff;--lg-ink:#12262a;--lg-ink2:#5b7376;--lg-ink3:#8da3a5;
+  --lg-rule:#dceaeb;--lg-rule2:#bcd9db;--lg-acc:#1e6c72;--lg-acc2:#2a8f97;--lg-tint:#e4f5f6;
+  --lg-err-bg:#fdf1f0;--lg-err:#c0392b;--lg-on-acc:#fff;--lg-shadow:rgba(18,38,42,.10);
+  background:var(--lg-page);padding:0;display:none;align-items:stretch;justify-content:stretch;
+  font-family:'Geologica',system-ui,sans-serif;color:var(--lg-ink);
+}
+#authOverlay.on{display:block;}
+@media(prefers-color-scheme:dark){body:not(.light) #authOverlay{
+  --lg-page:#0e1a1c;--lg-sheet:#132528;--lg-ink:#e6f3f3;--lg-ink2:#9db6b8;--lg-ink3:#8aa4a6;
+  --lg-rule:#224347;--lg-rule2:#2d585d;--lg-acc:#8fd6dc;--lg-acc2:#5fc2ca;--lg-tint:#173338;
+  --lg-err-bg:#2a1a1a;--lg-err:#f0a49b;--lg-on-acc:#08181a;--lg-shadow:rgba(0,0,0,.45);background:var(--lg-page);}}
+body.dark #authOverlay{
+  --lg-page:#0e1a1c;--lg-sheet:#132528;--lg-ink:#e6f3f3;--lg-ink2:#9db6b8;--lg-ink3:#8aa4a6;
+  --lg-rule:#224347;--lg-rule2:#2d585d;--lg-acc:#8fd6dc;--lg-acc2:#5fc2ca;--lg-tint:#173338;
+  --lg-err-bg:#2a1a1a;--lg-err:#f0a49b;--lg-on-acc:#08181a;--lg-shadow:rgba(0,0,0,.45);background:var(--lg-page);}
+#authOverlay .lg-stage{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:40px 20px;box-sizing:border-box;}
+@media(max-width:760px){#authOverlay .lg-stage{padding:26px 14px;}}
+#authOverlay .lg-paper{width:100%;max-width:420px;background:var(--lg-sheet);padding:30px 40px 38px;box-sizing:border-box;
+  box-shadow:0 1px 0 var(--lg-rule),0 22px 50px var(--lg-shadow);}
+@media(max-width:520px){#authOverlay .lg-paper{padding:22px 22px 26px;}}
+#authOverlay .lg-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-8px -6px 14px;}
+#authOverlay .lg-top-l{display:flex;align-items:center;gap:4px;}
+#authOverlay .lg-theme{position:relative;flex:none;display:flex;align-items:center;justify-content:center;min-width:32px;
+  padding:8px 9px;border:0;border-radius:8px;background:none;color:var(--lg-ink2);cursor:pointer;font-family:inherit;}
+#authOverlay .lg-theme::before{content:'';position:absolute;inset:-6px -2px;}
+@media(hover:hover){#authOverlay .lg-theme:hover{background:var(--lg-tint);color:var(--lg-acc);}}
+#authOverlay .lg-lang{font-size:.62rem;font-weight:600;letter-spacing:.06em;line-height:14px;}
+/* На телефоне тема базы следует системе — кнопки темы там нет, как и прежде. */
+@media(max-width:880px){#authOverlay .lg-theme-btn{display:none;}}
+#authOverlay .lg-badge{flex:none;padding-right:6px;font-size:.62rem;letter-spacing:.06em;color:var(--lg-ink3);}
+#authOverlay .lg-logo{height:26px;width:auto;display:block;margin:0 0 20px -2px;}
+#authOverlay .lg-logo-n{display:none;}
+@media(prefers-color-scheme:dark){body:not(.light) #authOverlay .lg-logo-d{display:none;}body:not(.light) #authOverlay .lg-logo-n{display:block;}}
+body.dark #authOverlay .lg-logo-d{display:none;}
+body.dark #authOverlay .lg-logo-n{display:block;}
+#authOverlay .lg-eyebrow{font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--lg-acc2);margin-bottom:8px;}
+#authOverlay .lg-title{font-family:'Unbounded',sans-serif;font-size:1.18rem;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--lg-ink);margin:0;}
+@media(max-width:520px){#authOverlay .lg-title{font-size:1.02rem;}}
+#authOverlay .lg-sub{margin-top:6px;font-size:.76rem;color:var(--lg-ink2);}
+#authOverlay .lg-rule{height:1px;background:var(--lg-rule);margin:20px 0 4px;}
+#authOverlay .lg-fld{padding:9px 0 0;}
+#authOverlay .lg-fld label{display:block;font-size:.6rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--lg-ink3);margin-bottom:2px;}
+#authOverlay .lg-wrap{position:relative;}
+#authOverlay .lg-wrap input{width:100%;height:44px;background:none;border:0;border-bottom:1px solid var(--lg-rule2);border-radius:0;
+  color:var(--lg-ink);font-family:inherit;font-size:.9rem;padding:0 34px 0 2px;margin:0;outline:none;box-sizing:border-box;box-shadow:none;}
+#authOverlay .lg-wrap input::placeholder{color:var(--lg-ink3);}
+#authOverlay .lg-wrap input:focus{border-bottom-color:var(--lg-acc2);}
+#authOverlay .lg-eye{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--lg-ink3);padding:6px;display:flex;}
+#authOverlay .lg-eye::before{content:'';position:absolute;inset:-10px -8px;}
+@media(hover:hover){#authOverlay .lg-eye:hover{color:var(--lg-acc);}}
+#authOverlay .lg-msg{margin:18px 0 0;padding:9px 12px;font-size:.74rem;line-height:1.45;background:var(--lg-err-bg);color:var(--lg-err);}
+#authOverlay .lg-go{width:100%;margin-top:24px;height:46px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:9px;
+  background:var(--lg-acc);color:var(--lg-on-acc);border:1px solid var(--lg-acc);border-radius:8px;
+  font-family:'Geologica',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;}
+@media(hover:hover){#authOverlay .lg-go:hover{background:var(--lg-acc2);border-color:var(--lg-acc2);}}
+/* Ожидание — как у калькулятора: кнопка залита, знак вращения, слова и
+   бегущая полоска по нижнему краю; поля приглушены. */
+#authOverlay .lg-go.wait,#authOverlay .lg-go.wait:hover{cursor:progress;background:var(--lg-acc);border-color:var(--lg-acc);}
+#authOverlay .lg-go.wait::after{content:'';position:absolute;left:0;bottom:0;height:3px;width:34%;background:currentColor;opacity:.55;animation:lgБег 1.3s ease-in-out infinite;}
+#authOverlay .lg-spin{width:13px;height:13px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:lgКруг .8s linear infinite;flex:none;}
+@keyframes lgБег{0%{transform:translateX(-100%);}100%{transform:translateX(300%);}}
+@keyframes lgКруг{to{transform:rotate(360deg);}}
+@media(prefers-reduced-motion:reduce){#authOverlay .lg-go.wait::after,#authOverlay .lg-spin{animation:none;}}
+#authOverlay .lg-paper.locked .lg-wrap input{color:var(--lg-ink3);}
+#authOverlay .lg-paper.locked .lg-eye{pointer-events:none;opacity:.5;}
 
 /* Theme toggle — matches calculator header button style */
 .theme-tog{
@@ -822,49 +893,49 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
 
 <!-- ── Auth modal (calculator-style) ── -->
 <div class="auth-overlay" id="authOverlay">
-  <button class="auth-dark-tog auth-lang-tog" onclick="toggleLangFromAuth()" title="Язык / Language" id="authLangBtn">
-    <span id="authLangLabel" style="font-size:0.62rem;font-weight:700;letter-spacing:0.04em;">En</span>
-  </button>
-  <button class="auth-dark-tog auth-dark-tog--overlay" onclick="toggleTheme()" title="Тёмный / светлый режим">
-    <svg id="authDarkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-  </button>
-  <div class="auth-modal">
-    <div style="text-align:center;margin-bottom:24px;">
-      <div style="display:inline-flex;align-items:center;gap:6px;background:#1e6c72;color:#fff;font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.04em;padding:8px 16px;border-radius:10px;margin-bottom:16px;">БМСК</div>
-      <div style="display:inline-block;font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gm);background:var(--gb);padding:3px 12px;border-radius:20px;margin-bottom:12px;">
-        <span class="lang-ru">Только для сотрудников</span><span class="lang-en">Employees only</span>
+  <!-- Окно входа — то же, что у калькулятора (лист «Бланка»: логотип,
+       надзаголовок, название, поля с линией снизу, кнопка с бегущей полоской
+       в ожидании). Константин 13.10.2026: «окно входа в базу знаний сделай в
+       стиле калькулятора окно, с полоской загрузки как там». -->
+  <div class="lg-stage">
+    <div class="lg-paper" id="authPaper">
+      <div class="lg-top">
+        <div class="lg-top-l">
+          <button type="button" class="lg-theme lg-theme-btn" onclick="toggleTheme()" title="Тёмный / светлый режим" aria-label="Тёмный / светлый режим">
+            <svg id="authDarkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button type="button" class="lg-theme" onclick="toggleLangFromAuth()" title="Язык / Language" id="authLangBtn">
+            <span id="authLangLabel" class="lg-lang">En</span>
+          </button>
+        </div>
+        <div class="lg-badge">v2.19</div>
       </div>
-      <div style="font-family:'Unbounded',sans-serif;font-size:1.35rem;font-weight:700;color:var(--bk);line-height:1.25;padding-bottom:14px;border-bottom:1px solid var(--gb);">
-        <span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span>
+      <img class="lg-logo lg-logo-d" src="assets/logo-bmsk-dark-bmsk.png" alt="Баня МСК">
+      <img class="lg-logo lg-logo-n" src="assets/logo-bmsk-light-bmsk.png" alt="Баня МСК">
+      <div class="lg-eyebrow"><span class="lang-ru">Вход для сотрудников</span><span class="lang-en">Employees only</span></div>
+      <h2 class="lg-title"><span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span></h2>
+      <div class="lg-sub"><span class="lang-ru">Обучение отдела продаж</span><span class="lang-en">Sales team training</span></div>
+      <div class="lg-rule"></div>
+      <div class="lg-fld">
+        <label for="authEmail"><span class="lang-ru">Email</span><span class="lang-en">Email</span></label>
+        <div class="lg-wrap">
+          <input id="authEmail" type="email" placeholder="manager@baniamsk.ru" autocomplete="username"
+            onkeydown="if(event.key==='Enter')document.getElementById('authPwd').focus()">
+        </div>
       </div>
-    </div>
-    <div style="margin-bottom:14px;">
-      <label style="font-size:0.68rem;font-weight:600;color:var(--gr);letter-spacing:0.04em;text-transform:uppercase;display:block;margin-bottom:6px;">
-        <span class="lang-ru">Email</span><span class="lang-en">Email</span>
-      </label>
-      <input id="authEmail" type="email" placeholder="manager@baniamsk.ru" autocomplete="email"
-        style="width:100%;padding:10px 13px;border-radius:9px;border:1.5px solid var(--bd);background:var(--w);color:var(--bk);font-size:0.85rem;font-family:'Geologica',sans-serif;box-sizing:border-box;outline:none;margin-bottom:0;"
-        onkeydown="if(event.key==='Enter')document.getElementById('authPwd').focus()">
-    </div>
-    <div style="margin-bottom:18px;">
-      <label style="font-size:0.68rem;font-weight:600;color:var(--gr);letter-spacing:0.04em;text-transform:uppercase;display:block;margin-bottom:6px;">
-        <span class="lang-ru">Пароль</span><span class="lang-en">Password</span>
-      </label>
-      <div style="position:relative;">
-        <input id="authPwd" type="password" placeholder="••••••••" autocomplete="current-password"
-          style="width:100%;padding:10px 40px 10px 13px;border-radius:9px;border:1.5px solid var(--bd);background:var(--w);color:var(--bk);font-size:0.85rem;font-family:'Geologica',sans-serif;box-sizing:border-box;outline:none;margin-bottom:0;"
-          onkeydown="if(event.key==='Enter')signIn()">
-        <button type="button" onclick="const f=document.getElementById('authPwd');f.type=f.type==='password'?'text':'password';"
-          style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gr);padding:0;display:flex;align-items:center;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </button>
+      <div class="lg-fld">
+        <label for="authPwd"><span class="lang-ru">Пароль</span><span class="lang-en">Password</span></label>
+        <div class="lg-wrap">
+          <input id="authPwd" type="password" placeholder="••••••••" autocomplete="current-password"
+            onkeydown="if(event.key==='Enter')signIn()">
+          <button type="button" class="lg-eye" onclick="const f=document.getElementById('authPwd');f.type=f.type==='password'?'text':'password';" title="Показать пароль" aria-label="Показать пароль">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
       </div>
+      <div class="auth-err lg-msg" id="authErr"></div>
+      <button type="button" id="authBtn" class="lg-go" onclick="signIn()"><span class="lang-ru">Войти</span><span class="lang-en">Sign in</span></button>
     </div>
-    <div class="auth-err" id="authErr"></div>
-    <button onclick="signIn()" style="width:100%;padding:12px;background:var(--g);color:#fff;border:none;border-radius:9px;font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;letter-spacing:0.04em;transition:opacity 0.15s;">
-      <span class="lang-ru">ВОЙТИ</span><span class="lang-en">SIGN IN</span>
-    </button>
-
   </div>
 </div>
 
@@ -1390,14 +1461,47 @@ async function toggleComplete(lessonId) {
   }
 }
 
+// Кнопка входа в ожидании — как у калькулятора: знак вращения, «Проверяем…»
+// и бегущая полоска. Любой исход возвращает её в «Войти».
+function _входКнопка(ждём) {
+  const к = document.getElementById('authBtn'), лист = document.getElementById('authPaper');
+  if (!к) return;
+  к.classList.toggle('wait', ждём);
+  к.setAttribute('aria-busy', ждём ? 'true' : 'false');
+  к.innerHTML = ждём
+    ? '<span class="lg-spin" aria-hidden="true"></span><span class="lang-ru">Проверяем…</span><span class="lang-en">Checking…</span>'
+    : '<span class="lang-ru">Войти</span><span class="lang-en">Sign in</span>';
+  if (лист) лист.classList.toggle('locked', ждём);
+  ['authEmail', 'authPwd'].forEach(ид => { const п = document.getElementById(ид); if (п) п.readOnly = ждём; });
+}
+
 async function signIn() {
+  const кн = document.getElementById('authBtn');
+  if (кн && кн.classList.contains('wait')) return;
   const email = document.getElementById('authEmail').value.trim();
   const pwd = document.getElementById('authPwd').value;
   const errEl = document.getElementById('authErr');
   errEl.classList.remove('on');
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
+  const en = document.body.getAttribute('data-lang') === 'en';
+  if (!email || !pwd) {
+    errEl.textContent = en ? 'Enter email and password' : 'Введите email и пароль';
+    errEl.classList.add('on');
+    return;
+  }
+  _входКнопка(true);
+  let data = null, error = null;
+  try {
+    ({ data, error } = await sb.auth.signInWithPassword({ email, password: pwd }));
+  } catch (e) {
+    error = e || { message: 'network' };
+  }
+  _входКнопка(false);
   if (error) {
-    errEl.textContent = error.message;
+    let msg = String(error.message || '');
+    if (msg === 'Invalid login credentials') msg = en ? 'Wrong email or password' : 'Неверный email или пароль';
+    else if (/fetch|network|Load failed/i.test(msg)) msg = en ? 'No connection — the server is unavailable.' : 'Нет соединения — сервер недоступен.';
+    else if (!msg) msg = en ? 'Sign-in failed. Try again.' : 'Вход не удался. Попробуйте ещё раз.';
+    errEl.textContent = msg;
     errEl.classList.add('on');
     return;
   }
