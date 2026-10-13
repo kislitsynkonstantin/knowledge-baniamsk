@@ -18,6 +18,13 @@ window._isEmbed = (function(){
     return window.location.search.indexOf('embed=1') > -1;
   } catch(e) { return false; }
 })();
+// Открытая по своей ссылке база — в «Зелёном-графите», цвете компании; в
+// калькуляторе цвет присылает он сам (Константин, 13.10.2026: «Базу знаний
+// сделай по умолчанию Зеленый-графит цветовую схему. Когда человек по её
+// ссылке заходит. А если из калькулятора, то цвет темы калькулятора»).
+// Признак тона ставится до отрисовки, чтобы боковое меню сразу было графитовым;
+// сами цвета перекрашиваются ниже, когда страница разобрана.
+if (!window._isEmbed) document.documentElement.dataset.tone = 'bmsk';
 
 // MOBILE EXCEPTION: on screens ≤880px, always follow system theme (button hidden)
 (function(){
@@ -1742,6 +1749,19 @@ function перекраситьПоТону(док, сдвиг, насыщ, не
     окно.__тонНаблюдатель.observe(док.documentElement, { subtree: true, childList: true, characterData: true,
       attributes: true, attributeFilter: АТР });
   }
+}
+
+// Параметры «Зелёного-графита» — те же, что калькулятор шлёт сообщением tone
+// (window.ТОНЫ_ПАЛИТРЫ калькулятора, тон bmsk).
+const ТОН_ПО_УМОЛЧАНИЮ = { name: 'bmsk', shift: -94, sat: 0.92, neutral: 0.12,
+  light: [[20, 20], [28, 44], [38, 52], [48, 57], [58, 62], [71, 66], [77, 74], [93, 93]] };
+if (!window._isEmbed) {
+  const покраситьПоУмолчанию = () => {
+    try { перекраситьПоТону(document, ТОН_ПО_УМОЛЧАНИЮ.shift, ТОН_ПО_УМОЛЧАНИЮ.sat,
+      ТОН_ПО_УМОЛЧАНИЮ.neutral, ТОН_ПО_УМОЛЧАНИЮ.light); } catch (e) {}
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', покраситьПоУмолчанию);
+  else покраситьПоУмолчанию();
 }
 
 async function handleEmbedAuth(user) {
