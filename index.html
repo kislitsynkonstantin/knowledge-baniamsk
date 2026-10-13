@@ -51,20 +51,20 @@ body{background:#eef7f7;}
 html.dark,body.dark{background:#0a1012!important;}
 :root{
   --g:#1e6c72;--gm:#2a8f97;--gl:#3db0ba;--gb:#e4f5f6;
-  --bk:#111;--gr:#555;--grl:#888;--bd:#d4e4e5;--w:#fff;
+  --bk:#111;--gr:#555;--grl:#888;--bd:#d4e4e5;--w:#fff;--pale:#a8dde0;
   --warn-bg:#f5f3f0;--warn-border:#8a7060;--warn-text:#4a3828;
   --tip-bg:#e4f5f6;--tip-border:#3db0ba;
   color-scheme:light dark;
 }
 body.dark{
   --g:#3db0ba;--gm:#5fc8d2;--gl:#7dd8dc;--gb:#1a3034;
-  --bk:#e8f0f1;--gr:#a8b8ba;--grl:#7a8a8c;--bd:#2a4044;--w:#0e1416;
+  --bk:#e8f0f1;--gr:#a8b8ba;--grl:#7a8a8c;--bd:#2a4044;--w:#0e1416;--pale:#2d585d;
   --warn-bg:#1e1a16;--warn-border:#7a6050;--warn-text:#c8b8a8;
   --tip-bg:#1a3034;--tip-border:#5fc8d2;
   }
 @media(prefers-color-scheme:dark){body:not(.light){
   --g:#3db0ba;--gm:#5fc8d2;--gl:#7dd8dc;--gb:#1a3034;
-  --bk:#e8f0f1;--gr:#a8b8ba;--grl:#7a8a8c;--bd:#2a4044;--w:#0e1416;
+  --bk:#e8f0f1;--gr:#a8b8ba;--grl:#7a8a8c;--bd:#2a4044;--w:#0e1416;--pale:#2d585d;
   --warn-bg:#1e1a16;--warn-border:#7a6050;--warn-text:#c8b8a8;
   --tip-bg:#1a3034;--tip-border:#5fc8d2;
   }}
@@ -271,8 +271,6 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 @media(max-width:880px){
   /* Hide desktop floating pin button on mobile */
   .sb-floating{display:none!important;}
-  /* Home screen: 2 columns on all screen sizes */
-  .hs-blocks{grid-template-columns:1fr 1fr!important;}
   /* Sidebar becomes off-canvas drawer — z-index ABOVE backdrop */
   .sb{
     width:min(280px,86vw);
@@ -652,43 +650,43 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
   .sec-st .w{display:inline;}
   .sec-tb td{padding:12px 10px;}
 }
-.hs-greeting{margin-bottom:28px;}
+/* Главная — разделы «Ведомостью», вариант 01 макета kb-sections-v2.
+   Константин 13.10.2026: «А список уроков вот эту внедряй Ведомость».
+   Плиток больше нет: список строк одного листа, номер крупный и бледный,
+   процент справа, линия пройденного под строкой. Цвета — из переменных:
+   тон палитры перекрашивает их сам. */
+.hs-wrap{container-type:inline-size;}
+.hs-greeting{margin-bottom:22px;}
 .hs-greeting-name{font-family:'Unbounded',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gm);margin-bottom:10px;}
-.hs-title{font-family:'Unbounded',sans-serif;font-size:1.5rem;font-weight:700;color:var(--bk);line-height:1.25;margin-bottom:6px;}
+.hs-title{font-family:'Unbounded',sans-serif;font-size:1.32rem;font-weight:700;color:var(--bk);line-height:1.2;letter-spacing:-.01em;margin-bottom:6px;}
 .hs-subtitle{font-size:0.84rem;color:var(--gr);}
-.hs-progress-row{display:flex;align-items:center;gap:14px;margin-bottom:36px;}
-.hs-prog-bar{flex:1;height:5px;background:var(--gb);border-radius:3px;overflow:hidden;}
-.hs-prog-fill{height:100%;background:var(--g);border-radius:3px;transition:width 0.5s ease;}
-.hs-prog-label{font-size:0.72rem;font-weight:600;color:var(--gm);white-space:nowrap;min-width:80px;text-align:right;}
-
-/* Block grid */
-.hs-blocks{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.hs-block{background:var(--g);border-radius:16px;padding:22px 20px 18px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;color:#fff;position:relative;overflow:hidden;}
-.hs-block::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 60%);pointer-events:none;}
-.hs-block:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(30,108,114,0.35);}
-.hs-block:active{transform:translateY(0);}
-.hs-block--dim{background:var(--g);cursor:default;}
-.hs-block--dim:hover{transform:none;box-shadow:none;}
-body.dark .hs-block{background:#1a4448;}
-body.dark .hs-block--dim{background:#1a4448;}
-body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
-.hs-block-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
-.hs-block-num{font-family:'Unbounded',sans-serif;font-size:1.6rem;font-weight:800;color:rgba(255,255,255,0.55);line-height:1;}
-.hs-wip-tag{display:inline-block;font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:8px;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.65);margin-top:6px;}
-.hs-block-name{font-family:'Unbounded',sans-serif;font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.02em;margin-bottom:4px;line-height:1.3;}
-.hs-block-count{font-size:0.65rem;color:rgba(255,255,255,0.55);margin-bottom:14px;}
-.hs-block--dim .hs-block-name{color:rgba(255,255,255,0.6);}
-
-/* Lesson pills in block tile */
-.hs-block-lessons{display:flex;flex-wrap:wrap;gap:5px;}
-.hs-pill{font-size:0.6rem;font-weight:600;padding:3px 8px;border-radius:10px;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);cursor:pointer;transition:background 0.12s;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
-.hs-pill:hover{background:rgba(255,255,255,0.28);}
-.hs-pill.done{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.45);text-decoration:line-through;}
-
-/* Progress ring */
-.hs-block-prog-ring{position:relative;width:36px;height:36px;flex-shrink:0;}
-.hs-block-prog-ring svg{width:36px;height:36px;}
-.hs-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:rgba(255,255,255,0.8);}
+.hs-progress-row{display:flex;align-items:center;gap:14px;margin-bottom:26px;}
+.hs-prog-bar{flex:1;height:4px;background:var(--bd);border-radius:2px;overflow:hidden;}
+.hs-prog-fill{height:100%;background:var(--g);border-radius:2px;transition:width 0.5s ease;}
+.hs-prog-label{font-size:0.74rem;color:var(--gr);white-space:nowrap;}
+.hs-prog-label b{color:var(--g);font-weight:600;}
+.hs-list{list-style:none;border-top:2px solid var(--g);}
+.hs-row{display:grid;grid-template-columns:52px 1fr auto;align-items:center;column-gap:12px;padding:14px 2px 0;border-bottom:1px solid var(--bd);cursor:pointer;}
+.hs-row:focus-visible{outline:2px solid var(--gm);outline-offset:-2px;}
+@media(hover:hover){.hs-row:not(.wip):hover{background:var(--gb);background:color-mix(in srgb,var(--gm) 8%,transparent);}}
+.hs-no{font-family:'Unbounded',sans-serif;font-weight:700;font-size:1.55rem;line-height:1;color:var(--pale);grid-row:span 2;align-self:start;padding-top:2px;}
+.hs-nm{font-family:'Unbounded',sans-serif;font-weight:600;font-size:0.84rem;color:var(--bk);line-height:1.3;}
+.hs-meta{font-size:0.72rem;color:var(--gr);margin-top:3px;}
+.hs-pct{font-size:0.95rem;font-weight:600;color:var(--g);display:flex;align-items:center;gap:8px;grid-row:span 2;align-self:center;white-space:nowrap;}
+.hs-pct svg{flex:none;color:var(--grl);}
+.hs-pct.zero{color:var(--grl);font-weight:500;}
+.hs-line{grid-column:2 / 4;height:2px;background:var(--bd);margin:12px 0 14px;border-radius:1px;overflow:hidden;}
+.hs-line i{display:block;height:100%;background:var(--g);}
+.hs-row.wip{cursor:default;}
+.hs-row.wip .hs-nm{color:var(--grl);}
+.hs-row.wip .hs-no{color:var(--bd);}
+.hs-tag{font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grl);border:1px dashed var(--bd);border-radius:20px;padding:3px 9px;white-space:nowrap;}
+.hs-row.wip .hs-line{background:transparent;border-top:1px dashed var(--bd);height:0;}
+@container (min-width:620px){
+  .hs-title{font-size:1.6rem;}
+  .hs-row{grid-template-columns:72px 1fr auto;padding-top:18px;}
+  .hs-no{font-size:2rem;}
+}
 </style>
 </head>
 <body data-lang="ru">
@@ -792,70 +790,8 @@ body.dark .hs-block-num{color:rgba(255,255,255,0.5);}
         <span class="hs-prog-label" id="hsProgLabel"></span>
       </div>
 
-      <!-- Block tiles -->
-      <div class="hs-blocks">
-
-        <!-- Block 1 -->
-        <div class="hs-block" onclick="openSection('b1')">
-          <div class="hs-block-top">
-            <span class="hs-block-num">01</span>
-            <div class="hs-block-prog-ring" id="hsProg-b1">
-              <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/><circle class="hs-ring-fill" cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="3" stroke-dasharray="88 88" stroke-dashoffset="88" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>
-              <span class="hs-ring-pct" id="hsPct-b1">0%</span>
-            </div>
-          </div>
-          <div class="hs-block-name"><span class="lang-ru">Компания</span><span class="lang-en">Company</span></div>
-          <div class="hs-block-count"><span class="lang-ru" id="hsCnt-b1-ru">2 урока</span><span class="lang-en" id="hsCnt-b1-en">2 lessons</span></div>
-
-        </div>
-
-        <!-- Block 2 -->
-        <div class="hs-block hs-block--dim">
-          <div class="hs-block-top">
-            <span class="hs-block-num">02</span>
-          </div>
-          <div class="hs-block-name"><span class="lang-ru">Продукт</span><span class="lang-en">Product</span></div>
-          <div class="hs-block-count"><span class="hs-wip-tag lang-ru">В разработке</span><span class="hs-wip-tag lang-en">In development</span></div>
-        </div>
-
-        <!-- Block 3 -->
-        <div class="hs-block" onclick="openSection('b3')">
-          <div class="hs-block-top">
-            <span class="hs-block-num">03</span>
-            <div class="hs-block-prog-ring" id="hsProg-b3">
-              <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/><circle class="hs-ring-fill" cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="3" stroke-dasharray="88 88" stroke-dashoffset="88" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>
-              <span class="hs-ring-pct" id="hsPct-b3">0%</span>
-            </div>
-          </div>
-          <div class="hs-block-name"><span class="lang-ru">Продажи</span><span class="lang-en">Sales</span></div>
-          <div class="hs-block-count"><span class="lang-ru" id="hsCnt-b3-ru">11 уроков</span><span class="lang-en" id="hsCnt-b3-en">11 lessons</span></div>
-
-        </div>
-
-        <!-- Block 4 -->
-        <div class="hs-block hs-block--dim">
-          <div class="hs-block-top">
-            <span class="hs-block-num">04</span>
-          </div>
-          <div class="hs-block-name"><span class="lang-ru">Конкуренты</span><span class="lang-en">Competitors</span></div>
-          <div class="hs-block-count"><span class="hs-wip-tag lang-ru">В разработке</span><span class="hs-wip-tag lang-en">In development</span></div>
-        </div>
-
-        <!-- Block 5 -->
-        <div class="hs-block" onclick="openSection('b5')">
-          <div class="hs-block-top">
-            <span class="hs-block-num">05</span>
-            <div class="hs-block-prog-ring" id="hsProg-b5">
-              <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/><circle class="hs-ring-fill" cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="3" stroke-dasharray="88 88" stroke-dashoffset="88" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>
-              <span class="hs-ring-pct" id="hsPct-b5">0%</span>
-            </div>
-          </div>
-          <div class="hs-block-name"><span class="lang-ru">Для клиентов</span><span class="lang-en">For clients</span></div>
-          <div class="hs-block-count"><span class="lang-ru" id="hsCnt-b5-ru">2 урока</span><span class="lang-en" id="hsCnt-b5-en">2 lessons</span></div>
-
-        </div>
-
-      </div><!-- /hs-blocks -->
+      <!-- Разделы: строки собирает showHomeScreen() из kb_blocks -->
+      <ol class="hs-list" id="hsList"></ol>
     </div><!-- /hs-wrap -->
 
     <div id="sectionScreen" style="display:none;">
@@ -1743,6 +1679,7 @@ function openSection(blockId) {
 }
 
 let HS_BLOCKS = [];       // [{ id:'b3', lessons:[{ id, ru:'', en:'' }] }]
+let HS_ALL_BLOCKS = [];   // коды всех блоков по порядку, и пустых тоже: ['b1','b2',…]
 
 
 // ── EMBED MODE: integrate with parent (calculator) ──
@@ -1983,36 +1920,50 @@ function showHomeScreen() {
   const fillEl = document.getElementById('hsProgFill');
   const lblEl  = document.getElementById('hsProgLabel');
   if (fillEl) fillEl.style.width = pct + '%';
-  if (lblEl) {
-    const isEn = document.body.getAttribute('data-lang') === 'en';
-    lblEl.textContent = isEn
-      ? `${done}/${total} completed`
-      : `${done} из ${total} пройдено`;
-  }
+  // Подписи на обоих языках сразу: переключает их правило [data-lang], и
+  // смена языка на главной не требует перерисовки.
+  const изРу = `<span class="lang-ru">из</span><span class="lang-en">of</span>`;
+  if (lblEl) lblEl.innerHTML = `<b>${done} ${изРу} ${total}</b> <span class="lang-ru">пройдено</span><span class="lang-en">completed</span>`;
 
-  // Render block tiles
-  HS_BLOCKS.forEach(blk => {
-    // Count done in this block
-    const blockDone = blk.lessons.filter(l => _progress[l.id]?.status === 'completed').length;
-    const blockTotal = blk.lessons.length;
-    const blockPct = Math.round((blockDone / blockTotal) * 100);
-
-    // Update ring
-    const ringEl = document.getElementById('hsProg-' + blk.id);
-    const pctEl  = document.getElementById('hsPct-'  + blk.id);
-    if (ringEl) {
-      const circle = ringEl.querySelector('.hs-ring-fill');
-      if (circle) {
-        const circumference = 88;
-        const offset = circumference - (blockPct / 100) * circumference;
-        circle.style.strokeDashoffset = offset;
-        circle.style.stroke = blockPct === 100 ? '#4ade80' : 'rgba(255,255,255,0.85)';
+  // Разделы — «Ведомостью»: все блоки из базы по порядку, у пустого —
+  // «Уроки готовятся» и «Скоро». Прежде плитки с именами и числом уроков
+  // стояли в разметке, и число не обновлялось: добавленный урок плитка не
+  // замечала, а имена блоков читались из исходника открытой страницы.
+  const уроковРу = n => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'урок'
+    : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'урока' : 'уроков');
+  const пройденоРу = (d, n) => d === 0 ? 'не начат' : d === n && n > 1 ? 'пройдены все' : d === 1 ? 'пройден 1' : 'пройдено ' + d;
+  const пройденоEn = (d, n) => d === 0 ? 'not started' : d === n && n > 1 ? 'all completed' : d + ' completed';
+  const стрелка = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>';
+  const список = document.getElementById('hsList');
+  if (список) {
+    список.innerHTML = '';
+    HS_ALL_BLOCKS.forEach(id => {
+      const meta = HS_BLOCK_META[id];
+      if (!meta) return;
+      const blk = HS_BLOCKS.find(b => b.id === id);
+      const n = blk ? blk.lessons.length : 0;
+      const d = blk ? blk.lessons.filter(l => _progress[l.id]?.status === 'completed').length : 0;
+      const p = n ? Math.round(100 * d / n) : 0;
+      const номер = String(id).replace(/\D/g, '').padStart(2, '0');
+      const имя = `<div class="hs-nm"><span class="lang-ru">${meta.name_ru}</span><span class="lang-en">${meta.name_en}</span></div>`;
+      const строка = document.createElement('li');
+      строка.className = 'hs-row' + (n ? '' : ' wip');
+      if (!n) {
+        строка.innerHTML = `<span class="hs-no">${номер}</span><div>${имя}
+          <div class="hs-meta"><span class="lang-ru">Уроки готовятся</span><span class="lang-en">Lessons in preparation</span></div></div>
+          <span class="hs-tag"><span class="lang-ru">Скоро</span><span class="lang-en">Soon</span></span><div class="hs-line"></div>`;
+      } else {
+        строка.innerHTML = `<span class="hs-no">${номер}</span><div>${имя}
+          <div class="hs-meta"><span class="lang-ru">${уроковРу(n)} · ${пройденоРу(d, n)}</span><span class="lang-en">${n} lesson${n === 1 ? '' : 's'} · ${пройденоEn(d, n)}</span></div></div>
+          <span class="hs-pct${p ? '' : ' zero'}"><span>${p}<span class="lang-ru"> %</span><span class="lang-en">%</span></span>${стрелка}</span>
+          <div class="hs-line"><i style="width:${p}%"></i></div>`;
+        строка.tabIndex = 0;
+        строка.onclick = () => openSection(id);
+        строка.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSection(id); } };
       }
-    }
-    if (pctEl) pctEl.textContent = blockPct + '%';
-
-
-  });
+      список.appendChild(строка);
+    });
+  }
 
   document.getElementById('homeScreen').style.display = 'block';
   document.getElementById('homeScreen').querySelector('.hs-wrap').style.display = '';
@@ -2234,6 +2185,7 @@ function построитьКаталог(уроки, блоки) {
   });
 
   HS_BLOCK_META = {};
+  HS_ALL_BLOCKS = блоки.map(б => б.id);
   блоки.forEach(б => {
     HS_BLOCK_META[б.id] = {
       name_ru: б.name_ru, name_en: б.name_en, sub_ru: б.sub_ru, sub_en: б.sub_en
