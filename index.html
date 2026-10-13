@@ -117,8 +117,12 @@ body[data-sb="unpinned"] .main{margin-left:0!important;}
 .sb-floating:hover{background:var(--gm);transform:translateY(-1px);}
 body[data-sb="unpinned"] .sb-floating{display:flex;}
 .sb-top{padding:22px 22px 16px;border-bottom:1px solid rgba(255,255,255,0.1);}
-.sb-logo{display:inline-flex;align-items:center;gap:7px;margin-bottom:10px;}
-.sb-logo-badge{font-family:'Unbounded',sans-serif;font-size:0.58rem;font-weight:800;background:rgba(255,255,255,0.15);border-radius:5px;padding:4px 9px;color:#fff;letter-spacing:0.04em;}
+.sb-logo{display:inline-flex;align-items:flex-end;gap:8px;margin-bottom:12px;}
+/* Логотип — светлый логотип калькулятора (белые буквы): меню тёмное и днём,
+   и ночью, дневной логотип с тёмными буквами на нём бы пропал. Крышу
+   перекрашивает тон палитры — тем же правилом, что в калькуляторе. */
+.sb-logo-img{display:block;height:22px;width:auto;margin-left:-2px;}
+.sb-ver{font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;line-height:1;padding-bottom:2px;}
 .sb-top h1{font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;color:#fff;line-height:1.3;}
 .sb-top p{font-size:0.66rem;color:rgba(255,255,255,0.55);margin-top:4px;}
 .sb-controls{margin-top:14px;display:flex;gap:7px;align-items:center;}
@@ -712,7 +716,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><span class="sb-logo-badge">БМСК</span><span style="font-size:0.52rem;color:rgba(255,255,255,0.35);font-family:'Geologica',sans-serif;margin-left:2px;">v2.19</span></div>
+    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.19</span></div>
     <h1><span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span></h1>
 
     <div class="sb-controls">
@@ -1773,10 +1777,87 @@ function _правилоТона(h, l, s, п) {
   }
   return [((h + п.сдвиг) % 360 + 360) % 360, l2, Math.min(1, s * к)];
 }
+// Логотип в боковом меню перекрашивается на холсте — так же, как калькулятор
+// перекрашивает свой (функции перенесены оттуда без изменений): у фирменных
+// пикселей (тон 175–195°) поворачивается тон, светлый логотип держит яркость
+// оригинала. Параметры — те же, что калькулятор присылает сообщением tone,
+// поэтому логотип выходит пиксель в пиксель как в шапке калькулятора.
+// Константин 13.10.2026: «Тут поставь значок Баня МСК под цвет темы».
+function _hlsВrgb(h, l, s) {
+  const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+  const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+  return [f(0), f(8), f(4)].map(v => Math.round(v * 255));
+}
+function _яркостьRgb(r, g, b) {
+  const к = [r, g, b].map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+  return 0.2126 * к[0] + 0.7152 * к[1] + 0.0722 * к[2];
+}
+function _цветКартинкиТона(r, g, b, п, держатьЯркость) {
+  const M = Math.max(r, g, b) / 255, m = Math.min(r, g, b) / 255, d = M - m;
+  if (d < 0.02) return null;
+  const R = r / 255, G = g / 255, B = b / 255;
+  let h = M === R ? ((G - B) / d) % 6 : M === G ? (B - R) / d + 2 : (R - G) / d + 4;
+  h = (h * 60 + 360) % 360;
+  if (h < 175 || h > 195) return null;
+  const l0 = (M + m) / 2;
+  const [h2, l, s] = _правилоТона(h, l0, d / (1 - Math.abs(2 * l0 - 1)), п);
+  if (!держатьЯркость) return _hlsВrgb(h2, l, s);
+  const нужно = _яркостьRgb(r, g, b);
+  let низ = 0, верх = 1;
+  for (let и = 0; и < 30; и++) {
+    const с = (низ + верх) / 2;
+    if (_яркостьRgb(..._hlsВrgb(h2, с, s)) < нужно) низ = с; else верх = с;
+  }
+  return _hlsВrgb(h2, (низ + верх) / 2, s);
+}
+function _перекраситьКартинку(src, п, держатьЯркость) {
+  return new Promise(готово => {
+    const и = new Image();
+    и.onload = () => {
+      try {
+        const х = document.createElement('canvas'); х.width = и.naturalWidth; х.height = и.naturalHeight;
+        const к = х.getContext('2d'); к.drawImage(и, 0, 0);
+        const д = к.getImageData(0, 0, х.width, х.height), пк = д.data, память = new Map();
+        for (let i = 0; i < пк.length; i += 4) {
+          if (!пк[i + 3]) continue;
+          const ключ = (пк[i] << 16) | (пк[i + 1] << 8) | пк[i + 2];
+          let н = память.get(ключ);
+          if (н === undefined) { н = _цветКартинкиТона(пк[i], пк[i + 1], пк[i + 2], п, держатьЯркость); память.set(ключ, н); }
+          if (н) { пк[i] = н[0]; пк[i + 1] = н[1]; пк[i + 2] = н[2]; }
+        }
+        к.putImageData(д, 0, 0);
+        готово(х.toDataURL('image/png'));
+      } catch (e) { готово(null); }
+    };
+    и.onerror = () => готово(null);
+    и.src = src;
+  });
+}
+// Состояние — в var без начального значения и в window: тон приходит и
+// раньше, чем скрипт дойдёт до этих строк (сообщение калькулятора), и
+// let здесь бросал «Cannot access before initialization».
+var _логотипЗапрос;
+async function перекраситьЛоготип(п) {
+  const лого = document.getElementById('sbLogo');
+  if (!лого) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => перекраситьЛоготип(п), { once: true });
+    return;
+  }
+  const основа = 'assets/logo-bmsk-light.png';
+  const кэш = window.__логотипыТона || (window.__логотипыТона = new Map());
+  const мой = _логотипЗапрос = (_логотипЗапрос || 0) + 1;
+  if (!п.сдвиг && п.насыщ === 1 && п.нейтр === 1 && !п.свет.length) { лого.src = основа; return; }
+  const ключ = JSON.stringify(п);
+  let src = кэш.get(ключ);
+  if (!src) { src = await _перекраситьКартинку(основа, п, true); if (src) кэш.set(ключ, src); }
+  // Пока холст работал, мог прийти другой тон: ставится только последний.
+  if (src && мой === _логотипЗапрос) лого.src = src;
+}
 function перекраситьПоТону(док, сдвиг, насыщ, нейтр, свет) {
   if (!(насыщ > 0)) насыщ = 1;
   if (!(нейтр >= 0)) нейтр = насыщ;
   if (!Array.isArray(свет)) свет = [];
+  if (док === document) перекраситьЛоготип({ сдвиг: сдвиг || 0, насыщ, нейтр, свет });
   const пр = { сдвиг, насыщ, нейтр, свет };
   const простой = !сдвиг && насыщ === 1 && нейтр === 1 && !свет.length;
   if (!док || !док.documentElement) return;
