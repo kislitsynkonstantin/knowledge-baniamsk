@@ -638,7 +638,6 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
 .sec-st{display:inline-flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--grl);}
 .sec-st .w{display:none;}
 .sec-st.done{color:var(--gr);}
-.sec-st.done svg{color:var(--gm);}
 .sec-st.next{color:var(--g);font-weight:600;}
 .sec-tb tr.done .slr-title{color:var(--gr);}
 .sec-tb tr.done .c-n{color:var(--grl);}
@@ -1623,10 +1622,11 @@ function openSection(blockId) {
   полоса.innerHTML = blkLessons.map(l => `<i class="${сост(l)}"></i>`).join('');
   полоса.setAttribute('aria-label', (isEn ? 'Completed ' : 'Пройдено ') + готово + (isEn ? ' of ' : ' из ') + всего);
 
-  const галка = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
   const стрелка = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   const слова = {
-    done: `<span class="sec-st done">${галка}<span class="w"><span class="lang-ru">Пройден</span><span class="lang-en">Done</span></span></span>`,
+    // Словом, а не галочкой, и на узкой колонке тоже (Константин 13.10.2026:
+    // «Вместо галочек напиши фразу, типа „пройдено“»).
+    done: `<span class="sec-st done"><span class="lang-ru">Пройден</span><span class="lang-en">Done</span></span>`,
     next: `<span class="sec-st next"><span class="lang-ru">Дальше</span><span class="lang-en">Next</span>${стрелка}</span>`,
     new: `<span class="sec-st"><span class="w"><span class="lang-ru">Не начат</span><span class="lang-en">Not started</span></span></span>`
   };
