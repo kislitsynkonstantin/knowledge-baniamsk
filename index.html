@@ -642,7 +642,11 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
 .sec-tb tr.done .slr-title{color:var(--gr);}
 .sec-tb tr.done .c-n{color:var(--grl);}
 .sec-tb tr.next td{background:var(--gb);background:color-mix(in srgb,var(--gm) 14%,transparent);}
-.sec-tb tr.next td:first-child{box-shadow:inset 2px 0 0 var(--gm);}
+/* Полоска текущего урока — в поле листа, левее таблицы: внутри ячейки она
+   упиралась в черту под шапкой и рисовала с ней угол (Константин 16.10.2026,
+   снимок раздела «Продукт»). Тот же приём, что у выбранной строки в «Бланке». */
+.sec-tb tr.next td:first-child{position:relative;}
+.sec-tb tr.next td:first-child::before{content:'';position:absolute;left:-8px;top:0;bottom:0;width:2px;background:var(--gm);}
 .sec-tb tfoot td{border-top:2px solid var(--g);border-bottom:0;font-size:0.8rem;color:var(--gr);padding-top:12px;}
 .sec-tb tfoot b{color:var(--g);font-weight:600;}
 @container (min-width:620px){

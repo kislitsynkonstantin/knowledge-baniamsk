@@ -121,6 +121,11 @@ window.supabase = { createClient: () => ({
     высотаСтроки: Math.min(...строки.map(т => Math.round(т.getBoundingClientRect().height))),
     назад: [Math.round(назад.width + доп(пп.left) + доп(пп.right)), Math.round(назад.height + доп(пп.top) + доп(пп.bottom))], правый: Math.min(...правый), ширинаКолонки,
     тон: document.documentElement.dataset.tone || '',
+    полоска: (() => { if (!след) return null; const я = след.querySelector('td'), с = getComputedStyle(я, '::before');
+      const внутри = getComputedStyle(я).boxShadow.indexOf('inset') > -1;
+      if (с.content === 'none' || с.position !== 'absolute') return { внутри, зазор: null };
+      const т = я.closest('table').getBoundingClientRect(), л = я.getBoundingClientRect().left + parseFloat(с.left) + parseFloat(с.width);
+      return { внутри, зазор: Math.round(т.left - л) }; })(),
     шрифт: (() => { const с = document.createElement('span'); с.textContent = 'Продажи 0123'; с.style.cssText = 'position:absolute;font:700 40px Unbounded,monospace';
       document.body.appendChild(с); const а = с.getBoundingClientRect().width; с.style.fontFamily = 'monospace'; const б = с.getBoundingClientRect().width; с.remove(); return Math.round(а - б); })()
   };
@@ -181,6 +186,8 @@ with sync_playwright() as pw:
             if ш in (768, 390):
                 факт(д['высотаСтроки'] >= 44, f"{н} строка не ниже 44 px: {д['высотаСтроки']}")
             факт(len(д['видШапки']) == 1, f"{н} заголовки колонок одного вида: {д['видШапки']}")
+            п = д['полоска']
+            факт(п is None or (not п['внутри'] and (п['зазор'] or 0) >= 4), f"{н} полоска следующего урока — в поле листа, левее таблицы, и не встречается с чертой под шапкой: {п}")
             факт(д['контраст'] >= 1.04, f"{н} следующая строка заметна на фоне страницы: {д['контраст']}:1")
             факт(not д['вылез'] and д['вширь'] <= 0 and not д['обрез'], f"{н} ничего не вылезает и не обрезано: {д['вылез']}, вширь {д['вширь']}, {д['обрез']}")
             факт(min(д['назад']) >= 32, f"{н} «Главная» ловится: {д['назад']}")
