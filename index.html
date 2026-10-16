@@ -1335,7 +1335,17 @@ async function loadLessons() {
 
   let placed = 0;
   rows.forEach(r => {
-    const slot = document.getElementById(r.id);
+    let slot = document.getElementById(r.id);
+    // Урок, которому в разметке страницы нет места, получает его сам — в конце
+    // основной колонки, рядом с остальными. Иначе урок, добавленный в базу,
+    // молча не показывался: меню и каталог его знали, а тела не было
+    // (Константин, 16.10.2026: «Добавь эти документы в базу знаний»).
+    if (!slot && r.body_html && /^lesson-\d+-\d+$/.test(r.id)) {
+      slot = document.createElement('div');
+      slot.id = r.id;
+      slot.style.display = 'none';
+      document.getElementById('main').appendChild(slot);
+    }
     if (!slot || !r.body_html) return;
     slot.outerHTML = r.body_html;                 // тело урока приходит с той же обёрткой
     const el = document.getElementById(r.id);
