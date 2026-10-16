@@ -189,6 +189,12 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 .sb-a-num{font-family:'Unbounded',sans-serif;font-size:0.6rem;font-weight:700;background:rgba(255,255,255,0.1);border-radius:4px;padding:2px 5px;flex-shrink:0;letter-spacing:0.03em;}
 .sb-a.on .sb-a-num{background:rgba(255,255,255,0.22);}
 .sb-a-check{margin-left:auto;width:13px;height:13px;flex-shrink:0;color:var(--gl);}
+/* Точка у нового урока — как у «Журнала обновлений» в справке: жёлтая, в правом
+   поле пункта, а не в строке, чтобы не отнимать места у названия. Горит месяц
+   после добавления урока, пока сотрудник его не откроет (Константин,
+   16.10.2026: «поставь возле них точки, как мы ставим в Журнале обновлений»). */
+.sb-a{position:relative;}
+.sb-new{width:5px;height:5px;border-radius:50%;background:#facc15;position:absolute;right:9px;top:50%;margin-top:-2.5px;}
 .sb-a.disabled{opacity:0.35;cursor:not-allowed;}
 .sb-a.disabled:hover{background:transparent;}
 
@@ -1336,7 +1342,7 @@ async function _загрузитьУроки() {
   try {
     const [оУроках, оБлоках] = await Promise.all([
       sb.from('kb_lessons')
-        .select('id, block, ord, status, title_ru, title_en, nav_ru, nav_en, sub_ru, sub_en, body_html')
+        .select('id, block, ord, status, title_ru, title_en, nav_ru, nav_en, sub_ru, sub_en, body_html, added_at')
         .order('block', { ascending: true })
         .order('ord', { ascending: true }),
       sb.from('kb_blocks')
@@ -1437,6 +1443,7 @@ function refreshProgressUI() {
     if (check) check.style.display = isDone ? 'block' : 'none';
     setCompleteState(lid, isDone);
   });
+  обновитьТочкиНовых();
 }
 
 function setCompleteState(lessonId, done) {
@@ -2279,6 +2286,17 @@ function showLesson(id) {
   buildLessonTOC(id);
   if (!_progress[id]) {
     _progress[id] = { lesson_id: id, status: 'in_progress', updated_at: new Date().toISOString() };
+    // Открытие записывается в прогресс: по нему гаснет точка нового урока, и
+    // гаснет на аккаунт, а не в одном браузере. Пройденным урок не считается —
+    // пройденные считаются по status = 'completed'.
+    if (_user && _user.id) {
+      try {
+        sb.from('kb_lesson_progress').upsert({ user_id: _user.id, lesson_id: id, status: 'in_progress',
+          updated_at: _progress[id].updated_at }, { onConflict: 'user_id,lesson_id' })
+          .then(() => {}, e => console.warn('Progress sync error:', e));
+      } catch (e) { console.warn('Progress sync error:', e); }
+    }
+    обновитьТочкиНовых();
   }
   // Render next lesson link
   renderNextLessonLink(id);
@@ -2324,7 +2342,7 @@ function номерУрока(ид) {
 function построитьКаталог(уроки, блоки) {
   const готовые = уроки.filter(у => у.status !== 'planned');
   KB_LESSONS = готовые.map(у => ({
-    id: номерУрока(у.id), title_ru: у.title_ru, title_en: у.title_en
+    id: номерУрока(у.id), title_ru: у.title_ru, title_en: у.title_en, added_at: у.added_at || null
   }));
   TOTAL_LESSONS = KB_LESSONS.length;
 
@@ -2352,6 +2370,21 @@ function построитьКаталог(уроки, блоки) {
 
 // Боковое меню собирается тем же набором строк. Имена узлов сохранены прежние
 // («navL34», «checkL34»): по ним ходят отметки о пройденном и подсветка урока.
+// Новый урок — тот, что добавлен в базу меньше месяца назад (kb_lessons.added_at)
+// и ещё не открывался этим сотрудником (строки в kb_lesson_progress нет).
+const СРОК_НОВОГО_МС = 30 * 24 * 3600 * 1000;
+function урокНовый(L) {
+  if (!L || !L.added_at || _progress[L.id]) return false;
+  const т = Date.parse(L.added_at);
+  return !isNaN(т) && Date.now() - т < СРОК_НОВОГО_МС;
+}
+function обновитьТочкиНовых() {
+  KB_LESSONS.forEach(L => {
+    const т = document.getElementById('newL' + L.id.replace('.', ''));
+    if (т) т.style.display = урокНовый(L) ? '' : 'none';
+  });
+}
+
 function построитьМеню(уроки, блоки) {
   const место = document.getElementById('sbNavList');
   if (!место) return;
@@ -2384,6 +2417,7 @@ function построитьМеню(уроки, блоки) {
           '<span class="sb-a-num">' + н + '</span>' +
           '<span class="lang-ru">' + экр(у.nav_ru) + '</span>' +
           '<span class="lang-en">' + экр(у.nav_en) + '</span>' +
+          '<span class="sb-new" id="newL' + ключ + '" style="display:none;" title="Новый урок"></span>' +
           '<svg class="sb-a-check" id="checkL' + ключ + '" viewBox="0 0 24 24" fill="none" ' +
           'stroke="currentColor" stroke-width="3" style="display:none;">' +
           '<polyline points="20 6 9 17 4 12"/></svg></div>';
