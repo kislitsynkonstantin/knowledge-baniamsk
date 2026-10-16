@@ -89,7 +89,8 @@ threading.Thread(target=с.serve_forever, daemon=True).start()
   const вид = !!т && т.style.display !== 'none' && т.getClientRects().length > 0;
   let зазор = null; if (вид && п) { const тр = т.getBoundingClientRect(); const имя = [...п.querySelectorAll('.lang-ru')].find(с => с.getClientRects().length);
     if (имя) зазор = Math.round(тр.left - имя.getBoundingClientRect().right); }
-  р[к] = { вид, зазор }; }); return р; }"""
+  let кол = null; if (вид) { const ш = document.querySelector('.sb-group-chevron'); if (ш) { const а = т.getBoundingClientRect(), б = ш.getBoundingClientRect(); кол = Math.round(Math.abs((а.left + а.right) / 2 - (б.left + б.right) / 2)); } }
+  р[к] = { вид, зазор, кол }; }); return р; }"""
 with sync_playwright() as pw:
     бр = pw.chromium.launch(executable_path=os.environ.get('BM_CHROMIUM'), args=["--no-sandbox"])
     стр = бр.new_page(viewport={"width": 1280, "height": 900})
@@ -101,6 +102,7 @@ with sync_playwright() as pw:
     факт(т['21']['вид'] and т['312']['вид'], f"у новых неоткрытых 2.1 и 3.12 точка видна: {т['21']}, {т['312']}")
     факт(not т['31']['вид'], f"у старого урока 3.1 точки нет: {т['31']}")
     факт(not т['313']['вид'], f"у нового урока 3.13, который уже открывали, точки нет: {т['313']}")
+    факт(all((т[к]['кол'] or 0) <= 3 for к in ('21', '312')), f"точка в колонке стрелок блоков, а не у края меню: смещение {т['21']['кол']}, {т['312']['кол']} px")
     факт(all(т[к]['зазор'] is None or т[к]['зазор'] >= 4 for к in ('21', '312')), f"точка не заходит на название: зазор {т['21']['зазор']}, {т['312']['зазор']} px")
     стр.evaluate("() => goLesson('3.12')"); стр.wait_for_timeout(400)
     т = стр.evaluate(ТОЧКИ)

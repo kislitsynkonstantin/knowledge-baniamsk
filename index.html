@@ -194,7 +194,10 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
    после добавления урока, пока сотрудник его не откроет (Константин,
    16.10.2026: «поставь возле них точки, как мы ставим в Журнале обновлений»). */
 .sb-a{position:relative;}
-.sb-new{width:5px;height:5px;border-radius:50%;background:#facc15;position:absolute;right:9px;top:50%;margin-top:-2.5px;}
+/* Точка стоит в той же колонке, что галочки пройденных и стрелки блоков; пункту
+   с точкой поле справа шире, чтобы длинное название до неё не доходило. */
+.sb-new{width:5px;height:5px;border-radius:50%;background:#facc15;position:absolute;right:24px;top:50%;margin-top:-2.5px;}
+.sb-a.is-new{padding-right:36px;}
 .sb-a.disabled{opacity:0.35;cursor:not-allowed;}
 .sb-a.disabled:hover{background:transparent;}
 
@@ -2381,7 +2384,10 @@ function урокНовый(L) {
 function обновитьТочкиНовых() {
   KB_LESSONS.forEach(L => {
     const т = document.getElementById('newL' + L.id.replace('.', ''));
-    if (т) т.style.display = урокНовый(L) ? '' : 'none';
+    if (!т) return;
+    const нов = урокНовый(L);
+    т.style.display = нов ? '' : 'none';
+    т.parentElement.classList.toggle('is-new', нов);
   });
 }
 
