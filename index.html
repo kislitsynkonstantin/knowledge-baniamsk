@@ -1299,15 +1299,34 @@ async function loadProgress() {
 // В разметке остаются пустые контейнеры lesson-N-M; сюда подставляется тело.
 let _lessonsLoaded = false;
 
-async function loadLessons() {
-  if (_lessonsLoaded) return true;
+// Загрузка уроков — одна на страницу, сколько бы её ни просили. В калькуляторе
+// базу просят дважды почти одновременно: init() по своей сессии и сообщение
+// auth от калькулятора. Прежде оба вызова качали все тела уроков (1,5 МБ после
+// шести новых уроков 16.10.2026), дважды вставляли их в страницу и дважды
+// перезапускали полоску загрузки — на телефоне база грузилась вдвое дольше и
+// мигала (Константин, 16.10.2026: «база при загрузке стала мигать»). Второй
+// вызов теперь ждёт первый.
+let _загрузкаУроков = null;
+function loadLessons() {
+  if (_lessonsLoaded) return Promise.resolve(true);
+  if (!_загрузкаУроков) _загрузкаУроков = _загрузитьУроки().finally(() => { _загрузкаУроков = null; });
+  return _загрузкаУроков;
+}
+async function _загрузитьУроки() {
   const ls = document.getElementById('loadingState');
   if (ls) {
     const текст = (document.body.getAttribute('data-lang') === 'en')
       ? 'Loading lessons…' : 'Загрузка материалов…';
-    // Разметку ставим целиком, а не одну надпись: после ошибки загрузки на месте
-    // полоски стоит текст ошибки, и повторная загрузка должна вернуть полоску.
-    ls.innerHTML = '<div class="kb-load" role="progressbar" aria-label="' + текст + '"><i></i></div><div>' + текст + '</div>';
+    // Полоска уже бежит — меняем только надпись: пересозданная разметка
+    // запускала полоску с начала. Целиком разметку ставим, только если полоски
+    // нет — после ошибки загрузки на её месте стоит текст ошибки.
+    const полоска = ls.querySelector('.kb-load');
+    if (полоска && полоска.nextElementSibling) {
+      полоска.setAttribute('aria-label', текст);
+      полоска.nextElementSibling.textContent = текст;
+    } else {
+      ls.innerHTML = '<div class="kb-load" role="progressbar" aria-label="' + текст + '"><i></i></div><div>' + текст + '</div>';
+    }
     ls.style.display = '';
   }
 
