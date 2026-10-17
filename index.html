@@ -332,6 +332,17 @@ h3 .num{color:var(--gm);font-weight:800;margin-right:8px;}
 p{font-size:0.86rem;color:var(--bk);line-height:1.7;margin-bottom:11px;}
 ul{margin:10px 0 14px 20px;}
 ul li{font-size:0.84rem;color:var(--bk);line-height:1.65;margin-bottom:4px;}
+/* Точки списков — тёмным цветом темы, а не чёрным (Константин, 17.10.2026:
+   «где обычные тут чёрные точки маркированного списка, поставь тёмные в цвет
+   темы»). --g днём тёмный, ночью светлый — точка видна на обоих фонах. У
+   «Зелёного-графита» --g днём средний зелёный (2,5 : 1 на листе), поэтому там
+   точка темнее. В тёплой плашке предупреждения точка — цвета её черты. */
+body{--mk:var(--g);}
+:root[data-tone="bmsk"] body{--mk:color-mix(in srgb,var(--g) 72%,#000);}
+:root[data-tone="bmsk"] body.dark{--mk:var(--g);}
+@media(prefers-color-scheme:dark){:root[data-tone="bmsk"] body:not(.light){--mk:var(--g);}}
+ul li::marker{color:var(--mk);}
+.warn li::marker{color:var(--warn-border);}
 
 .kbd{display:inline-block;font-family:'Geologica',sans-serif;font-size:0.72rem;font-weight:600;color:var(--g);background:var(--gb);border:1px solid var(--bd);border-radius:4px;padding:1px 6px;letter-spacing:0.02em;}
 
@@ -728,7 +739,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.21</span></div>
+    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.22</span></div>
     <h1><span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span></h1>
 
     <div class="sb-controls">
@@ -899,7 +910,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
             <span id="authLangLabel" class="lg-lang">En</span>
           </button>
         </div>
-        <div class="lg-badge">v2.21</div>
+        <div class="lg-badge">v2.22</div>
       </div>
       <img class="lg-logo lg-logo-d" src="assets/logo-bmsk-dark-bmsk.png" alt="Баня МСК">
       <img class="lg-logo lg-logo-n" src="assets/logo-bmsk-light-bmsk.png" alt="Баня МСК">
