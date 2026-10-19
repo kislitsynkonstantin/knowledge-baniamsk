@@ -198,6 +198,23 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
    с точкой поле справа шире, чтобы длинное название до неё не доходило. */
 .sb-new{width:5px;height:5px;border-radius:50%;background:#facc15;position:absolute;right:24px;top:50%;margin-top:-2.5px;}
 .sb-a.is-new{padding-right:36px;}
+/* Плашка «New» вместо точки — три месяца после добавления урока, открывал его
+   сотрудник или нет (Константин 19.10.2026: «к новым 6-ти статьям поставь
+   плашку New — пусть она висит 3 месяца»). Пока урок не открыт, плашка
+   залита жёлтым, как прежняя точка; открытый — та же надпись приглушённо.
+   Стоит в той же колонке, что галочка пройденного, и в строке, а не поверх:
+   длинное название переносится до неё. */
+.sb-new.nw{position:static;width:auto;height:auto;margin:0 0 0 auto;flex-shrink:0;padding:3px 6px;border-radius:20px;
+  font-family:'Unbounded',sans-serif;font-size:0.5rem;font-weight:700;letter-spacing:0.06em;line-height:1;
+  background:#facc15;color:#1d1a0e;}
+.sb-new.nw.seen{background:transparent;color:rgba(255,255,255,0.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.3);}
+.sb-a.is-new.nw-on{padding-right:22px;}
+.sb-a.nw-on .sb-a-check{margin-left:6px;}
+/* Та же плашка в списке уроков раздела — после названия. */
+.nw-tag{display:inline-block;margin-left:6px;padding:3px 6px;border-radius:20px;vertical-align:2px;
+  font-family:'Unbounded',sans-serif;font-size:0.5rem;font-weight:700;letter-spacing:0.06em;line-height:1;
+  background:#facc15;color:#1d1a0e;}
+.nw-tag.seen{background:transparent;color:var(--gr);box-shadow:inset 0 0 0 1px var(--bd);}
 .sb-a.disabled{opacity:0.35;cursor:not-allowed;}
 .sb-a.disabled:hover{background:transparent;}
 
@@ -739,7 +756,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.22</span></div>
+    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.23</span></div>
     <h1><span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span></h1>
 
     <div class="sb-controls">
@@ -910,7 +927,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
             <span id="authLangLabel" class="lg-lang">En</span>
           </button>
         </div>
-        <div class="lg-badge">v2.22</div>
+        <div class="lg-badge">v2.23</div>
       </div>
       <img class="lg-logo lg-logo-d" src="assets/logo-bmsk-dark-bmsk.png" alt="Баня МСК">
       <img class="lg-logo lg-logo-n" src="assets/logo-bmsk-light-bmsk.png" alt="Баня МСК">
@@ -1714,7 +1731,7 @@ function openSection(blockId) {
     row.tabIndex = 0;
     row.innerHTML = `
       <td class="c-n">${l.id}</td>
-      <td><div class="slr-title"><span class="lang-ru">${titleRu}</span><span class="lang-en">${titleEn}</span></div>
+      <td><div class="slr-title"><span class="lang-ru">${titleRu}</span><span class="lang-en">${titleEn}</span>${kb ? плашкаНового(kb) : ''}</div>
         <div class="slr-sub"><span class="lang-ru">${subRu}</span><span class="lang-en">${subEn}</span></div></td>
       <td class="c-ab"><span class="lang-ru">${subRu}</span><span class="lang-en">${subEn}</span></td>
       <td class="c-st">${слова[к]}</td>`;
@@ -2386,19 +2403,32 @@ function построитьКаталог(уроки, блоки) {
 // («navL34», «checkL34»): по ним ходят отметки о пройденном и подсветка урока.
 // Новый урок — тот, что добавлен в базу меньше месяца назад (kb_lessons.added_at)
 // и ещё не открывался этим сотрудником (строки в kb_lesson_progress нет).
-const СРОК_НОВОГО_МС = 30 * 24 * 3600 * 1000;
-function урокНовый(L) {
-  if (!L || !L.added_at || _progress[L.id]) return false;
+// Плашка «New» висит три месяца после добавления, открывали урок или нет;
+// «новый» (ещё не открыт) только меняет её вид — залитая или приглушённая.
+// Первый набор уроков стоит в базе с added_at 01.09.2026 — днём, когда колонку
+// заполнили, а не днём появления урока; новыми такие не считаются.
+const СРОК_НОВОГО_МС = 92 * 24 * 3600 * 1000;
+const НОВЫЕ_С = Date.parse('2026-10-01T00:00:00Z');
+function урокСвежий(L) {
+  if (!L || !L.added_at) return false;
   const т = Date.parse(L.added_at);
-  return !isNaN(т) && Date.now() - т < СРОК_НОВОГО_МС;
+  return !isNaN(т) && т >= НОВЫЕ_С && Date.now() - т < СРОК_НОВОГО_МС;
+}
+function урокНовый(L) {
+  return урокСвежий(L) && !_progress[L.id];
+}
+function плашкаНового(L) {
+  return урокСвежий(L) ? '<span class="nw-tag' + (урокНовый(L) ? '' : ' seen') + '" title="Новый урок">New</span>' : '';
 }
 function обновитьТочкиНовых() {
   KB_LESSONS.forEach(L => {
     const т = document.getElementById('newL' + L.id.replace('.', ''));
     if (!т) return;
-    const нов = урокНовый(L);
-    т.style.display = нов ? '' : 'none';
-    т.parentElement.classList.toggle('is-new', нов);
+    const свеж = урокСвежий(L);
+    т.style.display = свеж ? '' : 'none';
+    т.classList.toggle('seen', свеж && !урокНовый(L));
+    т.parentElement.classList.toggle('is-new', свеж);
+    т.parentElement.classList.toggle('nw-on', свеж);
   });
 }
 
@@ -2434,7 +2464,7 @@ function построитьМеню(уроки, блоки) {
           '<span class="sb-a-num">' + н + '</span>' +
           '<span class="lang-ru">' + экр(у.nav_ru) + '</span>' +
           '<span class="lang-en">' + экр(у.nav_en) + '</span>' +
-          '<span class="sb-new" id="newL' + ключ + '" style="display:none;" title="Новый урок"></span>' +
+          '<span class="sb-new nw" id="newL' + ключ + '" style="display:none;" title="Новый урок">New</span>' +
           '<svg class="sb-a-check" id="checkL' + ключ + '" viewBox="0 0 24 24" fill="none" ' +
           'stroke="currentColor" stroke-width="3" style="display:none;">' +
           '<polyline points="20 6 9 17 4 12"/></svg></div>';
