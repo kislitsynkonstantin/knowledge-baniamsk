@@ -364,14 +364,14 @@ ul li::marker{color:var(--mk);}
 
 .kbd{display:inline-block;font-family:'Geologica',sans-serif;font-size:0.72rem;font-weight:600;color:var(--g);background:var(--gb);border:1px solid var(--bd);border-radius:4px;padding:1px 6px;letter-spacing:0.02em;}
 
-/* Tip / Warn / Quote — без черты слева, как в справке калькулятора (Константин, 20.10.2026:
-   «8 — снимай как в справке»; правило «черты сбоку нет нигде», 18.10.2026). */
-.tip,.warn,.quote{border-radius:10px;padding:13px 17px;margin:14px 0;font-size:0.84rem;line-height:1.65;}
-.tip{background:var(--tip-bg);color:var(--bk);}
-.warn{background:var(--warn-bg);color:var(--warn-text);}
+/* Tip / Warn / Quote — черта слева и скругление справа. Черта у плашек урока
+   возвращена 20.10.2026: «Там было 2 цвета и полоса. Я не говорил её убирать». */
+.tip,.warn,.quote{border-radius:0 10px 10px 0;padding:13px 17px;margin:14px 0;font-size:0.84rem;line-height:1.65;}
+.tip{background:var(--tip-bg);border-left:3px solid var(--tip-border);color:var(--bk);}
+.warn{background:var(--warn-bg);border-left:3px solid var(--warn-border);color:var(--warn-text);}
 .warn strong{color:#c06010;}
 body.dark .warn strong{color:#e0b070;}
-.quote{background:linear-gradient(90deg,var(--gb) 0%,transparent 100%);font-style:italic;color:var(--bk);font-size:0.92rem;padding:18px 22px;}
+.quote{background:linear-gradient(90deg,var(--gb) 0%,transparent 100%);border-left:3px solid var(--g);font-style:italic;color:var(--bk);font-size:0.92rem;padding:18px 22px;}
 body.dark .quote{background:linear-gradient(90deg,var(--gb) 0%,transparent 100%);}
 
 /* Comparison table */
@@ -755,7 +755,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.25</span></div>
+    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.26</span></div>
     <h1><span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span></h1>
 
     <div class="sb-controls">
@@ -926,7 +926,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
             <span id="authLangLabel" class="lg-lang">En</span>
           </button>
         </div>
-        <div class="lg-badge">v2.25</div>
+        <div class="lg-badge">v2.26</div>
       </div>
       <img class="lg-logo lg-logo-d" src="assets/logo-bmsk-dark-bmsk.png" alt="Баня МСК">
       <img class="lg-logo lg-logo-n" src="assets/logo-bmsk-light-bmsk.png" alt="Баня МСК">
