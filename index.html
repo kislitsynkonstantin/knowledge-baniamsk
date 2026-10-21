@@ -89,7 +89,7 @@ html.dark,body.dark{background:#0a1012;}
 :root[data-tone="bmsk"] .sb-group{color:#8bc34a;}
 :root[data-tone="bmsk"] .sb-a svg,:root[data-tone="bmsk"] .sb-home-btn>svg{color:#8bc34a;stroke:#8bc34a;opacity:1;}
 :root[data-tone="bmsk"] .sb-a-num{background:rgba(139,195,74,.18);color:#a6d474;}
-:root[data-tone="bmsk"] .sb-a.on{color:#a6d474;}
+:root[data-tone="bmsk"] .sb-a.on{color:#a6d474;border-left-color:#8bc34a;}
 
 /* Resizer handle — desktop only (hidden on mobile via media query below) */
 .sb-resizer{position:fixed;top:0;left:calc(var(--sb-w) - 3px);width:6px;height:100vh;cursor:col-resize;z-index:90;background:transparent;transition:background 0.15s;}
@@ -183,11 +183,9 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 .sb-group.collapsed .sb-group-chevron{transform:rotate(-90deg);}
 .sb-group-items{overflow:hidden;transition:max-height 0.28s ease;}
 .sb-group-items.collapsed{max-height:0!important;}
-.sb-a{display:flex;align-items:center;gap:8px;padding:8px 22px 8px 24px;font-size:0.74rem;color:rgba(255,255,255,0.88);cursor:pointer;transition:all 0.12s;user-select:none;line-height:1.35;}
+.sb-a{display:flex;align-items:center;gap:8px;padding:8px 22px;font-size:0.74rem;color:rgba(255,255,255,0.88);cursor:pointer;transition:all 0.12s;border-left:2px solid transparent;user-select:none;line-height:1.35;}
 .sb-a:hover{background:rgba(255,255,255,0.06);color:#fff;}
-/* Открытый урок — заливкой и начертанием, без черты слева: черты в выделении
-   нет нигде (Константин 18.10.2026; снята здесь 19.10.2026 — «1 — да»). */
-.sb-a.on{background:rgba(255,255,255,0.12);color:#fff;font-weight:600;}
+.sb-a.on{background:rgba(255,255,255,0.12);color:#fff;border-left-color:var(--gl);font-weight:600;}
 .sb-a-num{font-family:'Unbounded',sans-serif;font-size:0.6rem;font-weight:700;background:rgba(255,255,255,0.1);border-radius:4px;padding:2px 5px;flex-shrink:0;letter-spacing:0.03em;}
 .sb-a.on .sb-a-num{background:rgba(255,255,255,0.22);}
 .sb-a-check{margin-left:auto;width:13px;height:13px;flex-shrink:0;color:var(--gl);}
@@ -254,7 +252,7 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
 .side-nav-inner::-webkit-scrollbar-thumb { background: var(--gl); border-radius: 2px; }
 .side-nav-item {
   display: block;
-  padding: 6px 16px 6px 18px;
+  padding: 6px 16px;
   font-family: 'Geologica', sans-serif;
   font-size: 0.72rem;
   color: var(--gr);
@@ -264,9 +262,10 @@ body[data-sb="unpinned"] .sb-floating{display:flex;}
   overflow: hidden;
   text-overflow: ellipsis;
   text-decoration: none;
+  border-left: 2px solid transparent;
 }
-.side-nav-item:hover { background: var(--gb); color: var(--g); }
-.side-nav-item:focus { outline: none; background: var(--gb); color: var(--g); font-weight: 600; }
+.side-nav-item:hover { background: var(--gb); color: var(--g); border-left-color: var(--gm); }
+.side-nav-item:focus { outline: none; background: var(--gb); color: var(--g); border-left-color: var(--g); font-weight: 600; }
 .side-nav-item.nav-section {
   font-weight: 600;
   font-size: 0.65rem;
@@ -681,8 +680,11 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
 .sec-tb tr.done .slr-title{color:var(--gr);}
 .sec-tb tr.done .c-n{color:var(--grl);}
 .sec-tb tr.next td{background:var(--gb);background:color-mix(in srgb,var(--gm) 14%,transparent);}
-/* Следующий урок — только заливкой строки: полоска левее таблицы снята
-   (черты в выделении нет нигде — Константин 18.10.2026; здесь 19.10.2026). */
+/* Полоска текущего урока — в поле листа, левее таблицы: внутри ячейки она
+   упиралась в черту под шапкой и рисовала с ней угол (Константин 16.10.2026,
+   снимок раздела «Продукт»). Тот же приём, что у выбранной строки в «Бланке». */
+.sec-tb tr.next td:first-child{position:relative;}
+.sec-tb tr.next td:first-child::before{content:'';position:absolute;left:-8px;top:0;bottom:0;width:2px;background:var(--gm);}
 .sec-tb tfoot td{border-top:2px solid var(--g);border-bottom:0;font-size:0.8rem;color:var(--gr);padding-top:12px;}
 .sec-tb tfoot b{color:var(--g);font-weight:600;}
 @container (min-width:620px){
@@ -755,7 +757,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
     <svg id="sbPinIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
   </button>
   <div class="sb-top">
-    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.26</span></div>
+    <div class="sb-logo"><img class="sb-logo-img" id="sbLogo" src="assets/logo-bmsk-light.png" alt="Баня МСК" width="98" height="22"><span class="sb-ver">v2.27</span></div>
     <h1><span class="lang-ru">База знаний</span><span class="lang-en">Knowledge Base</span></h1>
 
     <div class="sb-controls">
@@ -926,7 +928,7 @@ body.dark .theme-tog:hover{background:rgba(255,255,255,0.22);color:#fff;}
             <span id="authLangLabel" class="lg-lang">En</span>
           </button>
         </div>
-        <div class="lg-badge">v2.26</div>
+        <div class="lg-badge">v2.27</div>
       </div>
       <img class="lg-logo lg-logo-d" src="assets/logo-bmsk-dark-bmsk.png" alt="Баня МСК">
       <img class="lg-logo lg-logo-n" src="assets/logo-bmsk-light-bmsk.png" alt="Баня МСК">
